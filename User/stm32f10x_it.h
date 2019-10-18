@@ -29,11 +29,16 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
+#include "gw_timer.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
+extern struct gw_timer global_timer;
+extern struct gw_event event_table[];
+
 /* Exported functions ------------------------------------------------------- */
+extern void TimingDelay_Decrement(void);
 
 void NMI_Handler(void);
 void HardFault_Handler(void);

@@ -23,7 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
-
+#include "stdio.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -58,6 +58,7 @@ void HardFault_Handler(void)
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
+	//printf("HardFault_Handler\n");
   }
 }
 
@@ -71,6 +72,7 @@ void MemManage_Handler(void)
   /* Go to infinite loop when Memory Manage exception occurs */
   while (1)
   {
+
   }
 }
 
@@ -133,7 +135,9 @@ void PendSV_Handler(void)
   * @retval None
   */
 void SysTick_Handler(void)
-{
+{	
+	//timer_add(&global_timer);
+	TimingDelay_Decrement();
 }
 
 /******************************************************************************/
