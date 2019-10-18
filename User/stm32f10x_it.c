@@ -23,7 +23,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
-#include "stdio.h"
+#include "gw_fifo.h"
+#include <stdio.h>
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -58,7 +59,7 @@ void HardFault_Handler(void)
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
-	//printf("HardFault_Handler\n");
+	printf("HardFault_Handler\n");
   }
 }
 
@@ -156,9 +157,18 @@ void SysTick_Handler(void)
 {
 }*/
 
+void TIM1_UP_IRQHandler(void){
+	//static uint32_t i=0;
+	if(TIM_GetFlagStatus(TIM1, TIM_IT_Update) == SET){
+		gw_poll_event_task();
+		gw_global_timer_add();
+	}	
+	TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
+}	
+
+
 /**
   * @}
   */ 
-
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

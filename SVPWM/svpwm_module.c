@@ -122,18 +122,17 @@ void svpwm_nofloat_run(struct svpwm_module *svpwm)
 	if ((T4+T6)>Ts){
 		Terr = T4+T6;
 		T4 = (float)((float)T4/(float)Terr)*Ts;
-		T6 = (float)((float)T6/(float)Terr)*Ts;
-		svpwm->Tcm4++;
+		T6 = (float)((float)T6/(float)Terr)*Ts;		
 	}
 	
 	Ta = (Ts - T4 - T6)/4;
 	Tb = Ta + (T4)/2;
 	Tc = Tb + (T6)/2;
 	
-	svpwm_time_check(&Ta,Ts/2,0);
-	svpwm_time_check(&Tb,Ts/2,0);
-	svpwm_time_check(&Tc,Ts/2,0);
-
+	svpwm_time_check(&Ta,Ts/2, 0);
+	svpwm_time_check(&Tb,Ts/2, 0);
+	svpwm_time_check(&Tc,Ts/2, 0);
+	
 	switch (sector){
 		case 1:
 			svpwm->Tcm1 = Tb;
@@ -171,7 +170,7 @@ void svpwm_nofloat_run(struct svpwm_module *svpwm)
 			//svpwm->Tcm2 = Ts/2;
 			//svpwm->Tcm3 = Ts/2;		   
 			break;
-	}	   
+	}	
 }
 
 

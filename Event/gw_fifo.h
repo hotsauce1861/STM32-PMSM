@@ -3,15 +3,14 @@
 #include "stdint.h"
 #include "gw_event.h"
 
-struct gw_fifo{
+void gw_event_fifo_init(void);
+void gw_reset_event_status(void);
+void gw_poll_event_task(void);
+void gw_execute_event_task(void);
+void gw_global_timer_add(void);
 
-#define	FIFO_SIZE	60
+uint8_t gw_is_event_empty(void);
 
-	struct 	gw_event **event_table;	//指向gw_event队列
-	uint8_t front;	//队首
-	uint8_t rear;	//队尾
-
-};
 
 #endif
 

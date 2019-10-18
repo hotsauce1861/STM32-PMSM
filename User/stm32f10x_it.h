@@ -29,6 +29,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
+#include "svpwm_driver.h"
+#include "svpwm_module.h"
+#include "svpwm_math.h"
 #include "gw_timer.h"
 
 /* Exported types ------------------------------------------------------------*/
@@ -36,7 +39,7 @@
 /* Exported macro ------------------------------------------------------------*/
 extern struct gw_timer global_timer;
 extern struct gw_event event_table[];
-
+extern struct svpwm_module *psvpwm;
 /* Exported functions ------------------------------------------------------- */
 extern void TimingDelay_Decrement(void);
 
@@ -49,6 +52,7 @@ void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
+
 
 #ifdef __cplusplus
 }

@@ -47,8 +47,8 @@
 #define MIN_INT32	(int32_t)-2147483648
 
 #define SINE_TABLE_SIZE		360
-extern const int32_t sine_table[SINE_TABLE_SIZE];
-extern const int32_t consine_table[SINE_TABLE_SIZE];
+extern const int16_t sine_table[SINE_TABLE_SIZE];
+extern const int16_t consine_table[SINE_TABLE_SIZE];
 extern const int16_t sine_table_8192[SINE_TABLE_SIZE];
 extern const int16_t consine_table_8192[SINE_TABLE_SIZE];
 

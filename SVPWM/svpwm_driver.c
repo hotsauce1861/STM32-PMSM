@@ -1,10 +1,8 @@
 #include "stm32f10x.h"
 #include "svpwm_driver.h"
 #include "stm32f10x_tim.h"
-
-#define PWM_FRQ 	8000L
-#define SYS_FRQ		SystemCoreClock
-
+#include "stm32f10x_it.h"
+#include <stdio.h>
 /**
   * @brief  Configures the different system clocks.
   * @param  None
@@ -13,8 +11,15 @@
 static void pwm_rcc_init(void)
 {
   /* TIM1, GPIOA, GPIOB, GPIOE and AFIO clocks enable */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1 | RCC_APB2Periph_GPIOA |
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1 | RCC_APB2Periph_GPIOA | 
+                         RCC_APB2Periph_AFIO |
                          RCC_APB2Periph_GPIOB, ENABLE);
+}
+
+static void pwm_cnt_irq_init(void)
+{
+
+	
 }
 
 /**
@@ -43,6 +48,7 @@ static void pwm_tim_init(void){
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef  TIM_OCInitStructure;
 	TIM_BDTRInitTypeDef      TIM_BDTRInitStructure;
+	NVIC_InitTypeDef 	NVIC_InitStructure;
 	uint16_t TimerPeriod = 0;
 	uint16_t Channel1Pulse = 0, Channel2Pulse = 0, Channel3Pulse = 0;
 
@@ -79,17 +85,27 @@ static void pwm_tim_init(void){
 	TIM_TimeBaseStructure.TIM_Period = TimerPeriod;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+
+	TIM_ClearFlag(TIM1, TIM_FLAG_Update);
+	TIM_ITConfig(TIM1,TIM_IT_Update, ENABLE);
+
+	NVIC_InitStructure.NVIC_IRQChannel = TIM1_UP_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x02;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
 	
 	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
 	
 	/* Channel 1, 2, 3 Configuration in PWM mode */
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
 	TIM_OCInitStructure.TIM_Pulse = Channel1Pulse;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-	TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_High;
-	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
+	TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCPolarity_High;
+	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
 	TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset;
 	
 	TIM_OC1Init(TIM1, &TIM_OCInitStructure);
@@ -105,15 +121,16 @@ static void pwm_tim_init(void){
 	TIM_OC2PreloadConfig(TIM1,TIM_OCPreload_Enable);
 	TIM_OC3PreloadConfig(TIM1,TIM_OCPreload_Enable);
 
+#ifndef SVPWM_USE_BDT
 	TIM_BDTRInitStructure.TIM_OSSRState = TIM_OSSRState_Enable;
 	TIM_BDTRInitStructure.TIM_OSSIState = TIM_OSSIState_Enable;
 	TIM_BDTRInitStructure.TIM_LOCKLevel = TIM_LOCKLevel_OFF;
-	TIM_BDTRInitStructure.TIM_DeadTime = 0;
+	TIM_BDTRInitStructure.TIM_DeadTime = 10;
 	TIM_BDTRInitStructure.TIM_Break = TIM_Break_Disable;			   
 	TIM_BDTRInitStructure.TIM_BreakPolarity = TIM_BreakPolarity_Low;
 	TIM_BDTRInitStructure.TIM_AutomaticOutput = TIM_AutomaticOutput_Disable;
 	TIM_BDTRConfig(TIM1, &TIM_BDTRInitStructure);
-	
+#endif	
 	/* TIM1 counter enable */
 	TIM_Cmd(TIM1, ENABLE);
 	TIM_CCPreloadControl(TIM1,ENABLE);
@@ -126,25 +143,25 @@ void pwm_init(void){
 
 	pwm_rcc_init();
 	pwm_pin_init();
+	pwm_cnt_irq_init();
 	pwm_tim_init();
-	
 }
 
 void pwm_reset_duty_cnt(uint8_t index, int16_t cnt){
 
 	switch(index){
 		case 1:
-//			TIM1->CCR1 = cnt;
-			TIM_SetCompare1(TIM1,cnt);
+			TIM1->CCR1 = cnt;
+//			TIM_SetCompare1(TIM1,cnt);
 
 		break;
 		case 2:
-//			TIM1->CCR2 = cnt;
-			TIM_SetCompare2(TIM1,cnt);
+			TIM1->CCR2 = cnt;
+//			TIM_SetCompare2(TIM1,cnt);
 		break;
 		case 3:
-//			TIM1->CCR3 = cnt;
-			TIM_SetCompare3(TIM1,cnt);			
+			TIM1->CCR3 = cnt;
+//			TIM_SetCompare3(TIM1,cnt);			
 		break;
 	}	
 }

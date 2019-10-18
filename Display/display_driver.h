@@ -16,9 +16,10 @@ struct dirver_74hc595 {
 	void (*output_rck)(uint8_t);
 	void (*output_sdi)(uint8_t);
 };
-
+#if 0
 void hc595_init(struct dirver_74hc595* pdev);
 void hc595_write(struct dirver_74hc595* pdev, uint8_t data);
 void hc595_output(struct dirver_74hc595* pdev);
+#endif
 
 #endif
