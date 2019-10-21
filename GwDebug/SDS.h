@@ -16,7 +16,7 @@ Ensure that SCI has been configured in 9600bps mode.
 #ifndef SDS_outputdata_H
 #define SDS_outputdata_H
 /*------------------------------------Extern Variables------------------------------------*/
-void SDS_OutPut_Data(float []);
+void SDS_OutPut_Data(float S_Out[]);
 void SDS_OutPut_Data_INT(int S_Out[]);
 
 #endif  

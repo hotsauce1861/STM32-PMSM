@@ -81,6 +81,9 @@ void usart_init(void){
 	USART_Cmd(COM_PORT, ENABLE);
 }
 
+
+
+#if USE_MICROLIB_USART
 /**
   * @brief  Retargets the C library printf function to the USART.
   * @param  None
@@ -97,8 +100,30 @@ PUTCHAR_PROTOTYPE
 	return ch;
 }
 
-//GETCHAR_PROTOTYPE
-//{
-//	return usart_recv_char();
-//}
+#else
+
+#pragma import(__use_no_semihosting)                          
+struct __FILE 
+{ 
+	int handle; 
+
+}; 
+FILE __stdout;       
+
+int _sys_exit(int x)
+{ 
+	x = x; 
+	return 0;
+} 
+int fputc(int ch, FILE *f)
+{      
+	/* Place your implementation of fputc here */
+	/* e.g. write a character to the USART */
+	USART_SendData(COM_PORT, (uint8_t) ch);
+	/* Loop until the end of transmission */
+	while (USART_GetFlagStatus(COM_PORT, USART_FLAG_TC) == RESET)
+	{}
+	return ch;
+}
+#endif
 

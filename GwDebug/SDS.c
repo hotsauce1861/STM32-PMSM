@@ -5,7 +5,7 @@
 #define uart_putchar(x) usart_send_char(x)
 
 
-float SDS_OutData[4] = { 0 };
+//float SDS_OutData[4] = { 0 };
 
 unsigned short CRC_CHECK(unsigned char *Buf, unsigned char CRC_CNT)
 {

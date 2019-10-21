@@ -4,6 +4,8 @@
 #include <stdint.h>
 /* Private function prototypes -----------------------------------------------*/
 
+#if USE_MICROLIB_USART
+
 #ifdef __GNUC__
 /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
    set to 'Yes') calls __io_putchar() */
@@ -13,14 +15,17 @@
 //#define GETCHAR_PROTOTYPE int fgetc(FILE *f)
 
 #endif /* __GNUC__ */
+extern PUTCHAR_PROTOTYPE;
+#else
 
+#endif
  
 void usart_init(void);
 void usart_send_char(char ch);
 void usart_test_echo(void);
 uint8_t usart_recv_char(void);
 
-extern PUTCHAR_PROTOTYPE;
+
 //extern GETCHAR_PROTOTYPE;
 
 #endif

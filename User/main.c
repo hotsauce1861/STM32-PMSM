@@ -27,6 +27,7 @@
 #include "gw_fifo.h"
 #include "svpwm_module.h"
 #include "SDS.h"
+#include "encoder.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -50,65 +51,36 @@ static __IO uint32_t TimingDelay;
   * @retval None
   */
 int main(void)
-{
-	
+{	
 	volatile uint16_t i = 0;
-	//uint8_t tmp_data = 0x00;
-	
+
 	/*!< At this stage the microcontroller clock setting is already configured, 
 	   this is done through SystemInit() function which is called from startup
 	   file (startup_stm32f10x_xx.s) before to branch to application main.
 	   To reconfigure the default setting of SystemInit() function, refer to
 	   system_stm32f10x.c file
-	*/     	
+	*/
+	
 	/*
 		hardware init
 	*/
 	timer_base_config();
 	usart_init();
-	svpwm_init();
+	svpwm_init();	
 
+	//pwm_disable();
+	
+	encoder_init();
+	
 	/*
 		software init
 	*/
 	gw_event_fifo_init();	
-
-	
-	
+		
 	while (1)
 	{			
 		gw_execute_event_task();
-		//Delay(5);
-		#if 0
-		svpwm.UAlpha = sine_table[i%SINE_TABLE_SIZE]; 
-		svpwm.UBeta = sine_table[(i+90)%SINE_TABLE_SIZE];//需要限制幅度作处理
-		#else
-//		psvpwm->UAlpha = sine_table[i%SINE_TABLE_SIZE]; 
-//		psvpwm->UBeta = consine_table[(i+270)%SINE_TABLE_SIZE];//需要限制幅度作处理			
-		#endif		
-		//svpwm_nofloat_run(psvpwm);
-		//test_data[0] = svpwm_nofloat_get_sector(&svpwm);
-		//tmp_data = svpwm_nofloat_get_sector(&svpwm);			
-		//pwm_reset_duty_cnt(1, psvpwm->Tcm1);
-		//pwm_reset_duty_cnt(2, psvpwm->Tcm2);
-		//pwm_reset_duty_cnt(3, psvpwm->Tcm3);
-
-		//test_data[0] = psvpwm->Tcm1;
-		//test_data[1] = psvpwm->Tcm2;
-		//test_data[2] = psvpwm->Tcm3;
-		//test_data[3] = psvpwm->sector*100;
-		
-		//test_data[0] = (int32_t)(tmp_data);
-		//test_data[1] = 0;
-		//test_data[2] = 0;
-		//test_data[3] = 0;
-		//printf("%d psvpwm->Tcm1 	: is %d\n",i,psvpwm->Tcm1);
-		//printf("%d psvpwm->Tcm2 	: is %d\n",i,psvpwm->Tcm2);
-		//printf("%d psvpwm->Tcm3 	: is %d\n",i,psvpwm->Tcm3);
-		//usart_send_char(0x55);
-		//SDS_OutPut_Data_INT(test_data);
-		//i++;	
-	}	
+	}
 }
 
 

@@ -57,10 +57,10 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-	printf("HardFault_Handler\n");
-  }
+	while (1)
+	{
+		printf("HardFault_Handler\n");
+	}
 }
 
 /**
@@ -138,6 +138,12 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {	
 	//timer_add(&global_timer);
+	static int32_t time_cricle = 0;
+	
+	if(time_cricle++%1 == 0){
+		gw_poll_event_task();		
+	}	
+	gw_global_timer_add();
 	TimingDelay_Decrement();
 }
 
@@ -156,16 +162,15 @@ void SysTick_Handler(void)
 /*void PPP_IRQHandler(void)
 {
 }*/
-
+/*
 void TIM1_UP_IRQHandler(void){
 	//static uint32_t i=0;
 	if(TIM_GetFlagStatus(TIM1, TIM_IT_Update) == SET){
-		gw_poll_event_task();
-		gw_global_timer_add();
+
 	}	
 	TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
 }	
-
+*/
 
 /**
   * @}

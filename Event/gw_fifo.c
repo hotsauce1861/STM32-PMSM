@@ -21,7 +21,7 @@ static struct gw_event event_table[] =
 		.type = TYPE_IRQ, 
 		.status = DISABLE,
 		.task = task_svpwm,
-		.poll_time = 100,
+		.poll_time = 10,
 		.g_timer = &global_timer,		
 	},
 	{
@@ -29,9 +29,18 @@ static struct gw_event event_table[] =
 		.type = TYPE_IRQ, 
 		.status = DISABLE,
 		.task = task_idle,
-		.poll_time = 1000,
+		.poll_time = 100,
 		.g_timer = &global_timer,
-	}	
+	},	
+	
+	{
+		.name = "get_rpm",
+		.type = TYPE_IRQ, 
+		.status = DISABLE,
+		.task = task_get_rpm,
+		.poll_time = 100,
+		.g_timer = &global_timer,
+	},		
 };
 
 #define EVENT_SIZE 2
