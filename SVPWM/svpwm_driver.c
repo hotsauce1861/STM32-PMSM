@@ -174,6 +174,7 @@ void pwm_reset_duty_cnt(uint8_t index, int16_t cnt){
 		case 3:
 			TIM1->CCR3 = (uint16_t)cnt;
 //			TIM_SetCompare3(TIM1,cnt);			
+
 		break;
 	}	
 }

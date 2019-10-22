@@ -2,7 +2,7 @@
 #define	SVPWM_DRIVER_H
 #include <stdint.h>
 
-#define PWM_FRQ 	9000L
+#define PWM_FRQ 	7500L
 #define SYS_FRQ		72000000L
 
 void pwm_init(void);

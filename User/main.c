@@ -94,8 +94,6 @@ void Delay(__IO uint32_t nTime);
 void Delay(__IO uint32_t nTime)
 { 
   TimingDelay = nTime;
-  
-
   while(TimingDelay != 0);
 }
 

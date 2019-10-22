@@ -1,9 +1,9 @@
 #include "svpwm_module.h"
+#include "svpwm_math.h"
 #include "svpwm_driver.h"
 #include <stdint.h>
 #include <stdio.h>
 
-#define FACTOR 1000000
 //#define SQRT_3 		1.732 * 100
 #define SQRT_3 		173
 #define MOTOR_POWER	20
@@ -64,7 +64,7 @@ void svpwm_nofloat_run(struct svpwm_module *svpwm)
 	//Ts的单位是秒所以要做归一化处理
 	//Ts = get_pwm_period ();
 	//float Ts = 0.0001; //0.0001 * 1000*1000
-	int32_t Ts = get_pwm_period();
+	int16_t Ts = get_pwm_period();
 
 	sector = svpwm_nofloat_get_sector(svpwm);
 
@@ -76,9 +76,9 @@ void svpwm_nofloat_run(struct svpwm_module *svpwm)
 	Z = SQRT_3 * (-SQRT_3*(int32_t)svpwm->UAlpha + (int32_t)svpwm->UBeta * 100)/ 200/Udc;
 #else
 	//产生了马鞍波形，但是毛刺较多，存在问题
-	X = svpwm->UBeta/Udc;
-	Y = (3*svpwm->UAlpha + svpwm->UBeta )/2/Udc;	//这里的UBeta查表处理，已经乘以sqrt3
-	Z = (-3*svpwm->UAlpha + svpwm->UBeta)/2/Udc;
+	X = Ts*svpwm->UBeta/Q14/Udc;
+	Y = Ts*(3*svpwm->UAlpha + svpwm->UBeta )/Q14/2/Udc;	//这里的UBeta查表处理，已经乘以sqrt3
+	Z = Ts*(-3*svpwm->UAlpha + svpwm->UBeta)/Q14/2/Udc;
 #endif
     /* 计算SVPWM占空比 */
 	/* 确定扇区号计算开关时间
