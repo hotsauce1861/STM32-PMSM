@@ -14,9 +14,20 @@ typedef enum{
 	BACK
 }MOTO_DIR;
 
+/**
+ * 	@brief init encoder pin for pha pab and zero
+ *		   and interrpts		
+ */
 void encoder_init(void);
-int32_t encoder_get_signal_cnt(void);
-MOTO_DIR encoder_get_motor_dir(void); 
 
+/**
+ *	@brief get encoder capture signal counts
+ */
+int32_t encoder_get_signal_cnt(void);
+
+/**
+ *	@brief get encoder running direction
+ */
+MOTO_DIR encoder_get_motor_dir(void); 
 
 #endif

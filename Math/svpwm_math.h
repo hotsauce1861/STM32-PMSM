@@ -49,8 +49,6 @@
 #define SINE_TABLE_SIZE		360
 extern const int16_t sine_table[SINE_TABLE_SIZE];
 extern const int16_t consine_table[SINE_TABLE_SIZE];
-extern const int16_t sine_table_8192[SINE_TABLE_SIZE];
-extern const int16_t consine_table_8192[SINE_TABLE_SIZE];
 
 /**
   * @brief Two components stator current type definition

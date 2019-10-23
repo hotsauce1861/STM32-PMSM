@@ -28,6 +28,7 @@
 #include "svpwm_module.h"
 #include "SDS.h"
 #include "encoder.h"
+#include "current.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -69,7 +70,7 @@ int main(void)
 	svpwm_init();	
 
 	//pwm_disable();
-	
+	cur_fbk_init();
 	encoder_init();
 	
 	/*

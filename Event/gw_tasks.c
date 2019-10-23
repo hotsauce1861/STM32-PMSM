@@ -6,6 +6,8 @@
 #include "svpwm_module.h"
 #include "svpwm_math.h"
 #include "encoder.h"
+#include "current.h"
+
 #include "SDS.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -58,11 +60,14 @@ void task_idle(void){
 #endif	
 	//printf("task_idle\n");
 }
-
+uint16_t Ia = 0;
+uint16_t Ib = 0;
 void task_get_rpm(void){
 	
-	int32_t rpm = 0;
+	int32_t rpm = 0;	
 	rpm = encoder_get_signal_cnt();
+	Ia = cur_fbk_get_Ia();
+	Ib = cur_fbk_get_Ib();
 }
 
 
