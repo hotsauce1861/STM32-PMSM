@@ -37,14 +37,15 @@ static void gpio_init(void){
 void usart_send_char(char ch){
 	USART_SendData(COM_PORT, (uint8_t) ch);
 	/* Loop until the end of transmission */
-	while (USART_GetFlagStatus(COM_PORT, USART_FLAG_TC) == RESET)
-	{}
+	//while (USART_GetFlagStatus(COM_PORT, USART_FLAG_TC) == RESET){}
+	while((COM_PORT->SR & USART_FLAG_TC) != USART_FLAG_TC){}	
 }
 
 uint8_t usart_recv_char(){
 	/* Wait the byte is entirely received by USARTy */
-    while(USART_GetFlagStatus(COM_PORT, USART_FLAG_RXNE) == RESET)
-    {}
+    //while(USART_GetFlagStatus(COM_PORT, USART_FLAG_RXNE) == RESET){}
+	while((COM_PORT->SR & USART_FLAG_RXNE) != USART_FLAG_RXNE){}
+	
     /* Store the received byte in the RxBuffer1 */
     return (uint8_t)USART_ReceiveData(COM_PORT);
 }

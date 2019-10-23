@@ -173,4 +173,115 @@ void svpwm_nofloat_run(struct svpwm_module *svpwm)
 	}	
 }
 
+#if 0
+uint16_t PWMC_SetPhaseVoltage( PWMC_Handle_t * pHandle, Volt_Components Valfa_beta )
+{
+  int32_t wX, wY, wZ, wUAlpha, wUBeta, wTimePhA, wTimePhB, wTimePhC;
+  PWMC_SetSampPointSectX_Cb_t pSetADCSamplingPoint;
+
+  wUAlpha = Valfa_beta.qV_Component1 * ( int32_t )pHandle->hT_Sqrt3;
+  wUBeta = -( Valfa_beta.qV_Component2 * ( int32_t )( pHandle->hPWMperiod ) ) * 2;
+
+  wX = wUBeta;
+  wY = ( wUBeta + wUAlpha ) / 2;
+  wZ = ( wUBeta - wUAlpha ) / 2;
+
+  /* Sector calculation from wX, wY, wZ */
+  if ( wY < 0 )
+  {
+    if ( wZ < 0 )
+    {
+      pHandle->hSector = SECTOR_5;
+      wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wY - wZ ) / ( int32_t )262144 );
+      wTimePhB = wTimePhA + wZ / 131072;
+      wTimePhC = wTimePhA - wY / 131072;
+      pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect5;
+    }
+    else /* wZ >= 0 */
+      if ( wX <= 0 )
+      {
+        pHandle->hSector = SECTOR_4;
+        wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wX - wZ ) / ( int32_t )262144 );
+        wTimePhB = wTimePhA + wZ / 131072;
+        wTimePhC = wTimePhB - wX / 131072;
+        pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect4;
+      }
+      else /* wX > 0 */
+      {
+        pHandle->hSector = SECTOR_3;
+        wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wY - wX ) / ( int32_t )262144 );
+        wTimePhC = wTimePhA - wY / 131072;
+        wTimePhB = wTimePhC + wX / 131072;
+        pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect3;
+      }
+  }
+  else /* wY > 0 */
+  {
+    if ( wZ >= 0 )
+    {
+      pHandle->hSector = SECTOR_2;
+      wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wY - wZ ) / ( int32_t )262144 );
+      wTimePhB = wTimePhA + wZ / 131072;
+      wTimePhC = wTimePhA - wY / 131072;
+      pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect2;
+    }
+    else /* wZ < 0 */
+      if ( wX <= 0 )
+      {
+        pHandle->hSector = SECTOR_6;
+        wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wY - wX ) / ( int32_t )262144 );
+        wTimePhC = wTimePhA - wY / 131072;
+        wTimePhB = wTimePhC + wX / 131072;
+        pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect6;
+      }
+      else /* wX > 0 */
+      {
+        pHandle->hSector = SECTOR_1;
+        wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wX - wZ ) / ( int32_t )262144 );
+        wTimePhB = wTimePhA + wZ / 131072;
+        wTimePhC = wTimePhB - wX / 131072;
+        pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect1;
+      }
+  }
+
+  pHandle->hCntPhA = ( uint16_t )wTimePhA;
+  pHandle->hCntPhB = ( uint16_t )wTimePhB;
+  pHandle->hCntPhC = ( uint16_t )wTimePhC;
+
+  if ( pHandle->DTTest == 1u )
+  {
+    /* Dead time compensation */
+    if ( pHandle->hIa > 0 )
+    {
+      pHandle->hCntPhA += pHandle->DTCompCnt;
+    }
+    else
+    {
+      pHandle->hCntPhA -= pHandle->DTCompCnt;
+    }
+
+    if ( pHandle->hIb > 0 )
+    {
+      pHandle->hCntPhB += pHandle->DTCompCnt;
+    }
+    else
+    {
+      pHandle->hCntPhB -= pHandle->DTCompCnt;
+    }
+
+    if ( pHandle->hIc > 0 )
+    {
+      pHandle->hCntPhC += pHandle->DTCompCnt;
+    }
+    else
+    {
+      pHandle->hCntPhC -= pHandle->DTCompCnt;
+    }
+  }
+
+  return ( pSetADCSamplingPoint( pHandle ) );
+}
+
+
+#endif
 

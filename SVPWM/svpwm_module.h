@@ -17,7 +17,7 @@ struct svpwm_module {
 	int16_t Tcm1;	//A相打开的时间
 	int16_t Tcm2;	//B相打开的时间
 	int16_t Tcm3;	//C相打开的时间
-
+	int16_t Angle;
 };
 
 

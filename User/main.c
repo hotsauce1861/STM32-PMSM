@@ -21,14 +21,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
-#include <stdio.h>
-//#include "display_driver.h"
-#include "usart_driver.h"
 #include "gw_fifo.h"
-#include "svpwm_module.h"
-#include "SDS.h"
-#include "encoder.h"
-#include "current.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -55,27 +48,6 @@ int main(void)
 {	
 	volatile uint16_t i = 0;
 
-	/*!< At this stage the microcontroller clock setting is already configured, 
-	   this is done through SystemInit() function which is called from startup
-	   file (startup_stm32f10x_xx.s) before to branch to application main.
-	   To reconfigure the default setting of SystemInit() function, refer to
-	   system_stm32f10x.c file
-	*/
-	
-	/*
-		hardware init
-	*/
-	timer_base_config();
-	usart_init();
-	svpwm_init();	
-
-	//pwm_disable();
-	cur_fbk_init();
-	encoder_init();
-	
-	/*
-		software init
-	*/
 	gw_event_fifo_init();	
 		
 	while (1)

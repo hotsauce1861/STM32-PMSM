@@ -14,7 +14,7 @@
 	void* (CALLBACK)(void*) task;	//回调函数
 	static struct gw_timer* timer;	//全局定时器	
 */
-#define EVENT_SIZE 3
+#define EVENT_SIZE 2
 static struct gw_event event_table[] = 
 {
 	{	
@@ -22,15 +22,16 @@ static struct gw_event event_table[] =
 		.type = TYPE_IRQ, 
 		.status = DISABLE,
 		.task = task_svpwm,
-		.poll_time = 10,
+		.poll_time = 5,
 		.g_timer = &global_timer,		
 	},
+	
 	{
 		.name = "event2",
 		.type = TYPE_IRQ, 
 		.status = DISABLE,
 		.task = task_idle,
-		.poll_time = 100,
+		.poll_time = 5,
 		.g_timer = &global_timer,
 	},	
 	
@@ -61,8 +62,9 @@ uint8_t gw_is_event_empty(void){
 void gw_event_fifo_init(void){
 
 	uint8_t i = 0;
-	uint8_t size = EVENT_SIZE;
+	uint8_t size = EVENT_SIZE;	
 	struct gw_event *p_event;
+	task_init();
 	for(; i<size; i++){
 		p_event = &event_table[i%size];
 		p_event->status = DISABLE;
