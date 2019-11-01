@@ -15,20 +15,54 @@
 
 static void cur_fbk_irq_init(void){
 
+	NVIC_InitTypeDef NVIC_InitStructure;
+
+	/* Configure and enable ADC interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel = ADC1_2_IRQn;
+
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
 }
 
 static void cur_fbk_adc_init(void){
-
+	//https://blog.csdn.net/yeqbo/article/details/51399373
 	ADC_DeInit(ADC1);
 	ADC_InitTypeDef ADC_InitStructure;
 	/* ADC1 configuration ------------------------------------------------------*/
 	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
-	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+	ADC_InitStructure.ADC_ScanConvMode = ENABLE;
 	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
-	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+	//ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_CC1;
 	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-	ADC_InitStructure.ADC_NbrOfChannel = 1;
-		
+	ADC_InitStructure.ADC_NbrOfChannel = 2;
+
+	/* Set injected sequencer length */
+	ADC_InjectedSequencerLengthConfig(ADC1, 2);
+	/* ADC1 injected channel Configuration */ 
+	ADC_InjectedChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_71Cycles5);
+	ADC_InjectedChannelConfig(ADC1, ADC_Channel_1, 2, ADC_SampleTime_71Cycles5);
+	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_2, 1, ADC_SampleTime_71Cycles5);
+	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_3, 1, ADC_SampleTime_71Cycles5);	
+	/* ADC1 injected external trigger configuration */
+	ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_None);
+
+	//ADC_SetInjectedOffset(ADC1, ADC_InjectedChannel_1,2048);
+	//ADC_SetInjectedOffset(ADC1, ADC_InjectedChannel_2,2048);
+	
+	/* Enable automatic injected conversion start after regular one */
+	ADC_AutoInjectedConvCmd(ADC1, ENABLE);
+	
+	/* Enable ADC1 DMA */
+	ADC_DMACmd(ADC1, ENABLE);
+	
+	/* Enable ADC1 external trigger */ 
+	ADC_ExternalTrigConvCmd(ADC1, ENABLE);
+
+	
 	ADC_Init(ADC1, &ADC_InitStructure);
 	ADC_Cmd(ADC1, ENABLE);
 	
@@ -46,6 +80,8 @@ static void cur_fbk_adc_init(void){
 		*/
 		//timeout_detect
 	}
+
+	ADC_ITConfig(ADC1, ADC_IT_JEOC, ENABLE);
 }
 
 static void cur_fbk_rcc_init(void){
@@ -122,6 +158,38 @@ uint16_t cur_fbk_get_Ib(void){
 
 int16_t cur_fbk_get_theta(void){
 	return 0;
+}
+
+/******************************************************************************/
+/*            STM32F10x Peripherals Interrupt Handlers                        */
+/******************************************************************************/
+
+/**
+  * @brief  This function handles ADC1 and ADC2 global interrupts requests.
+  * @param  None
+  * @retval None
+  */
+volatile int16_t ad_irq = 0;
+volatile uint16_t Ia_val = 0;
+volatile uint16_t Ib_val = 0;
+
+void ADC1_2_IRQHandler(void)
+{
+
+	ad_irq++;
+	Ia_val = ADC_GetInjectedConversionValue(ADC1, ADC_InjectedChannel_1);
+	Ib_val = ADC_GetInjectedConversionValue(ADC1, ADC_InjectedChannel_2);
+	/* Clear ADC1 JEOC pending interrupt bit */
+	ADC_ClearITPendingBit(ADC1, ADC_IT_JEOC);
+}
+
+
+uint16_t get_inject_ia(void){
+	return Ia_val;
+}
+
+uint16_t get_inject_ib(void){
+	return Ib_val;
 }
 
 

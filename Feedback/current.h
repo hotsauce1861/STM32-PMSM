@@ -19,6 +19,10 @@ uint16_t cur_fbk_get_Ia_avl(uint8_t sample_times);
 uint16_t cur_fbk_get_Ib(void);
 uint16_t cur_fbk_get_Ib_avl(uint8_t sample_times);
 
+uint16_t get_inject_ia(void);
+uint16_t get_inject_ib(void);
+
+
 int16_t cur_fbk_get_theta(void);
 
 #endif

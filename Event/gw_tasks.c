@@ -72,8 +72,6 @@ void task_init(void){
 	svpwm.Tpwm = (uint16_t)get_pwm_period();
 	svpwm.Udc = 8;
 	cur_fbk_init();
-	Ia_ref = cur_fbk_get_Ia_avl(10);
-	Ib_ref = cur_fbk_get_Ib_avl(10);
 	pwm_enable();
 	volt_input.qV_Component1 = 0;
 	volt_input.qV_Component2 = 20;
@@ -152,8 +150,10 @@ void task_svpwm(void){
 //	Ib = (int32_t)cur_fbk_get_Ib() - 2048;	
 	//Ia = (int32_t)cur_fbk_get_Ia() - Ia_ref;	
 	//Ib = (int32_t)cur_fbk_get_Ib() - Ib_ref;	
-	Ia = (int32_t)cur_fbk_get_Ia_avl(10) - 2048;	
-	Ib = (int32_t)cur_fbk_get_Ib_avl(10) - 2048;	
+//	Ia = (int32_t)cur_fbk_get_Ia_avl(10) - 2048;	
+//	Ib = (int32_t)cur_fbk_get_Ib_avl(10) - 2048;	
+	Ia = get_inject_ia() - 2048;
+	Ib = get_inject_ib() - 2048;
 
 #if USE_PID	
 	cur_ab.qI_Component1 = Ia;
@@ -205,11 +205,11 @@ void task_svpwm(void){
 	
 	uart_data[0] = Ia;
 	uart_data[1] = Ib;
-	uart_data[2] = (Ia+Ib)-(Ia+Ib)/2;
+	uart_data[2] = -Ia-Ib;
 	uart_data[3] = svpwm.Tcm1;	
 	
-	printf("%d,\n",Ia);
-//SDS_OutPut_Data_INT(uart_data); 
+	//printf("%d,\n",Ia);
+	SDS_OutPut_Data_INT(uart_data); 
 	//pwm_reset_duty_cnt(1, svpwm.Tcm1);
 	//pwm_reset_duty_cnt(2, svpwm.Tcm2);
 	//pwm_reset_duty_cnt(3, svpwm.Tcm3);
