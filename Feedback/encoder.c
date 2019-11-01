@@ -5,7 +5,22 @@
 #include "stm32f10x_tim.h"
 #include "stm32f10x_exti.h"
 #include "misc.h"
+#include "svpwm_math.h"
 
+/*
+0x7FFF - 0x7787
+0x7FFF - 0x7788
+0x7FFF - 0x778E
+0x7FFF - 0x7791
+0x7FFF - 0x7790
+0x7FFF - 0x7791
+0x7FFF - 0x778F
+0x7FFF - 0x778E
+0x7FFF - 0x7791
+0x7FFF - 0x7790
+0x7FFF - 0x7790
+*/
+#define ENCODER_ONE_CIRCLE_CNT	2060
 #define SAMPLE_FRQ 	10000L
 #define SYS_FRQ		72000000L
 #define ENCODER_MAX_CNT	0xFFFF
@@ -17,7 +32,7 @@
 /* Private variables ---------------------------------------------------------*/
 volatile int32_t N = 0;
 volatile uint32_t EncCnt = 0;
-
+volatile int32_t angle_cnt = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -130,14 +145,6 @@ void encoder_init(void){
 	encoder_tim_init();
 }
 
-void EXTI9_5_IRQHandler(void){
-
-	if(EXTI_GetITStatus(EXTI_Line5) == SET){ 
-		
-	}
-	EXTI_ClearITPendingBit(EXTI_Line5);
-}
-
 MOTO_DIR encoder_get_motor_dir(void)
 {
 	if((TIM3->CR1 & 0x0010) == 0x0010){
@@ -154,9 +161,39 @@ int32_t encoder_get_signal_cnt(void){
 	}else{
 		EncCnt = cnt = ENCODER_ZERO_VAL - TIM3->CNT;	
 	}
+	angle_cnt+=cnt;
+	//angle_cnt%=ENCODER_ONE_CIRCLE_CNT;
+	
 	TIM_SetCounter(TIM3,ENCODER_ZERO_VAL);
 	return cnt;
 }
+
+static void encoder_set_angular_pos_cnt(uint16_t val){
+	angle_cnt = 0;
+}
+
+
+int16_t encoder_get_angular_pos(void){
+
+	/**
+	| hAngle 			| angle 	| std 		|
+	| (0,16384] 		| U0_90 	| (0,0.5]	|
+	| (16384,32767]		| U90_180 	| (0.5,0.99]|
+	| (-16384,-1] 		| U270_360 	| (0,-0.5] 	|
+	| (-16384,-32768]	| U180_270 	| (-0.5,-1)	|
+	*/
+	int32_t zero_val = 0;
+	if(angle_cnt >= ENCODER_ONE_CIRCLE_CNT){
+		angle_cnt = ENCODER_ONE_CIRCLE_CNT;
+	}
+	zero_val = ENCODER_ONE_CIRCLE_CNT/2;
+	if(angle_cnt <= zero_val){
+		return (int16_t)(angle_cnt*Q15/zero_val);
+	}else{
+		return (int16_t)((angle_cnt-ENCODER_ONE_CIRCLE_CNT)*Q15/zero_val);
+	}
+}
+
 
 /******************************************************************************/
 /*            STM32F10x Peripherals Interrupt Handlers                        */
@@ -166,6 +203,7 @@ int32_t encoder_get_signal_cnt(void){
   * @param  None
   * @retval None
   */
+#if 1
 void TIM3_IRQHandler(void)
 { 
 	uint16_t flag = 0x0001 << 4;
@@ -181,3 +219,16 @@ void TIM3_IRQHandler(void)
 	TIM3->SR&=~(TIM_FLAG_Update);		
 }
 
+#endif
+
+#if 1
+
+void EXTI9_5_IRQHandler(void){
+
+	if(EXTI_GetITStatus(EXTI_Line5) == SET){ 
+		encoder_set_angular_pos_cnt(0);
+	}
+	EXTI_ClearITPendingBit(EXTI_Line5);
+}
+
+#endif

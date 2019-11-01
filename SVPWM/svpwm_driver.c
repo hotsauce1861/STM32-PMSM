@@ -74,11 +74,11 @@ void pwm_tim_init(void){
 	//TimerPeriod = (SystemCoreClock / 17570 ) - 1;
 	TimerPeriod = (SYS_FRQ / PWM_FRQ ) - 1;
 	/* Compute CCR1 value to generate a duty cycle at 50% for channel 1 and 1N */
-	Channel1Pulse = (uint16_t) (((uint32_t) 50 * (TimerPeriod - 1)) / 100);
+	Channel1Pulse = (uint16_t) (((uint32_t) PWM_DUTY * (TimerPeriod - 1)) / 100);
 	/* Compute CCR2 value to generate a duty cycle at 37.5%  for channel 2 and 2N */
-	Channel2Pulse = (uint16_t) (((uint32_t) 50 * (TimerPeriod - 1)) / 100);
+	Channel2Pulse = (uint16_t) (((uint32_t) PWM_DUTY * (TimerPeriod - 1)) / 100);
 	/* Compute CCR3 value to generate a duty cycle at 25%  for channel 3 and 3N */
-	Channel3Pulse = (uint16_t) (((uint32_t) 50 * (TimerPeriod - 1)) / 100);
+	Channel3Pulse = (uint16_t) (((uint32_t) PWM_DUTY * (TimerPeriod - 1)) / 100);
 
 	//TIM_DeInit(TIM1);
 
@@ -102,7 +102,7 @@ void pwm_tim_init(void){
 	*/
 	/* Channel 1, 2, 3 Configuration in PWM mode */
 	#if USE_HARD_PWM
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
 	TIM_OCInitStructure.TIM_Pulse = Channel1Pulse;

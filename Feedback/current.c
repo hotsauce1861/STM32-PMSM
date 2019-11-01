@@ -5,8 +5,13 @@
 #include "stm32f10x_rcc.h"
 #include <stdint.h>
 
+#if 1
 #define IA_CHANNEL_DRI ADC_Channel_0
 #define IB_CHANNEL_DRI ADC_Channel_1
+#else
+#define IA_CHANNEL_DRI ADC_Channel_2
+#define IB_CHANNEL_DRI ADC_Channel_3
+#endif
 
 static void cur_fbk_irq_init(void){
 
@@ -88,12 +93,35 @@ void cur_fbk_init(void){
 	cur_fbk_adc_init();
 }
 
+uint16_t cur_fbk_get_Ia_avl(uint8_t sample_times){
+	uint32_t Ia_sum = 0;
+	int8_t i;
+	for(; i < sample_times; i++){
+		Ia_sum+=cur_fbk_get_Ia();
+	}
+	return (uint16_t)(Ia_sum/sample_times);
+}
+
+uint16_t cur_fbk_get_Ib_avl(uint8_t sample_times){
+	uint32_t Ib_sum = 0;
+	int8_t i = 0;
+	for(;i < sample_times; i++){
+		Ib_sum+=cur_fbk_get_Ib();
+	}
+	return (uint16_t)(Ib_sum/sample_times);
+}
+
+
 uint16_t cur_fbk_get_Ia(void){
 	return cur_fbk_get_ad_val(IA_CHANNEL_DRI);
 }
 
 uint16_t cur_fbk_get_Ib(void){
 	return cur_fbk_get_ad_val(IB_CHANNEL_DRI);
+}
+
+int16_t cur_fbk_get_theta(void){
+	return 0;
 }
 
 

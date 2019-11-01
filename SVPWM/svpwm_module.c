@@ -3,7 +3,9 @@
 #include "svpwm_driver.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
+#define ABS(x)  ((x)>0?(x):-(x))
 //#define SQRT_3 		1.732 * 100
 #define SQRT_3 		173
 #define MOTOR_POWER	20
@@ -11,6 +13,7 @@
 
 void svpwm_init(void){
 	pwm_init();	
+
 }
 
 //sqrt(3)*Vbeta作为标么值
@@ -45,7 +48,7 @@ uint8_t svpwm_nofloat_get_sector(struct svpwm_module *svpwm){
 	return (4*c + 2*b + a);
 }
 
-void svpwm_time_check(int32_t *time,int32_t max_time,int32_t min_time){
+void svpwm_time_check(uint16_t *time,uint16_t max_time,uint16_t min_time){
 	if(*time>max_time){
 		*time = max_time;
 	}
@@ -53,235 +56,415 @@ void svpwm_time_check(int32_t *time,int32_t max_time,int32_t min_time){
 		*time = min_time;
 	}
 }
-//sqrt(3)*Vbeta作为标么值
-void svpwm_nofloat_run(struct svpwm_module *svpwm)
-{
-    uint8_t sector=0;
-    int32_t Udc = MOTOR_POWER;
-	int32_t T4,T6,Terr,X,Y,Z,Ta,Tb,Tc;
+
+
+/**
+ * 	@brief 过调制重置快关时间
+ *	@args
+ *		- Ts 	in 		pwm周期
+ *		- pTx	out		更新后的Tx Q6格式
+ *		- pTy	out		更新后的Ty Q6格式
+ *		- Tx	in		原Tx时间
+ *		- Ty	in		原Ty时间
+ */
+void svpwm_reset_time(	int32_t Ts,
+							int32_t *pTx,int32_t *pTy,
+							int32_t Tx,int32_t Ty){
+	*pTx = Tx*Q6/(Tx+Ty);
+	*pTy = Ty*Q6/(Tx+Ty) ;
+}
+
+
+/**
+ * @brief produce svpwm wave
+ *		X=sqrt(3)*Ubeta*Tpwm/Vdc
+		Y=(3Ualpha+sqrt(3)*Ubeta)*Tpwm/2/Vdc
+		Z=(-3Ualpha+sqrt(3)*Ubeta)*Tpwm/2/Vdc
+	扇区		落在此扇区的充要条件
+
+	I		Uα>0 ，Uβ>0 且Uβ/Uα<sqrt(3)
+	Ⅱ 		Uα>0 ， 且Uβ/|Uα|>sqrt(3)
+	Ⅲ 		Uα<0 ，Uβ>0 且-Uβ/Uα<sqrt(3)
+	Ⅳ 		Uα<0 ，Uβ<0 且Uβ/Uα<sqrt(3)
+	Ⅴ 		Uβ<0 且-Uβ/|Uα|>sqrt(3)
+	Ⅵ 		Uα>0 ，Uβ<0 且-Uβ/Uα<sqrt(3)
+
+ */
+//1-3-2-6-4-5
+//#define OVER_MODULATE	1
+#define SQRT3_Q14	0x6ED9
+
+#define TPWM		(int32_t)(5000)
+#define SQRT3_TPWM	(int32_t)(8660)
+#define ABS_X(x)	((x)>=0?(x):-(x))
+
+void svpwm_get_sector(struct svpwm_module* const svpwm){
+	int32_t wUalpha,wUbeta;
+	uint8_t a,b,c;
+	wUalpha = svpwm->UAlpha * SQRT3_Q14;
+	wUbeta = svpwm->UBeta * Q14;
+#if 1
+	if(wUbeta>=0){
+		if(wUalpha > wUbeta){
+			svpwm->sector = 1;
+		}else if(ABS_X(wUalpha) < wUbeta){
+			svpwm->sector = 2;
+		}else if(-wUalpha > wUbeta){
+			svpwm->sector = 3;
+		}
+	}else{
+		if(wUalpha < wUbeta){
+			svpwm->sector = 4;
+		}else if(ABS_X(wUalpha)< -wUbeta){
+			svpwm->sector = 5;
+		}else if(-wUalpha < wUbeta){
+			svpwm->sector = 6;
+		}
+	}
+	svpwm->Ua = wUalpha;
+	svpwm->Ub = wUbeta;
+	#else
+	if(wUbeta>0)
+		a = 1;
+	else
+		a = 0;
 	
-//	uint16_t Ta,Tb,Tc;
-	//Ts的单位是秒所以要做归一化处理
-	//Ts = get_pwm_period ();
-	//float Ts = 0.0001; //0.0001 * 1000*1000
-	int16_t Ts = get_pwm_period();
+	if(wUalpha > wUbeta)
+		b = 1;
+	else
+		b = 0;
+	if(-wUalpha > wUbeta)
+		c = 1;
+	else
+		c = 0;
+	
+	svpwm->sector = 4*c+2*b+a;	
+	svpwm->Ua = wUalpha;
+	svpwm->Ub = wUbeta;
+	#endif
+}
 
-	sector = svpwm_nofloat_get_sector(svpwm);
+void svpwm_main_run1(struct svpwm_module* const svpwm){
 
-	//注意数据范围，是否会溢出
-#if 0
-	//产生了马鞍波形，但是毛刺较多，存在问题
-	X = SQRT_3 * (int32_t)svpwm->UBeta/Udc;
-	Y = SQRT_3 * (SQRT_3*(int32_t)svpwm->UAlpha + (int32_t)svpwm->UBeta * 100)/ 200/Udc;
-	Z = SQRT_3 * (-SQRT_3*(int32_t)svpwm->UAlpha + (int32_t)svpwm->UBeta * 100)/ 200/Udc;
-#else
-	//产生了马鞍波形，但是毛刺较多，存在问题
-	X = Ts*svpwm->UBeta/Q14/Udc;
-	Y = Ts*(3*svpwm->UAlpha + svpwm->UBeta )/Q14/2/Udc;	//这里的UBeta查表处理，已经乘以sqrt3
-	Z = Ts*(-3*svpwm->UAlpha + svpwm->UBeta)/Q14/2/Udc;
-#endif
-    /* 计算SVPWM占空比 */
-	/* 确定扇区号计算开关时间
-	N		3	1	5	4	6	2
-	扇区	1	2	3	4	5	6
-	*/
+	int32_t wX,wY,wZ,wTimePhA,wTimePhB,wTimePhC;
+	int32_t wUalpha,wUbeta;
+	uint8_t a,b,c;
+	uint8_t sector;
+	uint16_t Ts = svpwm->Tpwm;
+	int32_t T4,T6,Tsum;
+ 	//wUalpha wUbeta is Q15 format
+	wUalpha = (int32_t)svpwm->UAlpha * (int32_t)SQRT3_Q14/Q14;
+	wUbeta = (int32_t)svpwm->UBeta;
+	
+	wX = wUbeta;
+	wY = (wUbeta + wUalpha)/2; //DIV 2
+	wZ = (wUbeta - wUalpha)/2; //DIV 2		
+		
+ 	//1-3-2-6-4-5 forward
+	//3-1-5-4-6-2 back
+	if(wUbeta>0)
+		a = 1;
+	else
+		a = 0;
+	
+	if(wUalpha > wUbeta)
+		b = 1;
+	else
+		b = 0;
+	if(-wUalpha > wUbeta)
+		c = 1;
+	else
+		c = 0;
+	
+	sector = 4*c+2*b+a;			
 	svpwm->sector = sector;
+
+	//wX wY wZ in Q15
+	/**
+    	N	1	2	3	4	5	6
+		T4	Z	Y	-Z	-X	X	-Y
+		T6	Y	-X	X	Z	-Y	-Z
+	 */
 	switch(sector){
 		case 1:
-			T4 = Z;
-			T6 = Y;
-		break;
+			T4 = wZ;
+			T6 = wY;
+			break;
 		case 2:
-			T4 = Y;
-			T6 = -X;
-		break;
+			T4 = wY;
+			T6 = -wX;
+			break;
 		case 3:
-			T4 = -Z;
-			T6 = X;
-		break;
+			T4 = -wZ;
+			T6 = wX;
+			break;
 		case 4:
-			T4 = -X;
-			T6 = Z;
-		break;
+			T4 = -wX;
+			T6 = wZ;
+			break;
 		case 5:
-			T4 = X;
-			T6 = -Y;
-		break;
+			T4 = wX;
+			T6 = -wY;
+			break;
 		case 6:
-			T4 = -Y;
-			T6 = -Z;
-		break;
-		default:
+			T4 = -wY;
+			T6 = -wZ;
 			break;
 	}
 
-	//判断是否过调制，会导致失真
-	// Ts = 0.0001
-	// 0.0001 * 10000 * 100 = 100
-
-	if ((T4+T6)>Ts){
-		Terr = T4+T6;
-		T4 = (float)((float)T4/(float)Terr)*Ts;
-		T6 = (float)((float)T6/(float)Terr)*Ts;		
+	if((T4+T6)*Ts > Ts*Q15){
+		//需要过调制处理		
+		Tsum = T4 + T6;
+		T4 = T4*Ts/Tsum;
+		T6 = T6*Ts/Tsum;
+		
+		wTimePhA = Ts/4 - (T4 + T6)/4/Q15;
+		wTimePhB = wTimePhA + T4/2/Q15;
+		wTimePhC = wTimePhB + T6/2/Q15;		
+		
+	}else{
+		wTimePhA = Ts/4 - (T4 + T6)*Ts/4/Q15;
+		wTimePhB = wTimePhA + T4*Ts/2/Q15;
+		wTimePhC = wTimePhB + T6*Ts/2/Q15;
 	}
-	
-	Ta = (Ts - T4 - T6)/4;
-	Tb = Ta + (T4)/2;
-	Tc = Tb + (T6)/2;
-	
-	svpwm_time_check(&Ta,Ts/2, 0);
-	svpwm_time_check(&Tb,Ts/2, 0);
-	svpwm_time_check(&Tc,Ts/2, 0);
-	
-	switch (sector){
+
+	wTimePhA = wTimePhA > 0 ? wTimePhA:0;
+	wTimePhB = wTimePhB > 0 ? wTimePhB:0;
+	wTimePhC = wTimePhC > 0 ? wTimePhC:0;
+
+	/**
+		N	1	2	3	4	5	6
+		Tc1	Tb	Ta	Ta	Tc	Tc	Tb
+		Tc2	Ta	Tc	Tb	Tb	Ta	Tc
+		Tc3	Tc	Tb	Tc	Ta	Tb	Ta
+	 */
+	switch(sector){
+		
 		case 1:
-			svpwm->Tcm1 = Tb;
-			svpwm->Tcm2 = Ta;
-			svpwm->Tcm3 = Tc;
-		break;
+			svpwm->Tcm1 = (uint16_t)wTimePhB;
+			svpwm->Tcm2 = (uint16_t)wTimePhA;
+			svpwm->Tcm3 = (uint16_t)wTimePhC;
+			break;
 		case 2:
-			svpwm->Tcm1 = Ta;
-			svpwm->Tcm2 = Tc;
-			svpwm->Tcm3 = Tb;
+			svpwm->Tcm1 = (uint16_t)wTimePhA;
+			svpwm->Tcm2 = (uint16_t)wTimePhC;
+			svpwm->Tcm3 = (uint16_t)wTimePhB;
 			break;
 		case 3:
-			svpwm->Tcm1 = Ta;
-			svpwm->Tcm2 = Tb;
-			svpwm->Tcm3 = Tc;
+			svpwm->Tcm1 = (uint16_t)wTimePhA;
+			svpwm->Tcm2 = (uint16_t)wTimePhB;
+			svpwm->Tcm3 = (uint16_t)wTimePhC;
 			break;
 		case 4:
-			svpwm->Tcm1 = Tc;
-			svpwm->Tcm2 = Tb;
-			svpwm->Tcm3 = Ta;
+			svpwm->Tcm1 = (uint16_t)wTimePhC;
+			svpwm->Tcm2 = (uint16_t)wTimePhB;
+			svpwm->Tcm3 = (uint16_t)wTimePhA;
 			break;
 		case 5:
-			svpwm->Tcm1 = Tc;
-			svpwm->Tcm2 = Ta;
-			svpwm->Tcm3 = Tb;
+			svpwm->Tcm1 = (uint16_t)wTimePhC;
+			svpwm->Tcm2 = (uint16_t)wTimePhA;
+			svpwm->Tcm3 = (uint16_t)wTimePhB;
 			break;
-		case 6: 	
-			svpwm->Tcm1 = Tb;
-			svpwm->Tcm2 = Tc;
-			svpwm->Tcm3 = Ta;
+		case 6:
+			svpwm->Tcm1 = (uint16_t)wTimePhB;
+			svpwm->Tcm2 = (uint16_t)wTimePhC;
+			svpwm->Tcm3 = (uint16_t)wTimePhA;
 			break;
-		//	零向量的处理
-		default:
-			//svpwm->Tcm1 = Ts/2;
-			//svpwm->Tcm2 = Ts/2;
-			//svpwm->Tcm3 = Ts/2;		   
-			break;
-	}	
+	}
 }
 
+/**
+ * @brief produce svpwm wave
+ * 		X=sqrt(3)*Ubeta*Tpwm/Vdc
+ 		Y=(3Ualpha+sqrt(3)*Ubeta)*Tpwm/2/Vdc
+ 		Z=(-3Ualpha+sqrt(3)*Ubeta)*Tpwm/2/Vdc
+	扇区		落在此扇区的充要条件
+
+	1		Uα>0 ，Uβ>0 且Uβ/Uα<sqrt(3)
+	2 		Uα>0 ， 且Uβ/|Uα|>sqrt(3)
+	3		Uα<0 ，Uβ>0 且-Uβ/Uα<sqrt(3)
+	4 		Uα<0 ，Uβ<0 且Uβ/Uα<sqrt(3)
+	5 		Uβ<0 且-Uβ/|Uα|>sqrt(3)
+	6 		Uα>0 ，Uβ<0 且-Uβ/Uα<sqrt(3)
+
+ */
+#define OVER_MODULATE	1
+void svpwm_main_run2(struct svpwm_module* const svpwm){
+	int32_t wX,wY,wZ,wTimePhA,wTimePhB,wTimePhC;
+	int32_t wUalpha,wUbeta;
+	uint8_t a,b,c;
+	int32_t sector;
+	uint16_t Ts = svpwm->Tpwm;
+	int32_t T4,T6;
+	wUalpha = (int32_t)svpwm->UAlpha * (int32_t)SQRT3_Q14 / Q14;
+	wUbeta = (int32_t)svpwm->UBeta;	
+	wX = wUbeta/svpwm->Udc;
+	wY = (wUalpha + wUbeta)/2/svpwm->Udc;
+	wZ = (-wUalpha + wUbeta)/2/svpwm->Udc;
+	
 #if 0
-uint16_t PWMC_SetPhaseVoltage( PWMC_Handle_t * pHandle, Volt_Components Valfa_beta )
-{
-  int32_t wX, wY, wZ, wUAlpha, wUBeta, wTimePhA, wTimePhB, wTimePhC;
-  PWMC_SetSampPointSectX_Cb_t pSetADCSamplingPoint;
 
-  wUAlpha = Valfa_beta.qV_Component1 * ( int32_t )pHandle->hT_Sqrt3;
-  wUBeta = -( Valfa_beta.qV_Component2 * ( int32_t )( pHandle->hPWMperiod ) ) * 2;
+#else
+	if(wUbeta>=0)
+		a = 1;
+	else
+		a = 0;
+	if(wUalpha>=wUbeta)
+		b = 1;
+	else
+		b = 0;
+	if(-wUalpha>=wUbeta)
+		c = 1;
+	else
+		c = 0;
+	//svpwm->sector = 4*c + 2*b + a;
 
-  wX = wUBeta;
-  wY = ( wUBeta + wUAlpha ) / 2;
-  wZ = ( wUBeta - wUAlpha ) / 2;
+	/*
 
-  /* Sector calculation from wX, wY, wZ */
-  if ( wY < 0 )
-  {
-    if ( wZ < 0 )
-    {
-      pHandle->hSector = SECTOR_5;
-      wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wY - wZ ) / ( int32_t )262144 );
-      wTimePhB = wTimePhA + wZ / 131072;
-      wTimePhC = wTimePhA - wY / 131072;
-      pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect5;
-    }
-    else /* wZ >= 0 */
-      if ( wX <= 0 )
-      {
-        pHandle->hSector = SECTOR_4;
-        wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wX - wZ ) / ( int32_t )262144 );
-        wTimePhB = wTimePhA + wZ / 131072;
-        wTimePhC = wTimePhB - wX / 131072;
-        pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect4;
-      }
-      else /* wX > 0 */
-      {
-        pHandle->hSector = SECTOR_3;
-        wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wY - wX ) / ( int32_t )262144 );
-        wTimePhC = wTimePhA - wY / 131072;
-        wTimePhB = wTimePhC + wX / 131072;
-        pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect3;
-      }
-  }
-  else /* wY > 0 */
-  {
-    if ( wZ >= 0 )
-    {
-      pHandle->hSector = SECTOR_2;
-      wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wY - wZ ) / ( int32_t )262144 );
-      wTimePhB = wTimePhA + wZ / 131072;
-      wTimePhC = wTimePhA - wY / 131072;
-      pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect2;
-    }
-    else /* wZ < 0 */
-      if ( wX <= 0 )
-      {
-        pHandle->hSector = SECTOR_6;
-        wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wY - wX ) / ( int32_t )262144 );
-        wTimePhC = wTimePhA - wY / 131072;
-        wTimePhB = wTimePhC + wX / 131072;
-        pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect6;
-      }
-      else /* wX > 0 */
-      {
-        pHandle->hSector = SECTOR_1;
-        wTimePhA = ( int32_t )( pHandle->hPWMperiod ) / 4 + ( ( wX - wZ ) / ( int32_t )262144 );
-        wTimePhB = wTimePhA + wZ / 131072;
-        wTimePhC = wTimePhB - wX / 131072;
-        pSetADCSamplingPoint = pHandle->pFctSetADCSampPointSect1;
-      }
-  }
+	 *	N	1	2	3	4	5	6
+		T4	Z	Y	-Z	-X	X	-Y
+		T6	Y	-X	X	Z	-Y	-Z
+		---------------------------
+		svpwm->Tpwm
+		Q15	wX,wY,wZ
+	 */
+	switch(4*c+2*b+a){
+		case 2:
+			svpwm->sector = 1;
+//			wTimePhA = (int32_t)svpwm->Tpwm/4+(wX - wY)/Q15/4;
+//			wTimePhB = wTimePhA + wY/Q16;
+//			wTimePhC = wTimePhB - wX/Q16;
+			//Q6		
+			wTimePhA = (int32_t)svpwm->Tpwm*Q4 + (wX - wY)*(int32_t)Ts/Q11;
+			if(wTimePhA > 0){
+				wTimePhB = wTimePhA + wY*(int32_t)Ts/Q10;
+				wTimePhC = wTimePhB - wX*(int32_t)Ts/Q10;
+			}else{
+				//过调制 T4 T6 Q6
+				#if OVER_MODULATE
+				svpwm_reset_time((int32_t)svpwm->Tpwm,
+								&T4,&T6,wY,-wX);
+				wTimePhA = (int32_t)svpwm->Tpwm*Q6/4 - (T4+T6)*(int32_t)Ts/4;
+				wTimePhB = wTimePhA + T4*(int32_t)Ts/2;
+				wTimePhC = wTimePhB + T6*(int32_t)Ts/2;	
+				#endif
+			}
+			svpwm->Tcm1 = (uint16_t)(wTimePhA/Q6 > 0 ? wTimePhA/Q6 : 0);
+			svpwm->Tcm2 = (uint16_t)(wTimePhC/Q6 > 0 ? wTimePhC/Q6 : 0);
+			svpwm->Tcm3 = (uint16_t)(wTimePhB/Q6 > 0 ? wTimePhB/Q6 : 0);
+			
+			break;
+		case 6:
+			svpwm->sector = 2;
+			wTimePhA = (int32_t)svpwm->Tpwm*Q4 + (wY + wZ)*(int32_t)Ts/Q11;
+			if(wTimePhA > 0){
+				wTimePhB = wTimePhA - wY*(int32_t)Ts/Q10;
+				wTimePhC = wTimePhB - wZ*(int32_t)Ts/Q10;
+			}else{
+				#if OVER_MODULATE
+				svpwm_reset_time((int32_t)svpwm->Tpwm,
+								&T4,&T6,-wY,-wZ);
+				wTimePhA = (int32_t)svpwm->Tpwm*Q4 - (T4+T6)*(int32_t)Ts/4;
+				wTimePhB = wTimePhA + T4*(int32_t)Ts/2;
+				wTimePhC = wTimePhB + T6*(int32_t)Ts/2;
+				#endif
+			}
+			svpwm->Tcm1 = (uint16_t)(wTimePhB/Q6 > 0 ? wTimePhB/Q6 : 0);
+			svpwm->Tcm2 = (uint16_t)(wTimePhC/Q6 > 0 ? wTimePhC/Q6 : 0);
+			svpwm->Tcm3 = (uint16_t)(wTimePhA/Q6 > 0 ? wTimePhA/Q6 : 0);
 
-  pHandle->hCntPhA = ( uint16_t )wTimePhA;
-  pHandle->hCntPhB = ( uint16_t )wTimePhB;
-  pHandle->hCntPhC = ( uint16_t )wTimePhC;
+			break;
+		case 1:
+			svpwm->sector = 3;
+			wTimePhA = (int32_t)svpwm->Tpwm*Q4 - (wZ+wY)*(int32_t)Ts/Q11;
+			if(wTimePhA > 0){
+				wTimePhB = wTimePhA + wZ*(int32_t)Ts/Q10;
+				wTimePhC = wTimePhB + wY*(int32_t)Ts/Q10;
+			}else{
+				#if OVER_MODULATE
+				svpwm_reset_time((int32_t)svpwm->Tpwm,
+								&T4,&T6,wZ,wY);
+				wTimePhA = (int32_t)svpwm->Tpwm*Q4 - (T4+T6)*(int32_t)Ts/4;
+				wTimePhB = wTimePhA + T4*(int32_t)Ts/2;
+				wTimePhC = wTimePhB + T6*(int32_t)Ts/2;
+				#endif
+			}
+			svpwm->Tcm1 = (uint16_t)(wTimePhB/Q6 > 0 ? wTimePhB/Q6 : 0);
+			svpwm->Tcm2 = (uint16_t)(wTimePhA/Q6 > 0 ? wTimePhA/Q6 : 0);
+			svpwm->Tcm3 = (uint16_t)(wTimePhC/Q6 > 0 ? wTimePhC/Q6 : 0);
+			
+			break;
+		case 4:
+			svpwm->sector = 4;
+			wTimePhA = (int32_t)svpwm->Tpwm*Q4 + (wX - wZ)*(int32_t)Ts/Q11;
+			if(wTimePhA>0){
+				wTimePhB = wTimePhA - wX*(int32_t)Ts/Q10;
+				wTimePhC = wTimePhB + wZ*(int32_t)Ts/Q10;
+			}else{
+				#if OVER_MODULATE
+				svpwm_reset_time((int32_t)svpwm->Tpwm,
+								&T4,&T6,-wX,wZ);
+				wTimePhA = (int32_t)svpwm->Tpwm*Q4 - (T4+T6)*(int32_t)Ts/4;
+				wTimePhB = wTimePhA + T4*(int32_t)Ts/2;
+				wTimePhC = wTimePhB + T6*(int32_t)Ts/2;
+				#endif
+			}
+			svpwm->Tcm1 = (uint16_t)(wTimePhC/Q6 > 0 ? wTimePhC/Q6 : 0);
+			svpwm->Tcm2 = (uint16_t)(wTimePhB/Q6 > 0 ? wTimePhB/Q6 : 0);
+			svpwm->Tcm3 = (uint16_t)(wTimePhA/Q6 > 0 ? wTimePhA/Q6 : 0);
+			
+			break;
+		case 3:
+			svpwm->sector = 5;
+			wTimePhA = (int32_t)svpwm->Tpwm*Q4+(wZ - wX)*(int32_t)Ts/Q11;
+			if(wTimePhA>0){
+				wTimePhB = wTimePhA - wZ*(int32_t)Ts/Q10;
+				wTimePhC = wTimePhB + wX*(int32_t)Ts/Q10;
+			}else{
+				#if OVER_MODULATE				
+				svpwm_reset_time((int32_t)svpwm->Tpwm,
+								&T4,&T6,-wZ,wX);
+				wTimePhA = (int32_t)svpwm->Tpwm*Q4 - (T4+T6)*(int32_t)Ts/4;
+				wTimePhB = wTimePhA + T4*(int32_t)Ts/2;
+				wTimePhC = wTimePhB + T6*(int32_t)Ts/2;
+				#endif				
+			}		
+			svpwm->Tcm1 = (uint16_t)(wTimePhA/Q6 > 0 ? wTimePhA/Q6 : 0);
+			svpwm->Tcm2 = (uint16_t)(wTimePhB/Q6 > 0 ? wTimePhB/Q6 : 0);
+			svpwm->Tcm3 = (uint16_t)(wTimePhC/Q6 > 0 ? wTimePhC/Q6 : 0);
 
-  if ( pHandle->DTTest == 1u )
-  {
-    /* Dead time compensation */
-    if ( pHandle->hIa > 0 )
-    {
-      pHandle->hCntPhA += pHandle->DTCompCnt;
-    }
-    else
-    {
-      pHandle->hCntPhA -= pHandle->DTCompCnt;
-    }
-
-    if ( pHandle->hIb > 0 )
-    {
-      pHandle->hCntPhB += pHandle->DTCompCnt;
-    }
-    else
-    {
-      pHandle->hCntPhB -= pHandle->DTCompCnt;
-    }
-
-    if ( pHandle->hIc > 0 )
-    {
-      pHandle->hCntPhC += pHandle->DTCompCnt;
-    }
-    else
-    {
-      pHandle->hCntPhC -= pHandle->DTCompCnt;
-    }
-  }
-
-  return ( pSetADCSamplingPoint( pHandle ) );
-}
-
-
+			break;
+		case 5:
+			svpwm->sector = 6;
+			wTimePhA = (int32_t)svpwm->Tpwm*Q4 + (wY - wX)*(int32_t)Ts/Q11;
+			if(wTimePhA>0){
+				wTimePhB = wTimePhA + wX*(int32_t)Ts/Q10;
+				wTimePhC = wTimePhB - wY*(int32_t)Ts/Q10;
+			}else{
+				#if OVER_MODULATE				
+				svpwm_reset_time((int32_t)svpwm->Tpwm,
+								&T4,&T6,wX,-wY);
+				wTimePhA = (int32_t)svpwm->Tpwm*Q4 - (T4+T6)*(int32_t)Ts/4;
+				wTimePhB = wTimePhA + T4*(int32_t)Ts/2;
+				wTimePhC = wTimePhB + T6*(int32_t)Ts/2;
+				#endif
+			}
+			svpwm->Tcm1 = (uint16_t)(wTimePhC/Q6 > 0 ? wTimePhC/Q6 : 0);
+			svpwm->Tcm2 = (uint16_t)(wTimePhA/Q6 > 0 ? wTimePhA/Q6 : 0);
+			svpwm->Tcm3 = (uint16_t)(wTimePhB/Q6 > 0 ? wTimePhB/Q6 : 0);
+			
+			break;
+		default:
+			svpwm->sector = 0;
+			break;
+	}
+	//svpwm->Tcm1 /= svpwm->Udc;
+	//svpwm->Tcm2 /= svpwm->Udc;
+	//svpwm->Tcm3 /= svpwm->Udc;
+	svpwm_time_check(&svpwm->Tcm1,Ts*2/3,1);
+	svpwm_time_check(&svpwm->Tcm2,Ts*2/3,1);
+	svpwm_time_check(&svpwm->Tcm3,Ts*2/3,1);
+	
 #endif
+}
 

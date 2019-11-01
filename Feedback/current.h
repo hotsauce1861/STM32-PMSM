@@ -13,7 +13,12 @@
  */
 
 void cur_fbk_init(void);
+
 uint16_t cur_fbk_get_Ia(void);
+uint16_t cur_fbk_get_Ia_avl(uint8_t sample_times);
 uint16_t cur_fbk_get_Ib(void);
+uint16_t cur_fbk_get_Ib_avl(uint8_t sample_times);
+
+int16_t cur_fbk_get_theta(void);
 
 #endif

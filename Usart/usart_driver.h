@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 /* Private function prototypes -----------------------------------------------*/
-
+#define USE_MICROLIB_USART 1
 #if USE_MICROLIB_USART
 
 #ifdef __GNUC__
@@ -24,7 +24,7 @@ void usart_init(void);
 void usart_send_char(char ch);
 void usart_test_echo(void);
 uint8_t usart_recv_char(void);
-
+void usart_printf(const char *fmt, ...);
 
 //extern GETCHAR_PROTOTYPE;
 

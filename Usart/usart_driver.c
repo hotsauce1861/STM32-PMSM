@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdarg.h>
 #include "stm32f10x_usart.h"
 #include "usart_driver.h"
 
@@ -35,10 +36,11 @@ static void gpio_init(void){
 }
 
 void usart_send_char(char ch){
-	USART_SendData(COM_PORT, (uint8_t) ch);
+
 	/* Loop until the end of transmission */
 	//while (USART_GetFlagStatus(COM_PORT, USART_FLAG_TC) == RESET){}
 	while((COM_PORT->SR & USART_FLAG_TC) != USART_FLAG_TC){}	
+	USART_SendData(COM_PORT, (uint8_t) ch);
 }
 
 uint8_t usart_recv_char(){
@@ -49,6 +51,24 @@ uint8_t usart_recv_char(){
     /* Store the received byte in the RxBuffer1 */
     return (uint8_t)USART_ReceiveData(COM_PORT);
 }
+
+void usart_printf(const char *fmt, ... )
+{
+    uint8_t i = 0;
+    uint8_t usart_tx_buf[128] = { 0 };
+    va_list ap;
+
+    va_start(ap, fmt );
+    vsprintf((char*)usart_tx_buf, fmt, ap);
+    va_end(ap);
+	
+	while(usart_tx_buf[i] && i < 128){
+		usart_send_char(usart_tx_buf[i]);		 
+		i++;
+	}	
+   	usart_send_char('\0');
+}
+
 
 void usart_test_echo(){
 	uint8_t tmp_dat = 0xff;
@@ -81,7 +101,6 @@ void usart_init(void){
 	/* Enable USART */
 	USART_Cmd(COM_PORT, ENABLE);
 }
-
 
 
 #if USE_MICROLIB_USART

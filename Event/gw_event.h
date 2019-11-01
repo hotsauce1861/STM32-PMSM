@@ -16,7 +16,7 @@ struct gw_event {
 	uint8_t status;					//事件状态
 	uint32_t timestamp;				//时间戳
 	uint32_t poll_time;				//轮询执行时间
-	void (*task)(void);	//回调函数
+	const void (*task)(void);	//回调函数
 	struct gw_timer* g_timer;	//全局定时器	
 };
 

@@ -30,4 +30,11 @@ int32_t encoder_get_signal_cnt(void);
  */
 MOTO_DIR encoder_get_motor_dir(void); 
 
+/**
+ *	@brief get angular position
+ *	@retval angle in q1.15 format
+ */
+int16_t encoder_get_angular_pos(void);
+
+
 #endif

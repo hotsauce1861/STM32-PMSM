@@ -188,7 +188,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -573,9 +573,9 @@
               <FilePath>.\Feedback\encoder.c</FilePath>
             </File>
             <File>
-              <FileName>positon.c</FileName>
+              <FileName>position.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Feedback\positon.c</FilePath>
+              <FilePath>.\Feedback\position.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -591,6 +591,11 @@
               <FileName>SDS.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\GwDebug\SDS.h</FilePath>
+            </File>
+            <File>
+              <FileName>gw_log.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\GwDebug\gw_log.h</FilePath>
             </File>
           </Files>
         </Group>
