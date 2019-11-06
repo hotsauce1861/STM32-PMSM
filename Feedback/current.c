@@ -35,7 +35,7 @@ static void cur_fbk_adc_init(void){
 	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
 	ADC_InitStructure.ADC_ScanConvMode = ENABLE;
 	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
-	//ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
 	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_CC1;
 	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
 	ADC_InitStructure.ADC_NbrOfChannel = 2;
@@ -48,6 +48,7 @@ static void cur_fbk_adc_init(void){
 	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_2, 1, ADC_SampleTime_71Cycles5);
 	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_3, 1, ADC_SampleTime_71Cycles5);	
 	/* ADC1 injected external trigger configuration */
+	//ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_T1_CC4);
 	ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_None);
 
 	//ADC_SetInjectedOffset(ADC1, ADC_InjectedChannel_1,2048);

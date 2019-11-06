@@ -84,7 +84,8 @@ void pwm_tim_init(void){
 
 	/* Time Base configuration */
 	TIM_TimeBaseStructure.TIM_Prescaler = TIM_PSCReloadMode_Update;
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	//TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_CenterAligned1;
 	TIM_TimeBaseStructure.TIM_Period = TimerPeriod;
 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;

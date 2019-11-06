@@ -23,13 +23,14 @@ struct svpwm_module {
 	int32_t Ua;
 	int32_t Ub;
 };
-
+	
+typedef struct svpwm_module svpwm_module_typedef;
 
 void svpwm_init(void);
 //uint16_t swpwm_setphase_vol( struct svpwm_module *pHandle , Volt_Components Valfa_beta );
 void svpwm_main_run1(struct svpwm_module* const svpwm);
 void svpwm_main_run2(struct svpwm_module* const svpwm);
 void svpwm_get_sector(struct svpwm_module* const svpwm);
-int8_t svpwm_get_sector_2(int16_t UAlpha, int16_t UBeta);
+void svpwm_reset_pwm_duty(struct svpwm_module* const svpwm);
 
 #endif

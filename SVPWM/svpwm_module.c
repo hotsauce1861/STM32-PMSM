@@ -9,11 +9,15 @@
 //#define SQRT_3 		1.732 * 100
 #define SQRT_3 		173
 #define MOTOR_POWER	20
+//#define OVER_MODULATE	1
+#define SQRT3_Q14	0x6ED9
 
+#define TPWM		(int32_t)(5000)
+#define SQRT3_TPWM	(int32_t)(8660)
+#define ABS_X(x)	((x)>=0?(x):-(x))
 
 void svpwm_init(void){
 	pwm_init();	
-
 }
 
 //sqrt(3)*Vbeta作为标么值
@@ -91,12 +95,6 @@ void svpwm_reset_time(	int32_t Ts,
 
  */
 //1-3-2-6-4-5
-//#define OVER_MODULATE	1
-#define SQRT3_Q14	0x6ED9
-
-#define TPWM		(int32_t)(5000)
-#define SQRT3_TPWM	(int32_t)(8660)
-#define ABS_X(x)	((x)>=0?(x):-(x))
 
 void svpwm_get_sector(struct svpwm_module* const svpwm){
 	int32_t wUalpha,wUbeta;
@@ -461,10 +459,16 @@ void svpwm_main_run2(struct svpwm_module* const svpwm){
 	//svpwm->Tcm1 /= svpwm->Udc;
 	//svpwm->Tcm2 /= svpwm->Udc;
 	//svpwm->Tcm3 /= svpwm->Udc;
-	svpwm_time_check(&svpwm->Tcm1,Ts*2/3,1);
-	svpwm_time_check(&svpwm->Tcm2,Ts*2/3,1);
-	svpwm_time_check(&svpwm->Tcm3,Ts*2/3,1);
+	svpwm_time_check(&svpwm->Tcm1, Ts*2/3,1);
+	svpwm_time_check(&svpwm->Tcm2, Ts*2/3,1);
+	svpwm_time_check(&svpwm->Tcm3, Ts*2/3,1);
 	
 #endif
+}
+
+void svpwm_reset_pwm_duty(struct svpwm_module* const svpwm){
+	pwm_reset_duty_cnt(1, svpwm->Tcm1);
+	pwm_reset_duty_cnt(2, svpwm->Tcm2);
+	pwm_reset_duty_cnt(3, svpwm->Tcm3);
 }
 

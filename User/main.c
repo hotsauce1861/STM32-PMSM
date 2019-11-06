@@ -41,10 +41,7 @@
 /* Private functions ---------------------------------------------------------*/
 
 static __IO uint32_t TimingDelay;
-int32_t wUalpha_g;
-int32_t wUbeta_g;
-struct svpwm_module ssvpwm;
-volatile Trig_Components strig_math;
+
 void Delay(__IO uint32_t nTime);
 /**
   * @brief  Main program.
@@ -58,47 +55,14 @@ void delay(int32_t time){
 		i++;
 	}
 }
-#define USE_TASK_ARCH 1
+
 int main(void)
 {	
-#if USE_TASK_ARCH
 	gw_event_fifo_init();
 
-#else
-	//static uint16_t i = 0;	
-	
-	//int16_t UAlpha;
-    //int16_t UBeta;
-	//int8_t a = 0;
-#endif
 	while (1)
 	{				
-#if USE_TASK_ARCH	
 		gw_execute_event_task();
-#else	
-		strig_math = trig_functions(i);
-		UAlpha = strig_math.hSin;
-		UBeta = strig_math.hCos;	
-		
-		wUalpha_g = UAlpha * (int32_t)(8660);
-		wUbeta_g = UBeta * (int32_t)(5000);
-	/*	
-		if((wUbeta & 0xF0000000) == 0xB0000000){
-			a=0;
-		}
-		if((wUalpha & 0xF0000000) == 0xB0000000){
-			a=0;
-		}
-		*/
-		
-		//svpwm_get_sector_2(UAlpha, UBeta);
-		usart_printf("%d,",svpwm_get_sector_2(UAlpha, UBeta)); 
-				
-
-		i+=32;		
-		//Delay(100);
-		delay(100000);
-#endif
 	}
 }
 

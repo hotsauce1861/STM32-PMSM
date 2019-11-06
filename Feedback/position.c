@@ -43,4 +43,35 @@ uint8_t get_pos_rotor(void){
 	return 4*c+b*2+a;
 }
 
+uint8_t get_pos_rotor_2(void){
+	int8_t a,b,c,sector;
+	a = get_pos_pha();
+	b = get_pos_phb();
+	c = get_pos_phc();
+	sector = 4*c+b*2+a; 
+
+	switch (sector)
+		{
+		case 1:
+			sector = 2;			
+			break;
+		case 2:
+			sector = 6;
+			break;
+		case 3:
+			sector = 1;
+			break;
+		case 4:
+			sector = 4;
+			break;
+		case 5:
+			sector = 3;
+			break;
+		case 6:
+			sector = 5;
+			break;			
+		}	
+	return sector;
+}
+
 

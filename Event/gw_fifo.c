@@ -22,7 +22,7 @@ static struct gw_event event_table[] =
 		.type = TYPE_IRQ, 
 		.status = DISABLE,
 		.task = task_svpwm,
-		.poll_time = 1,
+		.poll_time = 10,
 		.g_timer = &global_timer,		
 	},
 	

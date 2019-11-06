@@ -8,5 +8,6 @@
 	PHC--->PB2
  */
 uint8_t get_pos_rotor(void);
+uint8_t get_pos_rotor_2(void);
 
 #endif

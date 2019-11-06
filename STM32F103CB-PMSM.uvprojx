@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER, STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>.\User;.\Libraries\STM32F10x_StdPeriph_Driver\inc;.\Libraries\CMSIS\CM3\CoreSupport;.\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;.\Display;.\Usart;.\SVPWM;.\Display;.\Event;.\Feedback;.\GwDebug;.\Math;.\Pid;.\Test</IncludePath>
+              <IncludePath>.\User;.\Libraries\STM32F10x_StdPeriph_Driver\inc;.\Libraries\CMSIS\CM3\CoreSupport;.\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;.\Display;.\Usart;.\SVPWM;.\Display;.\Event;.\Feedback;.\GwDebug;.\Math;.\Pid;.\Test;.\Foc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -651,6 +651,21 @@
               <FileName>pid_regulator.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Pid\pid_regulator.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Foc</GroupName>
+          <Files>
+            <File>
+              <FileName>foc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Foc\foc.c</FilePath>
+            </File>
+            <File>
+              <FileName>foc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Foc\foc.h</FilePath>
             </File>
           </Files>
         </Group>

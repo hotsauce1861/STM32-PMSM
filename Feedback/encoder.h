@@ -37,4 +37,15 @@ MOTO_DIR encoder_get_motor_dir(void);
 int16_t encoder_get_angular_pos(void);
 
 
+void encoder_set_to_zero_position(void);
+
+uint8_t encoder_get_zero_pos_flag(void);
+
+int16_t encoder_get_first_zero_cnt(void);
+
+int16_t encoder_get_timecounter_cnt(void);
+
+void encoder_set_zero_pos_flag(uint8_t flag);
+
+
 #endif

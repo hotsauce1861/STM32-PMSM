@@ -5,6 +5,7 @@
 #include "stm32f10x_tim.h"
 #include "stm32f10x_exti.h"
 #include "misc.h"
+#include "position.h"
 #include "svpwm_math.h"
 
 /*
@@ -20,11 +21,11 @@
 0x7FFF - 0x7790
 0x7FFF - 0x7790
 */
-#define ENCODER_ONE_CIRCLE_CNT	2060
-#define SAMPLE_FRQ 	10000L
-#define SYS_FRQ		72000000L
-#define ENCODER_MAX_CNT	0xFFFF
-#define ENCODER_ZERO_VAL 0x7FFF
+#define ENCODER_ONE_CIRCLE_CNT	2060L
+#define SAMPLE_FRQ 				10000L
+#define SYS_FRQ					72000000L
+#define ENCODER_MAX_CNT			0xFFFF
+#define ENCODER_ZERO_VAL 		0x7FFF
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -33,6 +34,8 @@
 volatile int32_t N = 0;
 volatile uint32_t EncCnt = 0;
 volatile int32_t angle_cnt = 0;
+volatile int16_t first_zero_cnt = 0;
+volatile uint8_t zero_pos_flag = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -134,8 +137,7 @@ void encoder_irq_init(void)
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
- 
+	NVIC_Init(&NVIC_InitStructure); 
 }
 
 void encoder_init(void){
@@ -145,6 +147,12 @@ void encoder_init(void){
 	encoder_tim_init();
 }
 
+/**
+ * @brief 	获取编码器旋转方向
+ * @retval	MOTO_DIR
+ *				-FORWARD
+ *				-BACK
+ */
 MOTO_DIR encoder_get_motor_dir(void)
 {
 	if((TIM3->CR1 & 0x0010) == 0x0010){
@@ -154,25 +162,32 @@ MOTO_DIR encoder_get_motor_dir(void)
 	}
 }
 
+/**
+ * @brief 	获取正交编码计数值 N=4*编码器线数
+ * @retval	数据格式 Q1
+ */
 int32_t encoder_get_signal_cnt(void){
 	int32_t cnt = 0;
-	if(TIM3->CNT > ENCODER_ZERO_VAL){
-		EncCnt = cnt = TIM3->CNT - ENCODER_ZERO_VAL;	
-	}else{
-		EncCnt = cnt = ENCODER_ZERO_VAL - TIM3->CNT;	
-	}
+	cnt = TIM3->CNT - ENCODER_ZERO_VAL;
 	angle_cnt+=cnt;
-	//angle_cnt%=ENCODER_ONE_CIRCLE_CNT;
-	
-	TIM_SetCounter(TIM3,ENCODER_ZERO_VAL);
+	//TIM_SetCounter(TIM3,ENCODER_ZERO_VAL);
 	return cnt;
 }
 
 static void encoder_set_angular_pos_cnt(uint16_t val){
-	angle_cnt = 0;
+	angle_cnt = val;
 }
 
 
+int16_t encoder__get_angular_pos_in_sector(void){
+	return 0;
+}
+
+
+/**
+ * @brief 获取转子相对于编码器零点信号的角度
+ * @retval 角度格式 Q15
+ */
 int16_t encoder_get_angular_pos(void){
 
 	/**
@@ -182,18 +197,69 @@ int16_t encoder_get_angular_pos(void){
 	| (-16384,-1] 		| U270_360 	| (0,-0.5] 	|
 	| (-16384,-32768]	| U180_270 	| (-0.5,-1)	|
 	*/
-	int32_t zero_val = 0;
-	if(angle_cnt >= ENCODER_ONE_CIRCLE_CNT){
-		angle_cnt = ENCODER_ONE_CIRCLE_CNT;
-	}
-	zero_val = ENCODER_ONE_CIRCLE_CNT/2;
-	if(angle_cnt <= zero_val){
-		return (int16_t)(angle_cnt*Q15/zero_val);
-	}else{
-		return (int16_t)((angle_cnt-ENCODER_ONE_CIRCLE_CNT)*Q15/zero_val);
-	}
+	int16_t zero_val = 0;
+	int16_t cnt;
+	zero_val = ENCODER_ONE_CIRCLE_CNT/2;	
+	cnt = TIM3->CNT - ENCODER_ZERO_VAL;
+	return (int16_t)(cnt*Q15/zero_val);
+
 }
 
+
+void encoder_set_to_zero_position(void){
+	TIM_SetCounter(TIM3, ENCODER_ZERO_VAL);
+	encoder_set_angular_pos_cnt(ENCODER_ZERO_VAL);	
+}
+
+/**
+ * @brief 设置零点信号的值
+ */
+void encoder_set_zero_pos_flag(uint8_t flag){
+	//TODO flag值的合理性校验
+	zero_pos_flag = flag;
+}
+
+/**
+ * @brief 查询是否产生零点信号
+ */
+uint8_t encoder_get_zero_pos_flag(void){
+	if(zero_pos_flag == 1){
+		zero_pos_flag = 0;
+		return 1;
+	}
+	return 0;
+}
+
+/**
+ * @brief 清除计数器寄存器的值
+ */
+void encoder_clear_timercounter(void){
+	TIM_SetCounter(TIM3,ENCODER_ZERO_VAL);
+}
+
+/**
+ * @brief 获取相对于六个扇区的转子角度
+ */
+int16_t encoder_get_sector_angular(void){
+
+	static int16_t old_cnt = 0;
+	int16_t tmp_cnt = 0,detal_cnt = 0,cnt = 0;
+	return (int16_t)(tmp_cnt+detal_cnt);
+}
+
+/**
+ * @brief 获取第一次产生零点信号编码器计数
+ */
+int16_t encoder_get_first_zero_cnt(void){	
+	return (int16_t)(first_zero_cnt - ENCODER_ZERO_VAL);
+}
+
+/**
+ * @brief 获取计数器寄存器的计数值/已经减去偏移量
+ */
+int16_t encoder_get_timecounter_cnt(void){
+	return (int16_t)(TIM3->CNT - ENCODER_ZERO_VAL);
+}
 
 /******************************************************************************/
 /*            STM32F10x Peripherals Interrupt Handlers                        */
@@ -215,7 +281,7 @@ void TIM3_IRQHandler(void)
 			//up mode
 			N++;
 		}
-	}	
+	}
 	TIM3->SR&=~(TIM_FLAG_Update);		
 }
 
@@ -226,7 +292,9 @@ void TIM3_IRQHandler(void)
 void EXTI9_5_IRQHandler(void){
 
 	if(EXTI_GetITStatus(EXTI_Line5) == SET){ 
-		encoder_set_angular_pos_cnt(0);
+		//encoder_set_angular_pos_cnt(ENCODER_ZERO_VAL);	
+		zero_pos_flag = 1;
+		first_zero_cnt = TIM3->CNT;
 	}
 	EXTI_ClearITPendingBit(EXTI_Line5);
 }
