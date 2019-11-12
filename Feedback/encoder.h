@@ -47,5 +47,6 @@ int16_t encoder_get_timecounter_cnt(void);
 
 void encoder_set_zero_pos_flag(uint8_t flag);
 
+void encoder_clear_timercounter(void);
 
 #endif

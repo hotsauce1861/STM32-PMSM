@@ -34,6 +34,7 @@
 volatile int32_t N = 0;
 volatile uint32_t EncCnt = 0;
 volatile int32_t angle_cnt = 0;
+volatile int16_t angle_one_circle_num = 0;
 volatile int16_t first_zero_cnt = 0;
 volatile uint8_t zero_pos_flag = 0;
 /* Private function prototypes -----------------------------------------------*/
@@ -70,11 +71,17 @@ void encoder_tim_init(void){
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
-	
-	TIM_EncoderInterfaceConfig(TIM3,TIM_EncoderMode_TI12, 
-									TIM_ICPolarity_Rising, 
-									TIM_ICPolarity_Rising);
 
+	/*
+		Set tim as encoder mode
+	*/
+	TIM_EncoderInterfaceConfig(TIM3,TIM_EncoderMode_TI12, 
+									TIM_ICPolarity_BothEdge, 
+									TIM_ICPolarity_BothEdge);
+
+
+	//TIM_ICStructInit(&TIM_ICInitStructure);//将结构体中的内容缺省输入
+	//TIM_ICInitStructure.TIM_ICFilter = 4;  //选择输入比较滤波器 
 	
 /*
 	TIM_ICStructInit(&TIM_ICInitStructure); // 设置默认值
@@ -169,8 +176,6 @@ MOTO_DIR encoder_get_motor_dir(void)
 int32_t encoder_get_signal_cnt(void){
 	int32_t cnt = 0;
 	cnt = TIM3->CNT - ENCODER_ZERO_VAL;
-	angle_cnt+=cnt;
-	//TIM_SetCounter(TIM3,ENCODER_ZERO_VAL);
 	return cnt;
 }
 
@@ -199,16 +204,24 @@ int16_t encoder_get_angular_pos(void){
 	*/
 	int16_t zero_val = 0;
 	int16_t cnt;
+	
 	zero_val = ENCODER_ONE_CIRCLE_CNT/2;	
-	cnt = TIM3->CNT - ENCODER_ZERO_VAL;
-	return (int16_t)(cnt*Q15/zero_val);
+
+	angle_cnt += (TIM3->CNT - ENCODER_ZERO_VAL);
+	if(angle_cnt > INT16_MAX){
+		angle_cnt = INT16_MAX; 
+	}
+	if(angle_cnt < INT16_MIN){
+		angle_cnt = INT16_MIN;
+	}
+	return (int16_t)(angle_cnt*Q15/zero_val);
 
 }
 
 
 void encoder_set_to_zero_position(void){
-	TIM_SetCounter(TIM3, ENCODER_ZERO_VAL);
-	encoder_set_angular_pos_cnt(ENCODER_ZERO_VAL);	
+	TIM_SetCounter(TIM3, ENCODER_ZERO_VAL);	
+	encoder_set_angular_pos_cnt(0);	
 }
 
 /**
@@ -251,7 +264,7 @@ int16_t encoder_get_sector_angular(void){
  * @brief 获取第一次产生零点信号编码器计数
  */
 int16_t encoder_get_first_zero_cnt(void){	
-	return (int16_t)(first_zero_cnt - ENCODER_ZERO_VAL);
+	return (int16_t)(first_zero_cnt);
 }
 
 /**
@@ -292,9 +305,9 @@ void TIM3_IRQHandler(void)
 void EXTI9_5_IRQHandler(void){
 
 	if(EXTI_GetITStatus(EXTI_Line5) == SET){ 
-		//encoder_set_angular_pos_cnt(ENCODER_ZERO_VAL);	
+		encoder_set_angular_pos_cnt(0);	
 		zero_pos_flag = 1;
-		first_zero_cnt = TIM3->CNT;
+		first_zero_cnt = angle_cnt;
 	}
 	EXTI_ClearITPendingBit(EXTI_Line5);
 }

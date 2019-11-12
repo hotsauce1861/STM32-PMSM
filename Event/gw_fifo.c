@@ -20,9 +20,9 @@ static struct gw_event event_table[] =
 	{	
 		.name = "event1",
 		.type = TYPE_IRQ, 
-		.status = DISABLE,
+		.status = ENABLE,
 		.task = task_svpwm,
-		.poll_time = 10,
+		.poll_time = 20,
 		.g_timer = &global_timer,		
 	},
 	
