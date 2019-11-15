@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER, STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>.\User;.\Libraries\STM32F10x_StdPeriph_Driver\inc;.\Libraries\CMSIS\CM3\CoreSupport;.\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;.\Display;.\Usart;.\SVPWM;.\Display;.\Event;.\Feedback;.\GwDebug;.\Math;.\Pid;.\Test;.\Foc</IncludePath>
+              <IncludePath>.\User;.\Libraries\STM32F10x_StdPeriph_Driver\inc;.\Libraries\CMSIS\CM3\CoreSupport;.\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;.\Display;.\Usart;.\SVPWM;.\Display;.\Feedback;.\GwDebug;.\Math;.\Pid;.\Test;.\Foc;.\GwOS</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -427,6 +427,11 @@
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f10x_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_flash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -471,6 +476,16 @@
               <FileName>stm32f10x_conf.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\User\stm32f10x_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>user_state_machine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\user_state_machine.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_state_machine.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\user_state_machine.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -530,32 +545,32 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Event</GroupName>
+          <GroupName>GwOS</GroupName>
           <Files>
             <File>
               <FileName>gw_event.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Event\gw_event.c</FilePath>
-            </File>
-            <File>
-              <FileName>gw_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Event\gw_timer.c</FilePath>
+              <FilePath>.\GwOS\gw_event.c</FilePath>
             </File>
             <File>
               <FileName>gw_fifo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Event\gw_fifo.c</FilePath>
+              <FilePath>.\GwOS\gw_fifo.c</FilePath>
             </File>
             <File>
               <FileName>gw_tasks.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Event\gw_tasks.c</FilePath>
+              <FilePath>.\GwOS\gw_tasks.c</FilePath>
             </File>
             <File>
-              <FileName>gw_tasks.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Event\gw_tasks.h</FilePath>
+              <FileName>gw_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\GwOS\gw_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>gw_msgs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\GwOS\gw_msgs.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -666,6 +681,16 @@
               <FileName>foc.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Foc\foc.h</FilePath>
+            </File>
+            <File>
+              <FileName>motor_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Foc\motor_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>motor_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Foc\motor_control.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -59,7 +59,7 @@ void delay(int32_t time){
 int main(void)
 {	
 	gw_event_fifo_init();
-
+	
 	while (1)
 	{				
 		gw_execute_event_task();

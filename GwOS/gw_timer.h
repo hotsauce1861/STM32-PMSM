@@ -3,7 +3,9 @@
 #include <stdint.h>
 #include "stm32f10x.h"
 
-//timebase-1ms 进行一次累加
+/**
+ * timebase-1ms 进行一次累加
+ */
 struct gw_timer{
 	uint32_t	timestamp;	
 };

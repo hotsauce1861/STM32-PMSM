@@ -59,7 +59,9 @@ void task_init(void){
 	encoder_init();
 	foc_obj.svpwm.Tpwm = (uint16_t)get_pwm_period();
 	foc_obj.svpwm.Udc = 1;
-	foc_obj.rpm_speed_set = -200;
+	//*FREQ_task*60/2060;	
+	foc_obj.rpm_speed_set = -100 * 2060 / (50 * 60);
+	
 	cur_fbk_init();
 //	foc_obj.vol_dq.qV_Component1 = 0;
 //	foc_obj.vol_dq.qV_Component2 = -25000;
@@ -276,7 +278,7 @@ void task_svpwm(void){
 	uart_data[0] = foc_obj.feedback.ia;
 	uart_data[1] = foc_obj.feedback.sector*1000;
 	uart_data[2] = foc_obj.feedback.theta*PN;
-	uart_data[3] = foc_obj.feedback.rpm*100;//*FREQ_task*60/2060;	
+	uart_data[3] = foc_obj.feedback.rpm*150;//*50*60/2060;	
 	
 	//printf("%d,\n",Ia);
 	SDS_OutPut_Data_INT(uart_data); 
