@@ -1,319 +1,192 @@
-#include <stdio.h>
-#include <stdint.h>
-
-#include "gw_timer.h"
+/**
+************************************************************************************************
+ * @file    : gw_task.c
+ * @brief   : Task management API
+ * @details : None
+ * @date    : 11-09-2018
+ * @version : v1.0.0.0
+ * @author  : UncleMac
+ * @email   : zhaojunhui1861@163.com
+ *
+ *      @license    : GNU General Public License, version 3 (GPL-3.0)
+ *
+ *      Copyright (C)2019 UncleMac.
+ *
+ *      This code is open source: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation, either version 3 of the License, or
+ *      (at your option) any later version.
+ *
+ *      This code is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ *      GNU General Public License for more details.
+ *
+ *      You should have received a copy of the GNU General Public License
+ *      along with this program.If not, see < https://www.gnu.org/licenses/>.
+*************************************************************************************************
+*/
 #include "gw_tasks.h"
-#include "svpwm_driver.h"
-#include "svpwm_module.h"
-#include "svpwm_math.h"
-//#include "display_driver.h"
-#include "usart_driver.h"
-#include "svpwm_module.h"
-#include "pid_regulator.h"
-#include "encoder.h"
-#include "current.h"
-#include "position.h"
-#include "foc.h"
+#include "gw_list.h"
+#include "gw_timer.h"
+#include "gw_log.h"
+static gw_list* ptask_list = NULL;
 
-#include "SDS.h"
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-#define USE_PID 		1
-#define USE_CUR_PID		1
-#define USE_SPEED_PID	1
-#define PN				2
-#define TEST_TASK		3
-/* Private function prototypes -----------------------------------------------*/
-
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-foc_module_typedef foc_obj;
-
-volatile Trig_Components trig_math;
-
-int32_t Ia = 0;
-int32_t Ib = 0;
-int32_t Ic = 0;
-
-extern void Delay(__IO uint32_t nTime);
-/* Private function prototypes -----------------------------------------------*/
-
-/* Private functions ---------------------------------------------------------*/
 /**
- * @brief hardware init and software init
+ * @brief Initialize the task list
  */
-void task_init(void){
-	/*!< At this stage the microcontroller clock setting is already configured, 
-	   this is done through SystemInit() function which is called from startup
-	   file (startup_stm32f10x_xx.s) before to branch to application main.
-	   To reconfigure the default setting of SystemInit() function, refer to
-	   system_stm32f10x.c file
-	*/
-	Volt_Components volt_input;
-	/*
-		hardware init
-	*/
-	timer_base_config();
-	usart_init();	
-	svpwm_init();		
-	encoder_init();
-	foc_obj.svpwm.Tpwm = (uint16_t)get_pwm_period();
-	foc_obj.svpwm.Udc = 1;
-	//*FREQ_task*60/2060;	
-	foc_obj.rpm_speed_set = -100 * 2060 / (50 * 60);
-	
-	cur_fbk_init();
-//	foc_obj.vol_dq.qV_Component1 = 0;
-//	foc_obj.vol_dq.qV_Component2 = -25000;
-	foc_obj.pre_set_vol_dq.qV_Component1 = 0;
-	foc_obj.pre_set_vol_dq.qV_Component2 = 25000;// 负数正转(顺时针)  正数反转(逆时针)
-
-	encoder_set_to_zero_position();	
-	foc_obj.feedback.sector = get_pos_rotor_2();
-	foc_motor_start(&foc_obj, 5000, Delay); 
-	foc_obj.feedback.sector = get_pos_rotor_2();
-	encoder_set_to_zero_position();
-	/*
-		software init		
-	*/
-#if USE_PID
-	PID_HandleInit(&foc_obj.speed_pi);
-	foc_obj.speed_pi.hKpGain = 220;
-	foc_obj.speed_pi.hKiGain = 15;
-	foc_obj.speed_pi.hKdGain = 0;	
-	foc_obj.speed_pi.hLowerOutputLimit = -32768;
-	foc_obj.speed_pi.hUpperOutputLimit = 32767;
-	
-	PID_HandleInit(&foc_obj.cur_d_pi);
-	foc_obj.cur_d_pi.hKpGain = 1;
-	foc_obj.cur_d_pi.hKpDivisor = 2;
-	foc_obj.cur_d_pi.hKiGain = 1;
-	foc_obj.cur_d_pi.hKiDivisor = 64;
-	foc_obj.cur_d_pi.hKdGain = 0;	
-	foc_obj.cur_d_pi.hLowerOutputLimit = -32768;
-	foc_obj.cur_d_pi.hUpperOutputLimit = 32767;	
-	
-	PID_HandleInit(&foc_obj.cur_q_pi);
-	foc_obj.cur_q_pi.hKpGain = 1;
-	foc_obj.cur_q_pi.hKpDivisor = 2;
-	foc_obj.cur_q_pi.hKiGain = 1;
-	foc_obj.cur_q_pi.hKiDivisor = 64;
-	foc_obj.cur_q_pi.hKdGain = 0;	
-	foc_obj.cur_q_pi.hLowerOutputLimit = -32768;
-	foc_obj.cur_q_pi.hUpperOutputLimit = 32767;
-	
-#endif	
+void gw_task_list_init(void){
+    ptask_list = gw_list_init();
+    ptask_list->event.g_timer = &global_timer;
 }
 
-#if (TEST_TASK == 1)
 /**
- * 	使用编码器反馈的角度代替帕克逆变换的角度输入
- *	输入的角度通过矫正
+ * @brief create a task
+ * @param name      - pointer to ths string of task name
+ * @param taskid    - task id
+ * @param type      - task type, see gw_type.h
+ * @param status    - task status, see gw_type.h
+ * @param poll_time - time circle to schedule task
+ * @param priority  - priority of task, low value is high priority
+ * @param init_func - callback when initialization
+ * @param p_exec_func - callback without args
+ * @param p_exec_args_func - callback with args
  */
-void task_svpwm(void){
-	int32_t uart_data[4];	
-	static int16_t cnt = 0;
-	Trig_Components angle;
-	int16_t detal = 0;
-	Volt_Components volt_out;
-	foc_get_feedback(&foc_obj.feedback);
-	volt_out = park_rev(foc_obj.pre_set_vol_dq,foc_obj.angle_cnt);
+void gw_task_create(const char *name,DATA_TYPE taskid,uint8_t type,
+                    uint8_t status, uint32_t poll_time,uint32_t priority,
+                    p_init_func init_func,
+                    p_exec_func exec_task,
+                    p_exec_args_func exec_args_task){
 
-	if(foc_obj.pre_set_vol_dq.qV_Component2 > 0){
-		detal = 18000;
-		volt_out = park_rev(foc_obj.pre_set_vol_dq,foc_obj.feedback.theta*PN + detal);
-	}else{
-		detal = -14000;
-		volt_out = park_rev(foc_obj.pre_set_vol_dq,foc_obj.feedback.theta*PN + detal);
-	}	
-	//angle = trig_functions(foc_obj.feedback.theta);
-	foc_obj.svpwm.UAlpha = volt_out.qV_Component1;
-	foc_obj.svpwm.UBeta = volt_out.qV_Component2;
-	//foc_obj.svpwm.UAlpha = angle.hSin;
-	//foc_obj.svpwm.UBeta = angle.hCos;
-	svpwm_main_run2(&foc_obj.svpwm);
-	svpwm_reset_pwm_duty(&foc_obj.svpwm);
-	
-	//uart_data[0] = foc_obj.feedback.sector*1000;
-	//uart_data[1] = (int16_t)(foc_obj.feedback.theta - foc_obj.feedback.theta_offset)*PN;
-	//uart_data[1] = (int16_t)foc_obj.feedback.theta*PN;
-	//uart_data[2] = foc_obj.feedback.ia*500;
-	//uart_data[3] = encoder_get_zero_pos_flag()*10000;	
-	uart_data[0] = foc_obj.feedback.ia*10;
-	uart_data[1] = foc_obj.feedback.theta_offset*PN + foc_obj.feedback.theta*PN;
-	if(foc_obj.pre_set_vol_dq.qV_Component2 > 0){
-		uart_data[2] = foc_obj.angle_cnt-=128;
-	}else{
-		uart_data[2] = foc_obj.angle_cnt+=128;
-	}	
-	uart_data[3] = foc_obj.feedback.theta*PN  + detal;
-	//printf("%d,\n",Ia);
-	SDS_OutPut_Data_INT(uart_data); 
-	//printf("%d,",foc_obj.feedback.sector);	
+    DATA_TYPE task_id = taskid;
+    if(task_id == 0){
+        task_id = global_timer.timestamp + ptask_list->data;
+    }
+    gw_list_node *pnode = gw_list_node_init(task_id);
+
+    gw_event_init(&pnode->event,name, task_id);
+
+    gw_event_set_type(&pnode->event, type);
+    gw_event_set_status(&pnode->event, status);
+    gw_event_set_priority(&pnode->event, priority);
+    gw_event_set_poll_time(&pnode->event, poll_time);
+    gw_event_set_init_func(&pnode->event, init_func);
+    gw_event_set_exec_task(&pnode->event, exec_task);
+    gw_event_set_exec_args_task(&pnode->event, exec_args_task);
+    gw_event_set_timer(&pnode->event, &global_timer);
+    gw_event_set_timestamp(&pnode->event, global_timer.timestamp);
+    gw_msg_init(&pnode->event.msg,task_id);
+
+    gw_list_insert_node_first(ptask_list, pnode);
 }
-#elif (TEST_TASK == 2)
-void task_svpwm(void){
-	int32_t uart_data[4];	
-	static int16_t i = 0;
-	foc_get_feedback(&foc_obj.feedback);
 
-	Volt_Components volt_out;
-	
-	volt_out = park_rev(foc_obj.pre_set_vol_dq, i-=128);
-	foc_obj.svpwm.UAlpha = volt_out.qV_Component1;
-	foc_obj.svpwm.UBeta = volt_out.qV_Component2;
-	
-	//foc_obj.svpwm.UAlpha = volt_out.qV_Component2;
-	//foc_obj.svpwm.UBeta = volt_out.qV_Component1;
-	
-	svpwm_main_run2(&foc_obj.svpwm);
-	svpwm_reset_pwm_duty(&foc_obj.svpwm);
+/**
+ * @brief Creates a callback function without parameters for the task
+ * @param name      - pointer to ths string of task name
+ * @param taskid    - task id
+ * @param type      - task type, see gw_type.h
+ * @param status    - task status, see gw_type.h
+ * @param poll_time - time circle to schedule task
+ * @param priority  - priority of task, low value is high priority
+ * @param init_func - callback when initialization
+ * @param p_exec_func - callback without args
+ */
+void gw_task_void_create(const char *name, DATA_TYPE taskid,uint8_t type,
+                    uint8_t status, uint32_t poll_time,
+                    p_init_func init_func,
+                    p_exec_func exec_func){
+    gw_task_create(name,taskid,type,status,poll_time,0,
+                   init_func,exec_func, NULL);
+}
 
-	//uart_data[0] = foc_obj.feedback.sector*1000;
-	//uart_data[1] = (int16_t)(foc_obj.feedback.theta - foc_obj.feedback.theta_offset)*PN;
-	//uart_data[1] = (int16_t)foc_obj.feedback.theta*PN;
-	//uart_data[2] = foc_obj.feedback.ia*500;
-	//uart_data[3] = encoder_get_zero_pos_flag()*10000;	
-	uart_data[0] = foc_obj.feedback.ia*10;
-	uart_data[1] = (foc_obj.feedback.theta + foc_obj.feedback.theta_offset)*PN;
-	uart_data[2] = i;
-	uart_data[3] = foc_obj.feedback.theta*PN;
-	//printf("%d,\n",Ia);
-	SDS_OutPut_Data_INT(uart_data); 
-	//printf("%d,",foc_obj.feedback.sector);
-	
+/**
+ * @brief Creates a callback function with parameters for the task
+ * @param name      - pointer to ths string of task name
+ * @param taskid    - task id
+ * @param type      - task type, see gw_type.h
+ * @param status    - task status, see gw_type.h
+ * @param poll_time - time circle to schedule task
+ * @param priority  - priority of task, low value is high priority
+ * @param init_func - callback when initialization
+ * @param p_exec_args_func - callback with args
+ */
+void gw_task_args_create(const char *name, DATA_TYPE taskid,uint8_t type,
+                    uint8_t status, uint32_t poll_time,
+                    p_init_func init_func,
+                    p_exec_args_func exec_args_func){
+
+    gw_task_create(name,taskid,type,
+                   status,poll_time,0,
+                   init_func, NULL, exec_args_func);
+}
+					
+/**
+ * @brief   The initialization task will be executed
+ */
+void gw_task_init_process(void){
+    gw_list* plist_tmp = NULL;
+    struct gw_event *p_event = NULL;
+    if(ptask_list->data < 1){
+        return;
+    }
+    //GW_ENTER_CRITICAL_AREA;
+    plist_tmp = ptask_list->next;
+    while(plist_tmp != NULL){
+        p_event = &plist_tmp->event;
+        if(p_event->init_task != NULL){
+            p_event->init_task();
+        }
+        plist_tmp = plist_tmp->next;
+    //GW_EXIT_CRITICAL_AREA;
+    }
 }
 /**
- *@brief main task change it in gw_fifo.c 
+ * @brief   Task execution function
+ *          The ready task will be executed
  */
-#elif (TEST_TASK == 3)
-void task_svpwm(void){
-
-	static uint16_t i = 0;	
-	uint8_t sector = 0;
-	
-	Volt_Components volt_input;
-	int16_t pi_speed_out = 0;
-	int16_t pi_id_out, pi_iq_out;
-	int32_t id_set = 0;
-	int32_t iq_set = 0;
-	int32_t uart_data[4];		
-
-#if USE_PID	
-
-	#if USE_CUR_PID	
-	foc_obj.cur_ab.qI_Component1 = foc_obj.feedback.ia;
-	foc_obj.cur_ab.qI_Component2 = foc_obj.feedback.ib;
-	
-	foc_obj.cur_clark_ab = clarke(foc_obj.cur_ab);	
-	if(foc_obj.pre_set_vol_dq.qV_Component2 > 0){
-		foc_obj.cur_park_dq = park(foc_obj.cur_clark_ab, foc_obj.feedback.theta*PN );
-	}else{
-		foc_obj.cur_park_dq = park(foc_obj.cur_clark_ab, foc_obj.feedback.theta*PN );
-	}
-	//cur_park_dq = park(cur_clark_ab, i);
-	//cur_park_dq.qI_Component2;
-	#if USE_SPEED_PID
-	pi_speed_out = PI_Controller(&foc_obj.speed_pi,foc_obj.rpm_speed_set - foc_obj.feedback.rpm);
-	foc_obj.pre_set_vol_dq.qV_Component2 = pi_speed_out;
-	#endif	
-	id_set = foc_obj.pre_set_vol_dq.qV_Component1;
-	iq_set = foc_obj.pre_set_vol_dq.qV_Component2;
-	#if 1
-	pi_id_out = PI_Controller(&foc_obj.cur_d_pi, id_set - foc_obj.cur_park_dq.qI_Component1);
-	pi_iq_out = PI_Controller(&foc_obj.cur_q_pi, iq_set - foc_obj.cur_park_dq.qI_Component2);
-	#else
-	pi_id_out = id_set;
-	pi_iq_out = iq_set;
-	#endif
-	volt_input.qV_Component1 = pi_id_out;// + foc_obj.cur_park_dq.qI_Component2 * 1000;
-	volt_input.qV_Component2 = pi_iq_out;// + foc_obj.cur_park_dq.qI_Component1 * 1000;
-
-	/**
-		帕克反变换
-	 */
-	if(foc_obj.pre_set_vol_dq.qV_Component2 > 0){		
-		foc_obj.vol_ab = park_rev(volt_input, foc_obj.feedback.theta*PN + INT16_MAX/2);
-	}else{
-		foc_obj.vol_ab = park_rev(volt_input, foc_obj.feedback.theta*PN);
-	}
-	
-	foc_obj.svpwm.UAlpha = foc_obj.vol_ab.qV_Component1;
-	foc_obj.svpwm.UBeta = foc_obj.vol_ab.qV_Component2;	
-	#endif
-#else
-	volt_input.qV_Component1 = 0;
-	volt_input.qV_Component2 = 25000;
-
-	//vol_ab = park_rev(volt_input, agl*PN);
-	vol_ab = park_rev(volt_input, i);
-	//trig_math = trig_functions(i);
-	svpwm.UBeta = vol_ab.qV_Component1;
-	svpwm.UAlpha = vol_ab.qV_Component2;
-	
-#endif
-	/*
-		计算SVPWM波形
-	*/
-	svpwm_main_run2(&foc_obj.svpwm);
-	svpwm_reset_pwm_duty(&foc_obj.svpwm);
-	
-	foc_get_feedback(&foc_obj.feedback);
-	//uart_data[0] = svpwm.Tcm1;
-	//uart_data[1] = svpwm.Tcm2;
-	//uart_data[2] = svpwm.Tcm3;
-	//uart_data[3] = svpwm.sector*1000;	
-	
-	//uart_data[0] = Ia*20;
-	//uart_data[1] = Ib*20;
-	//uart_data[2] = i;
-	//uart_data[3] = agl*PN;
-	//SDS_OutPut_Data(uart_data);
-
-	//uart_data[0] = i;
-	//uart_data[1] = agl*PN;
-	//uart_data[2] = pi_id_out;
-	//uart_data[3] = pi_iq_out;	
-	
-	uart_data[0] = foc_obj.feedback.ia;
-	uart_data[1] = foc_obj.feedback.sector*1000;
-	uart_data[2] = foc_obj.feedback.theta*PN;
-	uart_data[3] = foc_obj.feedback.rpm*150;//*50*60/2060;	
-	
-	//printf("%d,\n",Ia);
-	SDS_OutPut_Data_INT(uart_data); 
-	//pwm_reset_duty_cnt(1, svpwm.Tcm1);
-	//pwm_reset_duty_cnt(2, svpwm.Tcm2);
-	//pwm_reset_duty_cnt(3, svpwm.Tcm3);
-	//printf("Sector:%d Ua:0x%08X Ub:0x%08X\n", svpwm.sector,svpwm.Ua,svpwm.Ub);
-	i+=32;
-}
-#endif
-
-
-#define USE_PRINTF 0
-void task_idle(void){
-
-	int32_t uart_data[4];	
-
-	//uart_data[0] = psvpwm->UAlpha;
-	//uart_data[1] = psvpwm->UBeta;
-	//uart_data[2] = psvpwm->Angle*100	
-	//uart_data[3] = psvpwm->sector*1000;	
-	
-#if USE_PRINTF	
-	//printf("Tcm1 is %d\n",uart_data[0]);
-	//printf("Tcm2 is %d\n",uart_data[1]);
-	//printf("Tcm3 is %d\n",uart_data[2]);
-#else	
-	//SDS_OutPut_Data_INT(uart_data);	
-#endif
-	SDS_OutPut_Data_INT(uart_data); 
-	//printf("%d\n",uart_data[3]);
+void gw_task_process(void){
+    gw_list* plist_tmp = NULL;
+    struct gw_event *p_event = NULL;
+    if(ptask_list->data < 1){
+        return;
+    }
+    //GW_ENTER_CRITICAL_AREA;
+    plist_tmp = ptask_list->next;
+    while(plist_tmp != NULL){
+        p_event = &plist_tmp->event;
+        if(p_event->status == GW_ENABLE ){
+            if( p_event->exec_task != NULL){
+                p_event->exec_task();
+            }
+            if(p_event->exec_args_task != NULL){
+                p_event->exec_args_task((struct gw_event *)p_event);
+            }
+            p_event->status = GW_DISABLE;
+        }
+        plist_tmp = plist_tmp->next;
+    //GW_EXIT_CRITICAL_AREA;
+    }
 }
 
-void task_get_rpm(void){
-	
+/**
+ * @brief   Task scheduling function
+ *          if task is ready, status will be set GW_ENABLE
+ */
+void gw_task_schedule(void){
+    gw_list* plist_tmp = NULL;
+    struct gw_event *p_event = NULL;
+    if(ptask_list->data < 1){
+        return;
+    }
+    GW_ENTER_CRITICAL_AREA;
+    plist_tmp = ptask_list->next;
+    while(plist_tmp != NULL){
+        p_event = &plist_tmp->event;
+        if(p_event->poll_time + p_event->timestamp < p_event->g_timer->timestamp ){
+            p_event->timestamp = p_event->g_timer->timestamp;
+            p_event->status = GW_ENABLE;
+        }
+        plist_tmp = plist_tmp->next;
+    }
+    GW_EXIT_CRITICAL_AREA;
 }
-
-

@@ -8,10 +8,10 @@
 const int16_t angle_table_forward[6] = {0x0000,0x2aaa,0x5554,0x8000,0xaaac,0xd556};
 const int16_t angle_table_back[6] = {0xd556,0xaaac,0x8000,0x5554,0x2aaa,0x0000};
 
-extern void Delay(__IO uint32_t nTime);
+extern void hal_delay(__IO uint32_t nTime);
 
 /*
-void foc_tesk_run_forward(foc_module_typedef * const foc,uint16_t timeout,
+void foc_tesk_run_forward(foc_module_tst foc,uint16_t timeout,
 													void (* const time_cbk)(int16_t)){
 
 	while(){
@@ -20,7 +20,7 @@ void foc_tesk_run_forward(foc_module_typedef * const foc,uint16_t timeout,
 }	
 */
 
-void foc_get_feedback(feedback_module_typedef * const pfbk){
+void foc_get_feedback(fdbk_mod_t * const pfbk){
 	static int16_t sample_times = 0;
 	const int16_t iref = 2048;	
 	pfbk->ia = get_inject_ia() - iref;
@@ -33,8 +33,7 @@ void foc_get_feedback(feedback_module_typedef * const pfbk){
 
 }
 
-void foc_motor_start(foc_module_typedef * const foc,uint16_t timeout,
-													void (* const time_cbk)(int16_t)){
+void foc_motor_start(foc_mod_t *foc,uint16_t timeout,void (* const time_cbk)(int16_t)){
 				
 	uint8_t circle = 0;
 	int16_t sector;
@@ -99,7 +98,7 @@ void foc_motor_start(foc_module_typedef * const foc,uint16_t timeout,
 }
 
 /*
-void foc_motor_get_zero_cnt(foc_module_typedef * const foc,uint16_t timeout,
+void foc_motor_get_zero_cnt(foc_mod_t foc,uint16_t timeout,
 													void (* const time_cbk)(int16_t)){
 
 		while((sector = get_pos_rotor_2()) != 1){

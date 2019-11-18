@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "svpwm_math.h"
 
-struct svpwm_module {
+struct svpwm_mod {
 
 	//确定转子象限
 //	int16_t Ua;		
@@ -24,13 +24,13 @@ struct svpwm_module {
 	int32_t Ub;
 };
 	
-typedef struct svpwm_module svpwm_module_typedef;
+typedef struct svpwm_mod svpwm_mod_t;
 
 void svpwm_init(void);
-//uint16_t swpwm_setphase_vol( struct svpwm_module *pHandle , Volt_Components Valfa_beta );
-void svpwm_main_run1(struct svpwm_module* const svpwm);
-void svpwm_main_run2(struct svpwm_module* const svpwm);
-void svpwm_get_sector(struct svpwm_module* const svpwm);
-void svpwm_reset_pwm_duty(struct svpwm_module* const svpwm);
+//uint16_t swpwm_setphase_vol( struct svpwm_mod *pHandle , Volt_Components Valfa_beta );
+void svpwm_main_run1(struct svpwm_mod* const svpwm);
+void svpwm_main_run2(struct svpwm_mod* const svpwm);
+void svpwm_get_sector(struct svpwm_mod* const svpwm);
+void svpwm_reset_pwm_duty(struct svpwm_mod* const svpwm);
 
 #endif

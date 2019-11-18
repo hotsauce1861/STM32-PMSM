@@ -21,7 +21,7 @@ void svpwm_init(void){
 }
 
 //sqrt(3)*Vbeta作为标么值
-uint8_t svpwm_nofloat_get_sector(struct svpwm_module *svpwm){
+uint8_t svpwm_nofloat_get_sector(struct svpwm_mod *svpwm){
 
     uint8_t a,b,c;
 	//int32_t U1,U2,U3;
@@ -96,7 +96,7 @@ void svpwm_reset_time(	int32_t Ts,
  */
 //1-3-2-6-4-5
 
-void svpwm_get_sector(struct svpwm_module* const svpwm){
+void svpwm_get_sector(struct svpwm_mod* const svpwm){
 	int32_t wUalpha,wUbeta;
 	uint8_t a,b,c;
 	wUalpha = svpwm->UAlpha * SQRT3_Q14;
@@ -142,7 +142,7 @@ void svpwm_get_sector(struct svpwm_module* const svpwm){
 	#endif
 }
 
-void svpwm_main_run1(struct svpwm_module* const svpwm){
+void svpwm_main_run1(struct svpwm_mod* const svpwm){
 
 	int32_t wX,wY,wZ,wTimePhA,wTimePhB,wTimePhC;
 	int32_t wUalpha,wUbeta;
@@ -287,7 +287,7 @@ void svpwm_main_run1(struct svpwm_module* const svpwm){
 
  */
 #define OVER_MODULATE	1
-void svpwm_main_run2(struct svpwm_module* const svpwm){
+void svpwm_main_run2(struct svpwm_mod* const svpwm){
 	int32_t wX,wY,wZ,wTimePhA,wTimePhB,wTimePhC;
 	int32_t wUalpha,wUbeta;
 	uint8_t a,b,c;
@@ -466,7 +466,7 @@ void svpwm_main_run2(struct svpwm_module* const svpwm){
 #endif
 }
 
-void svpwm_reset_pwm_duty(struct svpwm_module* const svpwm){
+void svpwm_reset_pwm_duty(struct svpwm_mod* const svpwm){
 	pwm_reset_duty_cnt(1, svpwm->Tcm1);
 	pwm_reset_duty_cnt(2, svpwm->Tcm2);
 	pwm_reset_duty_cnt(3, svpwm->Tcm3);

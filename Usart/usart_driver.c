@@ -39,20 +39,24 @@ void usart_send_char(char ch){
 
 	/* Loop until the end of transmission */
 	//while (USART_GetFlagStatus(COM_PORT, USART_FLAG_TC) == RESET){}
-	while((COM_PORT->SR & USART_FLAG_TC) != USART_FLAG_TC){}	
+	while((COM_PORT->SR & USART_FLAG_TC) != USART_FLAG_TC){
+	
+	}	
 	USART_SendData(COM_PORT, (uint8_t) ch);
 }
 
 uint8_t usart_recv_char(){
 	/* Wait the byte is entirely received by USARTy */
     //while(USART_GetFlagStatus(COM_PORT, USART_FLAG_RXNE) == RESET){}
-	while((COM_PORT->SR & USART_FLAG_RXNE) != USART_FLAG_RXNE){}
+	while((COM_PORT->SR & USART_FLAG_RXNE) != USART_FLAG_RXNE){
+	
+	}
 	
     /* Store the received byte in the RxBuffer1 */
     return (uint8_t)USART_ReceiveData(COM_PORT);
 }
 
-void usart_printf(const char *fmt, ... )
+int usart_printf(const char *fmt, ... )
 {
     uint8_t i = 0;
     uint8_t usart_tx_buf[128] = { 0 };
@@ -67,6 +71,7 @@ void usart_printf(const char *fmt, ... )
 		i++;
 	}	
    	usart_send_char('\0');
+	return 0;
 }
 
 

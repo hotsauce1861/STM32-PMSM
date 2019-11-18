@@ -12,9 +12,9 @@ struct motor_param {
 	int16_t Un;
 	int16_t Flux;
 };
-typedef struct motor_param motor_param_typedef;
+typedef struct motor_param motor_param_t;
 
-struct feedback_module {
+struct fdbk_mod {
 	int16_t udc;
 	int16_t theta;
 	int16_t theta_offset;
@@ -24,9 +24,9 @@ struct feedback_module {
 	int16_t ia;
 	int16_t ib;		
 };
-typedef struct feedback_module feedback_module_typedef;
+typedef struct fdbk_mod fdbk_mod_t;
 
-struct foc_module {
+struct foc_mod {
 
 	PID_Handle_t speed_pi;
 	PID_Handle_t cur_d_pi;
@@ -39,17 +39,17 @@ struct foc_module {
 	Volt_Components vol_ab;
 	Volt_Components vol_dq;
 	Volt_Components pre_set_vol_dq;	
-	svpwm_module_typedef svpwm;
-	motor_param_typedef motor_cfg;
-	feedback_module_typedef feedback;
+	svpwm_mod_t svpwm;
+	motor_param_t motor_cfg;
+	fdbk_mod_t feedback;
 	int16_t angle_cnt;
 	int16_t angle_cnt_detal;	
 	int16_t rpm_speed_set;
 };
-typedef struct foc_module foc_module_typedef;
+typedef struct foc_mod foc_mod_t;
 
-void foc_get_feedback(feedback_module_typedef * const pfbk);
-void foc_motor_start(foc_module_typedef * const foc,uint16_t timeout,
+void foc_get_feedback(fdbk_mod_t * const pfbk);
+void foc_motor_start(foc_mod_t * const foc,uint16_t timeout,
 													void (* const time_cbk)(int16_t));
 
 

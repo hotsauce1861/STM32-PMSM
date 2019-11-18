@@ -22,9 +22,10 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f10x_it.h"
-#include "gw_fifo.h"
 #include <stdio.h>
+#include "stm32f10x_it.h"
+#include "user_config.h"
+
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -139,12 +140,15 @@ void SysTick_Handler(void)
 {	
 	//timer_add(&global_timer);
 	static int32_t time_cricle = 0;
-	
+	#if USE_TASK_LIST
+		gw_task_schedule();
+	#else
 	if(time_cricle++%1 == 0){
 		gw_poll_event_task();		
 	}	
+	#endif
 	gw_global_timer_add();
-	TimingDelay_Decrement();
+	gw_hal_dec();
 }
 
 /******************************************************************************/

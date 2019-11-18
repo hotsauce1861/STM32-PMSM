@@ -24,7 +24,7 @@ void usart_init(void);
 void usart_send_char(char ch);
 void usart_test_echo(void);
 uint8_t usart_recv_char(void);
-void usart_printf(const char *fmt, ...);
+int usart_printf(const char *fmt, ...);
 
 //extern GETCHAR_PROTOTYPE;
 

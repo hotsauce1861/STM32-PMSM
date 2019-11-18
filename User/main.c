@@ -21,11 +21,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
-#include "gw_fifo.h"
-#include "svpwm_module.h"
-#include "svpwm_math.h"
-#include "usart_driver.h"
-
+#include "task_main.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -40,56 +36,24 @@
 
 /* Private functions ---------------------------------------------------------*/
 
-static __IO uint32_t TimingDelay;
-
-void Delay(__IO uint32_t nTime);
-/**
-  * @brief  Main program.
-  * @param  None
-  * @retval None
-  */
-  
-void delay(int32_t time){
-	int i = 0;
-	while(i<=time){
-		i++;
-	}
-}
-
 int main(void)
 {	
-	gw_event_fifo_init();
+	/**
+		add user hard environment init here
+	*/
 	
-	while (1)
-	{				
-		gw_execute_event_task();
-	}
-}
+	/**
+		task code		
+	*/
+	task_system_init();
 
-/**
-  * @brief  Inserts a delay time.
-  * @param  nTime: specifies the delay time length, in milliseconds.
-  * @retval None
-  */
-void Delay(__IO uint32_t nTime)
-{ 
-  TimingDelay = nTime;
-  while(TimingDelay != 0);
-}
+	task_bsp_init();
+	
+	task_create();
+	
+	task_main();
 
-/**
-  * @brief  Decrements the TimingDelay variable.
-  * @param  None
-  * @retval None
-  */
-void TimingDelay_Decrement(void)
-{
-  if (TimingDelay != 0x00)
-  { 
-    TimingDelay--;
-  }
 }
-
 
 #ifdef  USE_FULL_ASSERT
 

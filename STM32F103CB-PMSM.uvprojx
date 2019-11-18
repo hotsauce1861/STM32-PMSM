@@ -321,7 +321,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>0</wLevel>
+            <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER, STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>.\User;.\Libraries\STM32F10x_StdPeriph_Driver\inc;.\Libraries\CMSIS\CM3\CoreSupport;.\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;.\Display;.\Usart;.\SVPWM;.\Display;.\Feedback;.\GwDebug;.\Math;.\Pid;.\Test;.\Foc;.\GwOS</IncludePath>
+              <IncludePath>.\User;.\Libraries\STM32F10x_StdPeriph_Driver\inc;.\Libraries\CMSIS\CM3\CoreSupport;.\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;.\Display;.\Usart;.\SVPWM;.\Display;.\Feedback;.\GwDebug;.\Math;.\Pid;.\Test;.\Foc;.\GwOS;.\Task</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -487,6 +487,11 @@
               <FileType>5</FileType>
               <FilePath>.\User\user_state_machine.h</FilePath>
             </File>
+            <File>
+              <FileName>user_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\user_config.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -571,6 +576,16 @@
               <FileName>gw_msgs.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\GwOS\gw_msgs.c</FilePath>
+            </File>
+            <File>
+              <FileName>gw_list.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\GwOS\gw_list.c</FilePath>
+            </File>
+            <File>
+              <FileName>gw_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\GwOS\gw_hal.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -694,13 +709,48 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>Task</GroupName>
+          <Files>
+            <File>
+              <FileName>task_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Task\task_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_motor_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Task\task_motor_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Task\task_key.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Task\task_main.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>::CMSIS</GroupName>
+        </Group>
       </Groups>
     </Target>
   </Targets>
 
   <RTE>
     <apis/>
-    <components/>
+    <components>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.1.2" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.4.0"/>
+        <targetInfos>
+          <targetInfo name="PMSM"/>
+        </targetInfos>
+      </component>
+    </components>
     <files/>
   </RTE>
 
