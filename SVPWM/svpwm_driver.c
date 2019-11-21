@@ -29,6 +29,15 @@ void pwm_cnt_irq_init(void)
   * @brief  Configure the TIM1 Pins.
   * @param  None
   * @retval None
+  * @note
+  *			PA8 /T1_CH1  ---> HIn3
+  *			PA9 /T1_CH2  ---> HIn2
+  *			PA10/T1_CH3  ---> HIn1
+  *										Out2 ---> PA0/ADC0
+  *										Out3 ---> PA1/ADC1
+  *			PB15/T1_CHN3 ---> LIn1
+  *			PB14/T1_CHN2 ---> LIn2
+  *			PB13/T1_CHN1 ---> LIn3
   */
 void pwm_pin_init(void)
 {
@@ -51,7 +60,7 @@ void pwm_tim_init(void){
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef  TIM_OCInitStructure;
 	TIM_BDTRInitTypeDef      TIM_BDTRInitStructure;
-	NVIC_InitTypeDef 	NVIC_InitStructure;
+//	NVIC_InitTypeDef 	NVIC_InitStructure;
 	uint16_t TimerPeriod = 0;
 	uint16_t Channel1Pulse = 0, Channel2Pulse = 0, Channel3Pulse = 0;
 
@@ -85,7 +94,7 @@ void pwm_tim_init(void){
 	/* Time Base configuration */
 	TIM_TimeBaseStructure.TIM_Prescaler = TIM_PSCReloadMode_Update;
 	//TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_CenterAligned1;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_CenterAligned2;
 	TIM_TimeBaseStructure.TIM_Period = TimerPeriod;
 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
@@ -103,6 +112,15 @@ void pwm_tim_init(void){
 	*/
 	/* Channel 1, 2, 3 Configuration in PWM mode */
 	#if USE_HARD_PWM
+
+	/**	
+	TIM_OCMode_PWM1	PWM模式1
+	在向上计数时，一旦TIMx_CNT<TIMx_CCR1时通道1为有效电平，否则为无效电平
+	在向下计数时，一旦TIMx_CNT>TIMx_CCR1时通道1为无效电平(OC1REF=0)，否则为有效 电平(OC1REF=1)。
+	TIM_OCMode_PWM2 PWM模式2
+	在向上计数时，一旦TIMx_CNT<TIMx_CCR1时通道1为无效电平，否则为有效电平
+	在向下计数时，一旦TIMx_CNT>TIMx_CCR1时通道1为有效电平，否则为无效电平。
+	*/	
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;

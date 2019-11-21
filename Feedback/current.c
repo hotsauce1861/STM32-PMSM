@@ -6,11 +6,11 @@
 #include <stdint.h>
 
 #if 1
-#define IA_CHANNEL_DRI ADC_Channel_0
-#define IB_CHANNEL_DRI ADC_Channel_1
+#define IA_CHANNEL_DRI ADC_Channel_1
+#define IB_CHANNEL_DRI ADC_Channel_0
 #else
-#define IA_CHANNEL_DRI ADC_Channel_2
-#define IB_CHANNEL_DRI ADC_Channel_3
+#define IA_CHANNEL_DRI ADC_Channel_3
+#define IB_CHANNEL_DRI ADC_Channel_2
 #endif
 
 static void cur_fbk_irq_init(void){

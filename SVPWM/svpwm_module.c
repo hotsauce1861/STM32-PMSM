@@ -465,7 +465,20 @@ void svpwm_main_run2(struct svpwm_mod* const svpwm){
 	
 #endif
 }
-
+/**
+ *		   PA8 /T1_CH1	---> HIn3
+ *		   PA9 /T1_CH2	---> HIn2
+ *		   PA10/T1_CH3	---> HIn1
+ *									   Out2 ---> PA0/ADC0
+ *									   Out3 ---> PA1/ADC1
+ *		   PB15/T1_CHN3 ---> LIn1
+ *		   PB14/T1_CHN2 ---> LIn2
+ *		   PB13/T1_CHN1 ---> LIn3
+ *
+ *			OC1 ---> Ic	
+ *			OC2 ---> Ib ---> PA0/ADC0
+ *			OC3 ---> Ia ---> PA1/ADC1
+ */
 void svpwm_reset_pwm_duty(struct svpwm_mod* const svpwm){
 	pwm_reset_duty_cnt(1, svpwm->Tcm1);
 	pwm_reset_duty_cnt(2, svpwm->Tcm2);

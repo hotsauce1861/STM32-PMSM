@@ -6,9 +6,12 @@
 #define RES_IB	1024	//采样电阻B
 
 /**
- * Ia--->PA0/ADC0
+ *			OC1 ---> Ic	
+ *			OC2 ---> Ib ---> PA0/ADC0
+ *			OC3 ---> Ia ---> PA1/ADC1
+ * Ib--->PA0/ADC0
  *	|------------>PA2/ADC2
- * Ib--->PA1/ADC1
+ * Ia--->PA1/ADC1
  *	|------------>PA3/ADC3
  */
 
