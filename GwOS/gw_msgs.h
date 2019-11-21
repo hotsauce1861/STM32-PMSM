@@ -58,7 +58,7 @@ void gw_msg_fifo_init(gw_msg_fifo_t * const pfifo);
 /**
  * @brief Gets a pointer to the global message queue
  */
-gw_msg_fifo_t* const gw_msg_fifo_get_pointer(void);
+gw_msg_fifo_t* gw_msg_fifo_get_pointer(void);
 
 /**
  * @brief Empty the ring fifo queue
