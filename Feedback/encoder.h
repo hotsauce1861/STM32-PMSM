@@ -1,6 +1,17 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 #include <stdint.h>
+
+#define ALIGNMENT_ANGLE       	(uint16_t) 0 //Degrees [0..359] 
+#define ENCODER_ONE_CIRCLE_CNT	2160L
+#define ENCODER_ZERO_CIRCLE_CNT	1580L
+#define SAMPLE_FRQ 				10000L
+#define SYS_FRQ					72000000L
+#define ENCODER_MAX_CNT			0xFFFF
+#define ENCODER_ZERO_VAL 		(int16_t)((int32_t)(ALIGNMENT_ANGLE)*65536/360)
+//#define ENCODER_ZERO_VAL		0
+#define START_SECTOR	5
+
 /*
 QPEA--->PA6/TIM3C1
 QPEB--->PA7/TIM3C1
@@ -49,4 +60,20 @@ void encoder_set_zero_pos_flag(uint8_t flag);
 
 void encoder_clear_timercounter(void);
 
+/**
+ * @brief convert encoder count to angular posiong
+ * @retval angle in format Q15
+ */
+int16_t encoder_conv_angular_pos(int16_t enc_cnt);
+
+int16_t encoder_get_m_theta(void);
+
+int16_t encoder_get_e_theta(void);
+
+void encoder_reset_aligment(void);
+
+void encoder_reset_zero(void);
+	
+void enconder_get_rpm(uint16_t * const pdata);
+	
 #endif

@@ -1,3 +1,23 @@
+/**
+  ******************************************************************************
+  * @file    mc_math.c
+  * @author  Motor Control SDK Team, ST Microelectronics
+  * @brief   This file provides mathematics functions useful for and specific to
+  *          Motor Control.
+  *
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2018 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under Ultimate Liberty license
+  * SLA0044, the "License"; You may not use this file except in compliance with
+  * the License. You may obtain a copy of the License at:
+  *                             www.st.com/SLA0044
+  *
+  ******************************************************************************
+  */
 #include "stdint.h"
 #include "svpwm_math.h"
 
@@ -112,7 +132,7 @@ Curr_Components clarke( Curr_Components Curr_Input )
   * @brief  This function transforms stator currents Ialpha and Ibeta, which
   *         belong to a stationary qd reference frame, to a rotor flux
   *         synchronous reference frame (properly oriented), so as Iq and Id.
-  *                   Id= Ialpha *sin(theta)+qIbeta *cos(Theta)
+  *                   Id=qIalpha *sin(theta)+qIbeta *cos(Theta)
   *                   Iq=qIalpha *cos(Theta)-qIbeta *sin(Theta)
   * @param  Curr_Input: stator current Ialpha and Ibeta in Curr_Components format
   * @param  Theta: rotating frame angular position in q1.15 format

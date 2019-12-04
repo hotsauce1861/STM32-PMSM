@@ -2,6 +2,7 @@
 #define SVPWM_MATH_H
 #include <stdint.h>
 
+#define FULL_MISRA_C_COMPLIANCY 1
 
 #define QTYPE		int16_t
 #define QWTYPE		int32_t
@@ -24,23 +25,23 @@
 #define	Q0			(QTYPE)0x0001
 #else
 #define Q17	        (QWTYPE)131072
-#define Q16	        (QTYPE)65536 
-#define Q15 		(QTYPE)32768
-#define Q14			(QTYPE)16384
-#define Q13			(QTYPE)8192
-#define Q12			(QTYPE)4096
-#define Q11			(QTYPE)2048
-#define Q10			(QTYPE)1024
-#define Q9			(QTYPE)512
-#define	Q8			(QTYPE)256
-#define	Q7			(QTYPE)128
-#define	Q6			(QTYPE)64
-#define	Q5			(QTYPE)32
-#define	Q4			(QTYPE)16
-#define	Q3			(QTYPE)8
-#define	Q2			(QTYPE)4
-#define	Q1			(QTYPE)2
-#define	Q0			(QTYPE)1
+#define Q16	        (QWTYPE)65536 
+#define Q15 		(QWTYPE)32768
+#define Q14			(QWTYPE)16384
+#define Q13			(QWTYPE)8192
+#define Q12			(QWTYPE)4096
+#define Q11			(QWTYPE)2048
+#define Q10			(QWTYPE)1024
+#define Q9			(QWTYPE)512
+#define	Q8			(QWTYPE)256
+#define	Q7			(QWTYPE)128
+#define	Q6			(QWTYPE)64
+#define	Q5			(QWTYPE)32
+#define	Q4			(QWTYPE)16
+#define	Q3			(QWTYPE)8
+#define	Q2			(QWTYPE)4
+#define	Q1			(QWTYPE)2
+#define	Q0			(QWTYPE)1
 #endif
 
 #define SQRT3_Q14	0x6ED9

@@ -178,7 +178,7 @@ void gw_task_schedule(void){
     if(ptask_list->data < 1){
         return;
     }
-    GW_ENTER_CRITICAL_AREA;
+    //GW_ENTER_CRITICAL_AREA;
     plist_tmp = ptask_list->next;
     while(plist_tmp != NULL){
         p_event = &plist_tmp->event;
@@ -188,5 +188,5 @@ void gw_task_schedule(void){
         }
         plist_tmp = plist_tmp->next;
     }
-    GW_EXIT_CRITICAL_AREA;
+    //GW_EXIT_CRITICAL_AREA;
 }

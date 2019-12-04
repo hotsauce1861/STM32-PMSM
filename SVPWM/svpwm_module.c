@@ -12,8 +12,6 @@
 //#define OVER_MODULATE	1
 #define SQRT3_Q14	0x6ED9
 
-#define TPWM		(int32_t)(5000)
-#define SQRT3_TPWM	(int32_t)(8660)
 #define ABS_X(x)	((x)>=0?(x):-(x))
 
 void svpwm_init(void){
@@ -292,6 +290,7 @@ void svpwm_main_run2(struct svpwm_mod* const svpwm){
 	int32_t wUalpha,wUbeta;
 	uint8_t a,b,c;
 	int32_t sector;
+	uint16_t max_times = 0;
 	uint16_t Ts = svpwm->Tpwm;
 	int32_t T4,T6;
 	wUalpha = (int32_t)svpwm->UAlpha * (int32_t)SQRT3_Q14 / Q14;
@@ -459,18 +458,18 @@ void svpwm_main_run2(struct svpwm_mod* const svpwm){
 	//svpwm->Tcm1 /= svpwm->Udc;
 	//svpwm->Tcm2 /= svpwm->Udc;
 	//svpwm->Tcm3 /= svpwm->Udc;
-	svpwm_time_check(&svpwm->Tcm1, Ts*2/3,1);
-	svpwm_time_check(&svpwm->Tcm2, Ts*2/3,1);
-	svpwm_time_check(&svpwm->Tcm3, Ts*2/3,1);
+	max_times = get_pwm_limit_period();
+	svpwm_time_check(&svpwm->Tcm1, max_times,1);
+	svpwm_time_check(&svpwm->Tcm2, max_times,1);
+	svpwm_time_check(&svpwm->Tcm3, max_times,1);
 	
 #endif
 }
 /**
- *		   PA8 /T1_CH1	---> HIn3
- *		   PA9 /T1_CH2	---> HIn2
- *		   PA10/T1_CH3	---> HIn1
- *									   Out2 ---> PA0/ADC0
- *									   Out3 ---> PA1/ADC1
+ *		   PA8 /T1_CH1	---> HIn3 ---> Out3
+ *		   PA9 /T1_CH2	---> HIn2 ---> Out2 ---> AMP-IN1 ---> ADC1-CH0
+ *		   PA10/T1_CH3	---> HIn1 ---> Out1 ---> AMP-IN2 ---> ADC1-CH1
+ *									   
  *		   PB15/T1_CHN3 ---> LIn1
  *		   PB14/T1_CHN2 ---> LIn2
  *		   PB13/T1_CHN1 ---> LIn3
@@ -478,10 +477,38 @@ void svpwm_main_run2(struct svpwm_mod* const svpwm){
  *			OC1 ---> Ic	
  *			OC2 ---> Ib ---> PA0/ADC0
  *			OC3 ---> Ia ---> PA1/ADC1
+ *
+ *			T1_CH1--->xxxxxx	Ic
+ *			T1_CH2--->ADC_CH0	Ia
+ *			T1_CH3--->ADC_CH1	Ib 
  */
 void svpwm_reset_pwm_duty(struct svpwm_mod* const svpwm){
-	pwm_reset_duty_cnt(1, svpwm->Tcm1);
-	pwm_reset_duty_cnt(2, svpwm->Tcm2);
-	pwm_reset_duty_cnt(3, svpwm->Tcm3);
+	#define USE_CNT 3
+	// E 1/5/6/2/4
+	#if (USE_CNT == 1)
+	pwm_reset_duty_cnt(1, svpwm->Tcm1); //A
+	pwm_reset_duty_cnt(2, svpwm->Tcm2); //B
+	pwm_reset_duty_cnt(3, svpwm->Tcm3); //C
+	#elif (USE_CNT == 2)
+	pwm_reset_duty_cnt(1, svpwm->Tcm1); //A
+	pwm_reset_duty_cnt(2, svpwm->Tcm3); //C
+	pwm_reset_duty_cnt(3, svpwm->Tcm2); //B
+	#elif (USE_CNT == 3)
+	pwm_reset_duty_cnt(1, svpwm->Tcm3);	//C
+	pwm_reset_duty_cnt(2, svpwm->Tcm1);	//A
+	pwm_reset_duty_cnt(3, svpwm->Tcm2);	//B
+	#elif (USE_CNT == 4)
+	pwm_reset_duty_cnt(1, svpwm->Tcm2); //B
+	pwm_reset_duty_cnt(2, svpwm->Tcm1); //A
+	pwm_reset_duty_cnt(3, svpwm->Tcm3); //C
+	#elif (USE_CNT == 5)	
+	pwm_reset_duty_cnt(1, svpwm->Tcm2);	//B
+	pwm_reset_duty_cnt(2, svpwm->Tcm3);	//C
+	pwm_reset_duty_cnt(3, svpwm->Tcm1);	//A
+	#elif (USE_CNT == 6)
+	pwm_reset_duty_cnt(1, svpwm->Tcm3); //C
+	pwm_reset_duty_cnt(2, svpwm->Tcm2); //B
+	pwm_reset_duty_cnt(3, svpwm->Tcm1);	//A
+	#endif
 }
 

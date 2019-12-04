@@ -25,6 +25,10 @@
 #include <stdio.h>
 #include "stm32f10x_it.h"
 #include "user_config.h"
+#include "foc.h"
+#include "user_state_machine.h"
+
+extern foc_mod_t foc_obj;
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -151,6 +155,7 @@ void SysTick_Handler(void)
 	gw_hal_dec();
 }
 
+
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */
 /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
@@ -166,15 +171,75 @@ void SysTick_Handler(void)
 /*void PPP_IRQHandler(void)
 {
 }*/
+#include "current.h"
 /*
 void TIM1_UP_IRQHandler(void){
 	//static uint32_t i=0;
 	if(TIM_GetFlagStatus(TIM1, TIM_IT_Update) == SET){
-
+		//set_inject_ia(cur_fbk_get_Ia());
+		//set_inject_ib(cur_fbk_get_Ib());
 	}	
 	TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
 }	
 */
+volatile int32_t wia = 0,wib=0,wic=0;
+volatile int16_t hmul = 0x02, hdiv = 0x02;
+extern void task_motor_cur_loop(Curr_Components cur_ab);
+extern void task_motor_startup(Curr_Components cur_ab,uint16_t timeout);
+void ADC1_2_IRQHandler(void)
+{
+	Curr_Components cur_ab;
+	
+	if(ADC_GetITStatus(ADC1, ADC_IT_JEOC) == SET){
+		#if 0
+		cur_ab.qI_Component1 = ADC_GetInjectedConversionValue(ADC1, IA_INJECT_CHANNEL_DRI);
+		cur_ab.qI_Component2 = ADC_GetInjectedConversionValue(ADC1, IB_INJECT_CHANNEL_DRI);
+		set_inject_ia(cur_ab.qI_Component1); 
+		set_inject_ib(cur_ab.qI_Component2); 
+		#else
+		ADC_ITConfig(ADC1, ADC_IT_JEOC, DISABLE);
+		set_inject_ia(ADC1->JDR1); 
+		set_inject_ib(ADC1->JDR2); 
+		//cur_ab.qI_Component1 = (int32_t)(ADC1->JDR1 - 2048)*Q15*38/2048;
+		//cur_ab.qI_Component2 = (int32_t)(ADC1->JDR2 - 2048)*Q15*38/2048;
+		
+		//wic = (int32_t)((ADC1->JDR1 - 2048)*165*5/2048)*Q13/454/2; //0-1 ==> 0-2A Q15 FORMAT
+		//wib = (int32_t)((ADC1->JDR2 - 2048)*165*5/2048)*Q13/454/2; //0-1 ==> 0-2A Q15 FORMAT
+		//wia = -(wib+wic);
+		
+		//cur_ab.qI_Component1 = (int16_t)wia;
+		//cur_ab.qI_Component2 = (int16_t)wib;
+		
+		//wia = (int32_t)((ADC1->JDR1 - 2048)*4)*Q13/2048; //0-1 ==> -4A~4A Q13 FORMAT
+		//wib = (int32_t)((ADC1->JDR2 - 2048)*4)*Q13/2048; //0-1 ==> -4A~4A Q13 FORMAT
+		
+		// Uadc = Uin*4.54
+		
+		wia = (int32_t)((int32_t)(ADC1->JDR1 - foc_obj.feedback.cur_offset.qI_Component1)*Q14/2048*165/454*2);
+		wib = (int32_t)((int32_t)(ADC1->JDR2 - foc_obj.feedback.cur_offset.qI_Component2)*Q14/2048*165/454*2);
+		
+		//wia = (int32_t)((ADC1->JDR1 - 2048)*165*5/2048)*Q15/454*hmul/hdiv; //0-1 ==> 0-2A Q15 FORMAT
+		//wib = (int32_t)((ADC1->JDR2 - 2048)*165*5/2048)*Q15/454*hmul/hdiv; //0-1 ==> 0-2A Q15 FORMAT
+		//wic = (int32_t)(4096 - ADC1->JDR1+ADC1->JDR2)*165*5/2048*Q14/454*hmul/hdiv;
+		
+		cur_ab.qI_Component1 = (int16_t)wib;
+		cur_ab.qI_Component2 = (int16_t)wia;
+		
+		if(stm_get_cur_state(&motor_state) == IDLE){
+			task_motor_startup(cur_ab,30000);
+		}else if(stm_get_cur_state(&motor_state) == RUN){
+			task_motor_cur_loop(cur_ab);
+		}
+		//task_motor_cur_loop(cur_ab);
+		ADC_ITConfig(ADC1, ADC_IT_JEOC, ENABLE);
+		#endif
+	}
+	
+	/* Clear ADC1 JEOC pending interrupt bit */
+	//task_motor_cur_loop(cur_ab);
+	ADC_ClearITPendingBit(ADC1, ADC_IT_JEOC);
+}
+
 
 /**
   * @}

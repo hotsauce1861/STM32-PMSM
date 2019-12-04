@@ -111,7 +111,7 @@ void gw_poll_event_task(void){
     uint8_t i = 0;
     uint8_t size = EVENT_SIZE;
     struct gw_event *p_event;
-    GW_ENTER_CRITICAL_AREA;
+    //GW_ENTER_CRITICAL_AREA;
     for(; i<size; i++){
         p_event = &event_table[i%size];
         if( p_event->poll_time + p_event->timestamp < p_event->g_timer->timestamp){
@@ -119,14 +119,14 @@ void gw_poll_event_task(void){
             p_event->status = ENABLE;
         }
     }
-    GW_EXIT_CRITICAL_AREA;
+    //GW_EXIT_CRITICAL_AREA;
 }
 
 void gw_execute_event_task(void){
     uint8_t i = 0;
     uint8_t size = EVENT_SIZE;
     struct gw_event *p_event;
-    GW_ENTER_CRITICAL_AREA;
+    //GW_ENTER_CRITICAL_AREA;
     for(; i<size; i++){
         p_event = &event_table[i%size];
         if(p_event->status == ENABLE && p_event->exec_task != NULL){
@@ -134,7 +134,7 @@ void gw_execute_event_task(void){
             p_event->status = DISABLE;
         }
     }
-    GW_EXIT_CRITICAL_AREA;
+    //GW_EXIT_CRITICAL_AREA;
 }
 
 void gw_global_timer_add(void){

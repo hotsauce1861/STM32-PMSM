@@ -159,8 +159,8 @@
             <ldmm>1</ldmm>
             <ldXref>1</ldXref>
             <BigEnd>0</BigEnd>
-            <AdsALst>1</AdsALst>
-            <AdsACrf>1</AdsACrf>
+            <AdsALst>0</AdsALst>
+            <AdsACrf>0</AdsACrf>
             <AdsANop>0</AdsANop>
             <AdsANot>0</AdsANot>
             <AdsLLst>1</AdsLLst>
@@ -172,8 +172,8 @@
             <AdsLsun>1</AdsLsun>
             <AdsLven>1</AdsLven>
             <AdsLsxf>1</AdsLsxf>
-            <RvctClst>1</RvctClst>
-            <GenPPlst>1</GenPPlst>
+            <RvctClst>0</RvctClst>
+            <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M3"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
             <mOS>0</mOS>
@@ -432,6 +432,11 @@
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_flash.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f10x_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_dma.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -598,14 +603,14 @@
               <FilePath>.\Feedback\current.c</FilePath>
             </File>
             <File>
-              <FileName>encoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Feedback\encoder.c</FilePath>
-            </File>
-            <File>
               <FileName>position.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Feedback\position.c</FilePath>
+            </File>
+            <File>
+              <FileName>encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Feedback\encoder.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -6,9 +6,6 @@
 struct svpwm_mod {
 
 	//确定转子象限
-//	int16_t Ua;		
-//	int16_t Ub;
-//	int16_t Uc;
 	int16_t Udc;
 	int32_t sector;
 	//克拉克变换OAB坐标
@@ -22,6 +19,7 @@ struct svpwm_mod {
 	uint16_t Tpwm;
 	int32_t Ua;
 	int32_t Ub;
+	
 };
 	
 typedef struct svpwm_mod svpwm_mod_t;

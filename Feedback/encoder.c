@@ -21,11 +21,7 @@
 0x7FFF - 0x7790
 0x7FFF - 0x7790
 */
-#define ENCODER_ONE_CIRCLE_CNT	2060L
-#define SAMPLE_FRQ 				10000L
-#define SYS_FRQ					72000000L
-#define ENCODER_MAX_CNT			0xFFFF
-#define ENCODER_ZERO_VAL 		0x7FFF
+
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -65,7 +61,8 @@ void encoder_tim_init(void){
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_ICInitTypeDef TIM_ICInitStructure; 		
 	
-	TIM_TimeBaseStructure.TIM_Period = ENCODER_MAX_CNT;
+	//TIM_TimeBaseStructure.TIM_Period = ENCODER_MAX_CNT;
+	TIM_TimeBaseStructure.TIM_Period = ENCODER_ONE_CIRCLE_CNT - 1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseStructure.TIM_Prescaler = 0;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
@@ -79,10 +76,9 @@ void encoder_tim_init(void){
 									TIM_ICPolarity_BothEdge, 
 									TIM_ICPolarity_BothEdge);
 
-
 	//TIM_ICStructInit(&TIM_ICInitStructure);//将结构体中的内容缺省输入
 	//TIM_ICInitStructure.TIM_ICFilter = 4;  //选择输入比较滤波器 
-	
+	//TIM_ICStructInit(&TIM_ICInitStructure); // 设置默认值
 /*
 	TIM_ICStructInit(&TIM_ICInitStructure); // 设置默认值
 
@@ -105,7 +101,7 @@ void encoder_tim_init(void){
 	TIM_ITConfig(TIM3,TIM_IT_Update, ENABLE);	
 	
 	//TIM_ITConfig(TIM3, TIM_IT_CC2, ENABLE);
-	TIM_SetCounter(TIM3,ENCODER_ZERO_VAL);
+	TIM_SetCounter(TIM3,0);
 	TIM_ICInit(TIM3, &TIM_ICInitStructure);
 	TIM_Cmd(TIM3, ENABLE);
 	
@@ -219,6 +215,39 @@ int16_t encoder_get_angular_pos(void){
 }
 
 
+int16_t encoder_get_e_theta(void){
+  int32_t temp;  
+  temp = -(int32_t)(TIM_GetCounter(TIM3)) * (int32_t)(UINT32_MAX / ENCODER_ONE_CIRCLE_CNT);         
+  temp *= 2;  
+  return((int16_t)(temp/65536)); 
+	
+}
+
+int16_t encoder_get_m_theta(void){
+	int32_t temp;  
+	temp = (int32_t)(TIM_GetCounter(TIM3)) * (int32_t)(UINT32_MAX / ENCODER_ONE_CIRCLE_CNT);         
+	return((int16_t)(temp/65536)); 
+}
+
+void encoder_reset_aligment(void){
+	TIM_SetCounter(TIM3, ENCODER_ZERO_VAL);	
+}
+
+void encoder_reset_zero(void){
+	TIM_SetCounter(TIM3, 0);	
+}
+
+/**
+ * @brief convert encoder count to angular posiong
+ * @retval angle in format Q15
+ */
+int16_t encoder_conv_angular_pos(int16_t enc_cnt){
+	int16_t angle = 0;
+	angle = (int32_t)enc_cnt*Q15/ENCODER_ZERO_CIRCLE_CNT;
+	return angle;
+}
+
+
 void encoder_set_to_zero_position(void){
 	TIM_SetCounter(TIM3, ENCODER_ZERO_VAL);	
 	encoder_set_angular_pos_cnt(0);	
@@ -283,6 +312,12 @@ int16_t encoder_get_timecounter_cnt(void){
   * @retval None
   */
 #if 1
+volatile uint16_t rpm = 0;
+
+void enconder_get_rpm(uint16_t * const pdata){
+	*pdata = rpm;
+	rpm = 0;
+}
 void TIM3_IRQHandler(void)
 { 
 	uint16_t flag = 0x0001 << 4;
@@ -293,6 +328,10 @@ void TIM3_IRQHandler(void)
 		}else{
 			//up mode
 			N++;
+		}
+		rpm++;
+		if(rpm >= UINT16_MAX){
+			rpm = UINT16_MAX;
 		}
 	}
 	TIM3->SR&=~(TIM_FLAG_Update);		
@@ -305,11 +344,12 @@ void TIM3_IRQHandler(void)
 void EXTI9_5_IRQHandler(void){
 
 	if(EXTI_GetITStatus(EXTI_Line5) == SET){ 
-		encoder_set_angular_pos_cnt(0);	
+		//encoder_set_angular_pos_cnt(0);	
 		zero_pos_flag = 1;
-		first_zero_cnt = angle_cnt;
+		//first_zero_cnt = angle_cnt;
 	}
 	EXTI_ClearITPendingBit(EXTI_Line5);
+	
 }
 
 #endif

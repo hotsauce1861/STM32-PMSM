@@ -48,7 +48,7 @@ uint8_t get_pos_rotor_2(void){
 	a = get_pos_pha();
 	b = get_pos_phb();
 	c = get_pos_phc();
-	sector = 4*c+b*2+a; 
+	sector = 4*c+b*2+a;
 
 	switch (sector)
 		{

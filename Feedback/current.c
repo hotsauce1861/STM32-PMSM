@@ -3,15 +3,11 @@
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_adc.h"
 #include "stm32f10x_rcc.h"
+#include "stm32f10x_dma.h"
+
 #include <stdint.h>
 
-#if 1
-#define IA_CHANNEL_DRI ADC_Channel_1
-#define IB_CHANNEL_DRI ADC_Channel_0
-#else
-#define IA_CHANNEL_DRI ADC_Channel_3
-#define IB_CHANNEL_DRI ADC_Channel_2
-#endif
+__IO uint16_t ADC_RegularConvertedValueTab[16];
 
 static void cur_fbk_irq_init(void){
 
@@ -28,41 +24,72 @@ static void cur_fbk_irq_init(void){
 }
 
 static void cur_fbk_adc_init(void){
-	//https://blog.csdn.net/yeqbo/article/details/51399373
+	
 	ADC_DeInit(ADC1);
 	ADC_InitTypeDef ADC_InitStructure;
+	DMA_InitTypeDef   DMA_InitStructure;
 	/* ADC1 configuration ------------------------------------------------------*/
 	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
 	ADC_InitStructure.ADC_ScanConvMode = ENABLE;
-	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
+	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+	//ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;	
 	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
-	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_CC1;
 	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-	ADC_InitStructure.ADC_NbrOfChannel = 2;
+	ADC_InitStructure.ADC_NbrOfChannel = 0;
 
+#if 0
+	/* ADC1 regular channels configuration */ 
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_1Cycles5);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_1, 2, ADC_SampleTime_1Cycles5);
+
+	/* Regular discontinuous mode channel number configuration */
+	ADC_DiscModeChannelCountConfig(ADC1, 2);
+	/* Enable regular discontinuous mode */
+	ADC_DiscModeCmd(ADC1, ENABLE);
+	/* Enable ADC1 DMA */
+	ADC_DMACmd(ADC1, ENABLE);
+	
+	DMA_DeInit(DMA1_Channel1);
+#define ADC1_DR_Address    ((uint32_t)0x4001244C)
+	DMA_InitStructure.DMA_PeripheralBaseAddr = ADC1_DR_Address;
+	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)ADC_RegularConvertedValueTab;
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+	DMA_InitStructure.DMA_BufferSize = 16;
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+	DMA_Init(DMA1_Channel1, &DMA_InitStructure);
+
+	/* Enable DMA1 channel1 */
+	DMA_Cmd(DMA1_Channel1, ENABLE);
+	
+#else	
+	//https://blog.csdn.net/gtkknd/article/details/39292731
 	/* Set injected sequencer length */
 	ADC_InjectedSequencerLengthConfig(ADC1, 2);
 	/* ADC1 injected channel Configuration */ 
-	ADC_InjectedChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_71Cycles5);
-	ADC_InjectedChannelConfig(ADC1, ADC_Channel_1, 2, ADC_SampleTime_71Cycles5);
-	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_2, 1, ADC_SampleTime_71Cycles5);
-	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_3, 1, ADC_SampleTime_71Cycles5);	
+	ADC_InjectedChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_1Cycles5);
+	ADC_InjectedChannelConfig(ADC1, ADC_Channel_1, 2, ADC_SampleTime_1Cycles5);
+	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_2, 1, ADC_SampleTime_1Cycles5);
+	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_3, 1, ADC_SampleTime_1Cycles5);	
 	/* ADC1 injected external trigger configuration */
+	ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_T1_TRGO);
 	//ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_T1_CC4);
-	ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_None);
-
+	ADC_ExternalTrigInjectedConvCmd(ADC1,ENABLE); 
 	//ADC_SetInjectedOffset(ADC1, ADC_InjectedChannel_1,2048);
 	//ADC_SetInjectedOffset(ADC1, ADC_InjectedChannel_2,2048);
 	
 	/* Enable automatic injected conversion start after regular one */
-	ADC_AutoInjectedConvCmd(ADC1, ENABLE);
-	
-	/* Enable ADC1 DMA */
-	ADC_DMACmd(ADC1, ENABLE);
+	//ADC_AutoInjectedConvCmd(ADC1, ENABLE);
 	
 	/* Enable ADC1 external trigger */ 
 	ADC_ExternalTrigConvCmd(ADC1, ENABLE);
-
+	ADC_ITConfig(ADC1, ADC_IT_JEOC, ENABLE);
+#endif
 	
 	ADC_Init(ADC1, &ADC_InitStructure);
 	ADC_Cmd(ADC1, ENABLE);
@@ -80,9 +107,8 @@ static void cur_fbk_adc_init(void){
 			TODO
 		*/
 		//timeout_detect
-	}
-
-	ADC_ITConfig(ADC1, ADC_IT_JEOC, ENABLE);
+	}	
+	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
 }
 
 static void cur_fbk_rcc_init(void){
@@ -174,19 +200,15 @@ volatile int16_t ad_irq = 0;
 volatile uint16_t Ia_val = 0;
 volatile uint16_t Ib_val = 0;
 
-void ADC1_2_IRQHandler(void)
-{
-
-	ad_irq++;
-	Ia_val = ADC_GetInjectedConversionValue(ADC1, ADC_InjectedChannel_1);
-	Ib_val = ADC_GetInjectedConversionValue(ADC1, ADC_InjectedChannel_2);
-	/* Clear ADC1 JEOC pending interrupt bit */
-	ADC_ClearITPendingBit(ADC1, ADC_IT_JEOC);
+void set_inject_ia(uint16_t ia){
+	Ia_val = ia;
 }
-
-
 uint16_t get_inject_ia(void){
 	return Ia_val;
+}
+
+void set_inject_ib(uint16_t ib){
+	Ib_val = ib;
 }
 
 uint16_t get_inject_ib(void){
