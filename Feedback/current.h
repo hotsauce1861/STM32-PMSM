@@ -42,4 +42,10 @@ void set_inject_ia(uint16_t ia);
 
 int16_t cur_fbk_get_theta(void);
 
+int16_t get_ia_offset(void);
+int16_t get_ib_offset(void);
+int16_t get_ia_asc_offset(void);
+int16_t get_ib_asc_offset(void);
+
+
 #endif

@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-__IO uint16_t ADC_RegularConvertedValueTab[16];
+//__IO uint16_t ADC_RegularConvertedValueTab[16];
 
 static void cur_fbk_irq_init(void){
 
@@ -70,12 +70,12 @@ static void cur_fbk_adc_init(void){
 #else	
 	//https://blog.csdn.net/gtkknd/article/details/39292731
 	/* Set injected sequencer length */
-	ADC_InjectedSequencerLengthConfig(ADC1, 2);
+	ADC_InjectedSequencerLengthConfig(ADC1, 4);
 	/* ADC1 injected channel Configuration */ 
 	ADC_InjectedChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_1Cycles5);
 	ADC_InjectedChannelConfig(ADC1, ADC_Channel_1, 2, ADC_SampleTime_1Cycles5);
-	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_2, 1, ADC_SampleTime_1Cycles5);
-	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_3, 1, ADC_SampleTime_1Cycles5);	
+	ADC_InjectedChannelConfig(ADC1, ADC_Channel_2, 3, ADC_SampleTime_1Cycles5);
+	ADC_InjectedChannelConfig(ADC1, ADC_Channel_3, 4, ADC_SampleTime_1Cycles5);	
 	/* ADC1 injected external trigger configuration */
 	ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_T1_TRGO);
 	//ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_T1_CC4);
@@ -216,3 +216,23 @@ uint16_t get_inject_ib(void){
 }
 
 
+volatile int16_t ia_offset = 0;
+volatile int16_t ib_offset = 0;
+volatile int16_t ia_asc_offset = 0;
+volatile int16_t ib_asc_offset = 0;
+
+int16_t get_ia_offset(void){
+	return ia_offset;
+}
+
+int16_t get_ib_offset(void){
+	return ib_offset;
+}
+
+int16_t get_ia_asc_offset(void){
+	return ia_asc_offset;
+}
+
+int16_t get_ib_asc_offset(void){
+	return ib_asc_offset;
+}

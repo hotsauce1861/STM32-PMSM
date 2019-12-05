@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include "stm32f10x.h"
 #include "task_motor_control.h"
 #include "user_config.h"
 #include "gw_tasks.h"
@@ -83,15 +84,15 @@ void task_motor_control(void* args){
     }
 	//task_motor_run();
 	// 100 ms get speed
-	if(time_cnt++ > 2000){
+	if(time_cnt++ > 200){
 		time_cnt = 0;
 		enconder_get_rpm(&foc_obj.feedback.rpm);
-		foc_obj.feedback.rpm = foc_obj.feedback.rpm * 6;
+		foc_obj.feedback.rpm = foc_obj.feedback.rpm*60;
 	}
-	//task_motor_open_loop();
+	task_motor_open_loop();
 	
 	//task_motor_park_clark();
-	task_motor_speed_loop();
+	//task_motor_speed_loop();
 	//task_motor_run_idzero();
 	//task_motor_run_iqzero();
 	//task_motor_run_iqidharf();
@@ -152,7 +153,7 @@ static void task_motor_config(void){
 	foc_obj.svpwm.Tpwm = (uint16_t)get_pwm_period();
 	foc_obj.svpwm.Udc = 1;
 	//*FREQ_task*60/2060;	
-	foc_obj.rpm_speed_set = -150 * 2160 / (50 * 60);
+	foc_obj.rpm_speed_set = 120;
 	
 	foc_obj.cur_pre_set_dq.qI_Component1 = PID_FLUX_REFERENCE;
 	foc_obj.cur_pre_set_dq.qI_Component2 = PID_TORQUE_REFERENCE;
@@ -274,19 +275,25 @@ static void task_motor_speed_loop(void){
 	uint8_t sector = 0;
 	
 	Volt_Components volt_input;
-	int16_t pi_speed_out = 0;
+	int32_t pi_speed_out = 0;
 	int16_t pi_id_out, pi_iq_out;
 	int32_t id_set = 0;
 	int32_t iq_set = 0;
 	int32_t uart_data[4];	
 	pi_speed_out = PI_Controller(&foc_obj.speed_pi,foc_obj.rpm_speed_set - foc_obj.feedback.rpm);
 	//foc_obj.vol_pre_set_dq.qV_Component2 = pi_speed_out;
-	foc_obj.cur_pre_set_dq.qI_Component2 = pi_speed_out;
+	if(pi_speed_out >= INT16_MAX){
+		pi_speed_out = INT16_MAX;
+	}
+	if(pi_speed_out <= INT16_MIN){
+		pi_speed_out = INT16_MIN;
+	}
+	foc_obj.cur_pre_set_dq.qI_Component2 = (int16_t)pi_speed_out;
 	foc_get_feedback(&foc_obj.feedback);
 	
 #if 1	 	
-	uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*2);
-	uart_data[1] = (int16_t)((int32_t)foc_obj.feedback.ib*Q14/2048*165/454*2);//foc_obj.feedback.ib*10;
+	uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
+	uart_data[1] = (int16_t)((int32_t)foc_obj.feedback.ib*Q14/2048*165/454*5);//foc_obj.feedback.ib*10;
 	uart_data[2] = foc_obj.cur_park_dq.qI_Component1;
 	uart_data[3] = foc_obj.cur_park_dq.qI_Component2;//*50*60/2060;	
 	
@@ -370,7 +377,7 @@ extern void task_motor_cur_loop(Curr_Components cur_ab){
 	pi_id_out = PI_Controller(&foc_obj.cur_d_pi, id_set - foc_obj.cur_park_dq.qI_Component1);
 	pi_iq_out = PI_Controller(&foc_obj.cur_q_pi, iq_set - foc_obj.cur_park_dq.qI_Component2);
 	//pi_iq_out = 0;
-	volt_input.qV_Component1 = pi_id_out;// + foc_obj.cur_park_dq.qI_Component2 * 1000;
+	volt_input.qV_Component1 = pi_id_out;
 	volt_input.qV_Component2 = pi_iq_out;
 	foc_obj.vol_pi_out.qV_Component1 = pi_id_out;
 	foc_obj.vol_pi_out.qV_Component2 = pi_iq_out;
@@ -422,15 +429,29 @@ static void task_motor_open_loop(void){
 	#endif
 	
 	#if 1	 	
-	uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*2);
-	uart_data[1] = (int16_t)((int32_t)foc_obj.feedback.ib*Q14/2048*165/454*2);//foc_obj.feedback.ib*10;
+	/* 
+	//对比电流
+	uart_data[0] = foc_obj.feedback.ia;
+	uart_data[1] = foc_obj.feedback.ib; 
+	uart_data[2] = (foc_obj.feedback.ia_asc - 1539)*454/50;
+	uart_data[3] = (foc_obj.feedback.ib_asc - 1538)*454/50;
+	*/
+	
+	//uart_data[0] = TIM1->ARR;
+	//uart_data[1] = TIM1->CCR1; 
+	//uart_data[2] = TIM1->CCR2;
+	//uart_data[3] = TIM1->CCR3;
+	
+	
+	uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
+	uart_data[1] = (int16_t)((int32_t)foc_obj.feedback.ib*Q14/2048*165/454*5);//foc_obj.feedback.ib*10;
 	uart_data[2] = foc_obj.cur_park_dq.qI_Component1;
-	uart_data[3] = foc_obj.cur_park_dq.qI_Component2;//*50*60/2060;	
+	uart_data[3] = foc_obj.cur_park_dq.qI_Component2;
 	
 	//uart_data[0] = foc_obj.cur_pre_set_dq.qI_Component1;
 	//uart_data[1] = foc_obj.cur_park_dq.qI_Component1;
 	//uart_data[2] = foc_obj.cur_pre_set_dq.qI_Component2;
-	//uart_data[3] = foc_obj.cur_park_dq.qI_Component2;//*50*60/2060;	
+	//uart_data[3] = foc_obj.cur_park_dq.qI_Component2;//*50*60/2060;
 	#else
 	uart_data[0] = foc_obj.feedback.theta_offset;
 	uart_data[1] = foc_obj.e_theta;//foc_obj.feedback.ib*10;

@@ -183,6 +183,7 @@ void TIM1_UP_IRQHandler(void){
 }	
 */
 volatile int32_t wia = 0,wib=0,wic=0;
+volatile int16_t ia_tmp = 0, ib_tmp = 0;
 volatile int16_t hmul = 0x02, hdiv = 0x02;
 extern void task_motor_cur_loop(Curr_Components cur_ab);
 extern void task_motor_startup(Curr_Components cur_ab,uint16_t timeout);
@@ -199,7 +200,9 @@ void ADC1_2_IRQHandler(void)
 		#else
 		ADC_ITConfig(ADC1, ADC_IT_JEOC, DISABLE);
 		set_inject_ia(ADC1->JDR1); 
-		set_inject_ib(ADC1->JDR2); 
+		set_inject_ib(ADC1->JDR2);
+		foc_obj.feedback.ia_asc = ADC1->JDR3;
+		foc_obj.feedback.ib_asc = ADC1->JDR4;
 		//cur_ab.qI_Component1 = (int32_t)(ADC1->JDR1 - 2048)*Q15*38/2048;
 		//cur_ab.qI_Component2 = (int32_t)(ADC1->JDR2 - 2048)*Q15*38/2048;
 		
@@ -215,8 +218,11 @@ void ADC1_2_IRQHandler(void)
 		
 		// Uadc = Uin*4.54
 		
-		wia = (int32_t)((int32_t)(ADC1->JDR1 - foc_obj.feedback.cur_offset.qI_Component1)*Q14/2048*165/454*2);
-		wib = (int32_t)((int32_t)(ADC1->JDR2 - foc_obj.feedback.cur_offset.qI_Component2)*Q14/2048*165/454*2);
+		wia = (int32_t)((int32_t)(ADC1->JDR1 - foc_obj.feedback.cur_offset.qI_Component1)*Q14/2048*165/454*5);
+		wib = (int32_t)((int32_t)(ADC1->JDR2 - foc_obj.feedback.cur_offset.qI_Component2)*Q14/2048*165/454*5);
+		
+		ia_tmp = (int16_t)((int32_t)(ADC1->JDR1 - foc_obj.feedback.cur_offset.qI_Component1)*Q14/2048*165/454*5000/Q14);
+		ib_tmp = (int16_t)((int32_t)(ADC1->JDR2 - foc_obj.feedback.cur_offset.qI_Component2)*Q14/2048*165/454*5000/Q14);
 		
 		//wia = (int32_t)((ADC1->JDR1 - 2048)*165*5/2048)*Q15/454*hmul/hdiv; //0-1 ==> 0-2A Q15 FORMAT
 		//wib = (int32_t)((ADC1->JDR2 - 2048)*165*5/2048)*Q15/454*hmul/hdiv; //0-1 ==> 0-2A Q15 FORMAT
@@ -226,7 +232,7 @@ void ADC1_2_IRQHandler(void)
 		cur_ab.qI_Component2 = (int16_t)wia;
 		
 		if(stm_get_cur_state(&motor_state) == IDLE){
-			task_motor_startup(cur_ab,30000);
+			task_motor_startup(cur_ab,5000);
 		}else if(stm_get_cur_state(&motor_state) == RUN){
 			task_motor_cur_loop(cur_ab);
 		}

@@ -58,6 +58,10 @@ struct fdbk_mod {
 
 	int16_t ia;
 	int16_t ib;		
+	
+	int16_t ia_asc;
+	int16_t ib_asc;
+	
 	Curr_Components cur_offset;
 };
 typedef struct fdbk_mod fdbk_mod_t;

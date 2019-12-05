@@ -25,7 +25,7 @@
 	#define DEADTIME  (u16)((unsigned long long)CKTIM/2 \
           *(unsigned long long)DEADTIME_NS/1000000000uL) 
 
-#define SVPWM_USE_BDT 	0
+#define SVPWM_USE_BDT 	1
 #define USE_HARD_PWM 	1
 /**
   * @brief  Configures the different system clocks.
@@ -238,13 +238,13 @@ void pwm_init(void){
 }
 
 
-int32_t get_pwm_period(void){
-	return PWM_PERIOD;
+int32_t get_pwm_period(void){	
+	return TIM1->ARR*2; // 中央对齐模式需要乘以2
 	//return (int32_t)((SYS_FRQ / PWM_FRQ ) - 1);
 }
 
 uint16_t get_pwm_limit_period(void){
-	return (uint16_t)(PWM_PERIOD*PWM_MAX_LIMIT/100);
+	return (uint16_t)((uint32_t)TIM1->ARR*2*PWM_MAX_LIMIT/100);
 }
 
 
