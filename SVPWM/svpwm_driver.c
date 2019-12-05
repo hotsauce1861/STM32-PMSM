@@ -102,7 +102,7 @@ void pwm_tim_init(void){
 	----------------------------------------------------------------------- */
 	/* Compute the value to be set in ARR regiter to generate signal frequency at 17.57 Khz */
 	//TimerPeriod = (SystemCoreClock / 17570 ) - 1;
-	TimerPeriod = (SYS_FRQ / PWM_FRQ * 2 ) - 1;
+	TimerPeriod = (SYS_FRQ / (PWM_FRQ * 2) ) - 1;
 	/* Compute CCR1 value to generate a duty cycle at 50% for channel 1 and 1N */
 	Channel1Pulse = (uint16_t) (((uint32_t) PWM_DUTY * (TimerPeriod - 1)) / 100);
 	/* Compute CCR2 value to generate a duty cycle at 37.5%  for channel 2 and 2N */

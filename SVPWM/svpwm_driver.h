@@ -4,7 +4,7 @@
 
 #define PWM_DUTY		50L		// 0--100
 #define PWM_MAX_LIMIT	98L		
-#define PWM_FRQ 		20000L
+#define PWM_FRQ 		10000L
 #define SYS_FRQ			72000000L
 
 void pwm_init(void);
