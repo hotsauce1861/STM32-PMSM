@@ -83,16 +83,17 @@ void task_motor_control(void* args){
                pev->name, pev->id,(uint8_t*)msg.pstr);
     }
 	//task_motor_run();
-	// 100 ms get speed
-	if(time_cnt++ > 200){
-		time_cnt = 0;
-		enconder_get_rpm(&foc_obj.feedback.rpm);
-		foc_obj.feedback.rpm = foc_obj.feedback.rpm*60;
-	}
-	task_motor_open_loop();
+	// 1000 ms get speed
+	//if(time_cnt++ >= 0){
+	//	time_cnt = 0;		
+		//enconder_get_rpm(&foc_obj.feedback.rpm);
+		//foc_obj.feedback.rpm = enconder_calc_rot_speed()*2*314/100;
+		foc_obj.feedback.rpm = enconder_get_ave_speed();
+	//}
 	
+	//task_motor_open_loop();	
 	//task_motor_park_clark();
-	//task_motor_speed_loop();
+	task_motor_speed_loop();
 	//task_motor_run_idzero();
 	//task_motor_run_iqzero();
 	//task_motor_run_iqidharf();
@@ -119,7 +120,7 @@ static void task_motor_config(void){
 	*/
 #if USE_PID
 	PID_HandleInit(&foc_obj.speed_pi);
-	foc_obj.speed_pi.hKpGain = 220;
+	foc_obj.speed_pi.hKpGain = 120;
 	foc_obj.speed_pi.hKiGain = 15;
 	foc_obj.speed_pi.hKdGain = 0;	
 	foc_obj.speed_pi.hLowerOutputLimit = -32768;
@@ -158,26 +159,8 @@ static void task_motor_config(void){
 	foc_obj.cur_pre_set_dq.qI_Component1 = PID_FLUX_REFERENCE;
 	foc_obj.cur_pre_set_dq.qI_Component2 = PID_TORQUE_REFERENCE;
 	
-	//foc_obj.vol_pre_set_dq.qV_Component1 = 0;
-	//foc_obj.vol_pre_set_dq.qV_Component2 = 25000;// 负数正转(顺时针)  正数反转(逆时针)
-	//foc_obj.pre_set_vol_dq.qV_Component1 = PI_Controller(&foc_obj.speed_pi,foc_obj.rpm_speed_set - 0);
-
-	//encoder_set_to_zero_position(); 
 	foc_obj.feedback.sector = get_pos_rotor_2();
-	//foc_motor_start2(&foc_obj, 5000, gw_hal_delay); 
-	//foc_start_up(&foc_obj, 5000, gw_hal_delay); 
-	//foc_start_up_02(&foc_obj, 500, gw_hal_delay); 
-	//foc_obj.feedback.sector = get_pos_rotor_2();
-	//encoder_set_to_zero_position();
-	//task_motor_run_idzero();
-	//encoder_clear_timercounter();
-	//task_motor_run_iqzero();
-	//tmp_cnt = encoder_get_timecounter_cnt();
-	//task_motor_run_iqidharf();
-	//task_motor_run_iq2id1();
-	//task_motor_run_iq1id2();
-	//foc_obj.feedback.sector = get_pos_rotor_2();
-	//foc_obj.feedback.sector = get_pos_rotor();
+	
 }
 /**
  * @brief test for motor park and clark 
@@ -292,10 +275,16 @@ static void task_motor_speed_loop(void){
 	foc_get_feedback(&foc_obj.feedback);
 	
 #if 1	 	
+	
 	uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
-	uart_data[1] = (int16_t)((int32_t)foc_obj.feedback.ib*Q14/2048*165/454*5);//foc_obj.feedback.ib*10;
-	uart_data[2] = foc_obj.cur_park_dq.qI_Component1;
-	uart_data[3] = foc_obj.cur_park_dq.qI_Component2;//*50*60/2060;	
+	uart_data[1] = foc_obj.cur_park_dq.qI_Component2;
+	uart_data[2] = foc_obj.feedback.rpm * 100;
+	uart_data[3] = foc_obj.rpm_speed_set * 100;	
+	
+	//uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
+	//uart_data[1] = (int16_t)((int32_t)foc_obj.feedback.ib*Q14/2048*165/454*5);//foc_obj.feedback.ib*10;
+	//uart_data[2] = foc_obj.cur_park_dq.qI_Component1;
+	//uart_data[3] = foc_obj.cur_park_dq.qI_Component2;//*50*60/2060;	
 	
 	//uart_data[0] = foc_obj.cur_pre_set_dq.qI_Component1;
 	//uart_data[1] = foc_obj.cur_park_dq.qI_Component1;
@@ -442,7 +431,8 @@ static void task_motor_open_loop(void){
 	//uart_data[2] = TIM1->CCR2;
 	//uart_data[3] = TIM1->CCR3;
 	
-	
+	//wia = (int32_t)((int32_t)(ADC1->JDR1 - foc_obj.feedback.cur_offset.qI_Component1)*Q14/2048*165/454*5);
+	//wib = (int32_t)((int32_t)(ADC1->JDR2 - foc_obj.feedback.cur_offset.qI_Component2)*Q14/2048*165/454*5);
 	uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
 	uart_data[1] = (int16_t)((int32_t)foc_obj.feedback.ib*Q14/2048*165/454*5);//foc_obj.feedback.ib*10;
 	uart_data[2] = foc_obj.cur_park_dq.qI_Component1;

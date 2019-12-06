@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "encoder.h"
 #include "stm32f10x.h"
 #include "stm32f10x_gpio.h"
@@ -312,26 +313,170 @@ int16_t encoder_get_timecounter_cnt(void){
   * @retval None
   */
 #if 1
-volatile uint16_t rpm = 0;
 
-void enconder_get_rpm(uint16_t * const pdata){
-	*pdata = rpm;
-	rpm = 0;
+volatile uint16_t overflow_times = 0;
+#define ENCODER_TIMER TIM3
+
+static volatile u16 hEncoder_Timer_Overflow; 
+int16_t previous_angle = 0;
+signed long long temp_spd;
+int32_t wdelta_angle;
+int16_t enconder_calc_rot_speed(void){
+	
+	static uint8_t bIs_First_Measurement = 1;
+	
+
+	uint16_t hEnc_Timer_Overflow_sample_one, hEnc_Timer_Overflow_sample_two;
+	uint16_t hCurrent_angle_sample_one, hCurrent_angle_sample_two;	
+	
+	int16_t haux;
+	if (!bIs_First_Measurement)
+	{
+		// 1st reading of overflow counter    
+		hEnc_Timer_Overflow_sample_one = hEncoder_Timer_Overflow; 
+		// 1st reading of encoder timer counter
+		hCurrent_angle_sample_one = ENCODER_TIMER->CNT;
+		// 2nd reading of overflow counter
+		hEnc_Timer_Overflow_sample_two = hEncoder_Timer_Overflow;  
+		// 2nd reading of encoder timer counter
+		hCurrent_angle_sample_two = ENCODER_TIMER->CNT;      
+
+		// Reset hEncoder_Timer_Overflow and read the counter value for the next
+		// measurement
+		hEncoder_Timer_Overflow = 0;
+		haux = ENCODER_TIMER->CNT;   
+
+		if (hEncoder_Timer_Overflow != 0) 
+		{
+			haux = ENCODER_TIMER->CNT; 
+			hEncoder_Timer_Overflow = 0;            
+		}
+
+		if (hEnc_Timer_Overflow_sample_one != hEnc_Timer_Overflow_sample_two)
+		{ 	
+			//Compare sample 1 & 2 and check if an overflow has been generated right 
+			//after the reading of encoder timer. If yes, copy sample 2 result in 
+			//sample 1 for next process 
+			hCurrent_angle_sample_one = hCurrent_angle_sample_two;
+			hEnc_Timer_Overflow_sample_one = hEnc_Timer_Overflow_sample_two;
+		}
+
+		if ( (ENCODER_TIMER->CR1 & TIM_CounterMode_Down) == TIM_CounterMode_Down)  
+		{
+			// encoder timer down-counting
+			wdelta_angle = (s32)(hCurrent_angle_sample_one - previous_angle - 
+			(hEnc_Timer_Overflow_sample_one) * ENCODER_ONE_CIRCLE_CNT);
+		}else  {
+			//encoder timer up-counting
+			wdelta_angle = (s32)(hCurrent_angle_sample_one - previous_angle + 
+			(hEnc_Timer_Overflow_sample_one) * ENCODER_ONE_CIRCLE_CNT);
+		}
+
+		// speed computation as delta angle * 1/(speed sempling time)
+		temp_spd = (signed long long)(wdelta_angle * SPEED_SAMPLING_FREQ);                                                                
+		temp_spd *= 10;  // 0.1 Hz resolution
+		temp_spd /= ENCODER_ONE_CIRCLE_CNT;
+
+	} //is first measurement, discard it
+	else
+	{
+		bIs_First_Measurement = 0;
+		temp_spd = 0;
+		hEncoder_Timer_Overflow = 0;
+		haux = ENCODER_TIMER->CNT;       
+		// Check if hEncoder_Timer_Overflow is still zero. In case an overflow IT 
+		// occured it resets overflow counter and wPWM_Counter_Angular_Velocity
+		if (hEncoder_Timer_Overflow != 0) 
+		{
+			haux = ENCODER_TIMER->CNT; 
+			hEncoder_Timer_Overflow = 0;            
+		}
+	}
+
+	previous_angle = haux;  
+ 
+	return (int16_t)temp_spd;
+}
+
+#define SPEED_BUFFER_SIZE 7
+static int16_t hSpeed_Buffer[SPEED_BUFFER_SIZE];
+int16_t encoder_calc_ave(int16_t *pdata, uint8_t len);
+
+int16_t enconder_get_ave_speed(void){
+	static uint8_t index = 0;
+	int32_t wtemp_spd = 0;
+	uint16_t abs_spd = 0;  
+	wtemp_spd = enconder_calc_rot_speed();
+	abs_spd = (wtemp_spd > 0?wtemp_spd:-wtemp_spd);
+	/**
+		TODO 
+	//	限幅处理
+	*/
+	hSpeed_Buffer[index++%SPEED_BUFFER_SIZE] = (int16_t)wtemp_spd;
+	
+	return encoder_calc_ave(hSpeed_Buffer,SPEED_BUFFER_SIZE);
+	
+}
+
+int16_t encoder_calc_ave(int16_t *pdata, uint8_t len){
+
+	int32_t wsum = 0;
+	int16_t temp = 0;
+	int i=0,j=0;
+	temp = pdata[i];
+	if(len < 2){
+		return 0;
+	}
+	for( ; i<len; i++){
+				
+		for( j = i+1; j<len; j++){
+			if(pdata[i] > pdata[j]){
+				temp = pdata[j];
+				pdata[j] = pdata[i];
+				pdata[i] = temp;
+			}
+		}
+	}
+	
+	for(i=1; i<len-1; i++){
+		wsum+= pdata[i];
+	}
+	
+	return (int16_t)(wsum/(len-2));
+}
+
+void enconder_get_pulse_cnt(int16_t *pdata){
+	int32_t cnt = 0;
+	if(overflow_times > 0){
+		cnt = overflow_times*ENCODER_ONE_CIRCLE_CNT + TIM3->CNT;
+	}else{
+		cnt = overflow_times*ENCODER_ONE_CIRCLE_CNT - TIM3->CNT;
+	}	
+	if(cnt >= INT16_MAX){
+		*pdata = INT16_MAX;
+	}else{
+		*pdata = cnt;
+	}
+	if(cnt <= INT16_MIN){
+		*pdata = INT16_MIN;
+	}else{
+		*pdata = cnt;
+	}
+	overflow_times = 0;
+}
+
+void enconder_get_rpm(int16_t *pdata){
+	
 }
 void TIM3_IRQHandler(void)
 { 
 	uint16_t flag = 0x0001 << 4;
 	if(TIM3->SR&(TIM_FLAG_Update)){		
-		//down mode
-		if((TIM3->CR1 & flag) == flag){
-			N--;
+		
+		if(overflow_times >= UINT16_MAX){
+			overflow_times = UINT16_MAX;
 		}else{
-			//up mode
-			N++;
-		}
-		rpm++;
-		if(rpm >= UINT16_MAX){
-			rpm = UINT16_MAX;
+			overflow_times++;
 		}
 	}
 	TIM3->SR&=~(TIM_FLAG_Update);		

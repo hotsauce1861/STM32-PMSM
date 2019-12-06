@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #define ALIGNMENT_ANGLE       	(uint16_t) 0 //Degrees [0..359] 
+#define SPEED_SAMPLING_FREQ		200
 #define ENCODER_ONE_CIRCLE_CNT	2160L
 #define ENCODER_ZERO_CIRCLE_CNT	1580L
 #define SAMPLE_FRQ 				10000L
@@ -74,6 +75,10 @@ void encoder_reset_aligment(void);
 
 void encoder_reset_zero(void);
 	
-void enconder_get_rpm(uint16_t * const pdata);
-	
+void enconder_get_rpm(int16_t *pdata);
+
+int16_t enconder_calc_rot_speed(void);
+
+int16_t enconder_get_ave_speed(void);
+
 #endif
