@@ -121,10 +121,16 @@ static void task_motor_config(void){
 #if USE_PID
 	PID_HandleInit(&foc_obj.speed_pi);
 	foc_obj.speed_pi.hKpGain = 120;
-	foc_obj.speed_pi.hKiGain = 15;
+	foc_obj.speed_pi.hKiGain = 40;
 	foc_obj.speed_pi.hKdGain = 0;	
+	foc_obj.speed_pi.wLowerIntegralLimit = -32768*10;
+	foc_obj.speed_pi.wUpperIntegralLimit = 32767*10;
 	foc_obj.speed_pi.hLowerOutputLimit = -32768;
-	foc_obj.speed_pi.hUpperOutputLimit = 32767;
+	foc_obj.speed_pi.hUpperOutputLimit = 32767;	
+	foc_obj.speed_pi.hKpDivisor = 1;
+	foc_obj.speed_pi.hKiDivisor = 1;
+	foc_obj.speed_pi.hKdDivisor = 1;
+	
 	
 	PID_HandleInit(&foc_obj.cur_d_pi);
 	foc_obj.cur_d_pi.hKpGain = PID_FLUX_KP_DEFAULT;
@@ -133,6 +139,9 @@ static void task_motor_config(void){
 //	foc_obj.cur_d_pi.hKiGain = Ki;
 	foc_obj.cur_d_pi.hKpDivisor = TF_KPDIV;
 	foc_obj.cur_d_pi.hKiDivisor = TF_KIDIV;
+	//foc_obj.cur_d_pi.wLowerIntegralLimit = -32768*10;
+	//foc_obj.cur_d_pi.wUpperIntegralLimit = 32767*10;
+	
 	foc_obj.cur_d_pi.hKdGain = 0;	
 	foc_obj.cur_d_pi.hLowerOutputLimit = -32768;
 	foc_obj.cur_d_pi.hUpperOutputLimit = 32767; 
@@ -149,6 +158,9 @@ static void task_motor_config(void){
 	foc_obj.cur_q_pi.hKdGain = 0;	
 	foc_obj.cur_q_pi.hLowerOutputLimit = -32768;
 	foc_obj.cur_q_pi.hUpperOutputLimit = 32767; 
+	//foc_obj.cur_q_pi.wLowerIntegralLimit = -32768*10;
+	//foc_obj.cur_q_pi.wUpperIntegralLimit = 32767*10;
+	
 #endif	
 
 	foc_obj.svpwm.Tpwm = (uint16_t)get_pwm_period();
@@ -263,7 +275,7 @@ static void task_motor_speed_loop(void){
 	int32_t id_set = 0;
 	int32_t iq_set = 0;
 	int32_t uart_data[4];	
-	pi_speed_out = PI_Controller(&foc_obj.speed_pi,foc_obj.rpm_speed_set - foc_obj.feedback.rpm);
+	pi_speed_out = PI_Controller(&foc_obj.speed_pi, foc_obj.rpm_speed_set - foc_obj.feedback.rpm);
 	//foc_obj.vol_pre_set_dq.qV_Component2 = pi_speed_out;
 	if(pi_speed_out >= INT16_MAX){
 		pi_speed_out = INT16_MAX;
@@ -276,10 +288,10 @@ static void task_motor_speed_loop(void){
 	
 #if 1	 	
 	
-	uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
-	uart_data[1] = foc_obj.cur_park_dq.qI_Component2;
-	uart_data[2] = foc_obj.feedback.rpm * 100;
-	uart_data[3] = foc_obj.rpm_speed_set * 100;	
+	uart_data[0] = 0;//(int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
+	uart_data[1] = 0;//foc_obj.cur_park_dq.qI_Component2;
+	uart_data[2] = foc_obj.feedback.rpm;
+	uart_data[3] = foc_obj.rpm_speed_set;	
 	
 	//uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
 	//uart_data[1] = (int16_t)((int32_t)foc_obj.feedback.ib*Q14/2048*165/454*5);//foc_obj.feedback.ib*10;
