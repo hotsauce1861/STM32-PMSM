@@ -26,9 +26,9 @@
 
 foc_mod_t foc_obj;
 
-static void task_motor_run(void);
 static void task_motor_open_loop(void);
 static void task_motor_speed_loop(void);
+static void task_motor_position_loop(void);
 static void task_motor_run_idzero(void);
 static void task_motor_run_iqzero(void);
 static void task_motor_run_iqidharf(void);
@@ -62,6 +62,8 @@ void task_motor_control_init(void){
 	task_motor_config();
 	foc_obj.feedback.cur_offset.qI_Component1 = 2020;
 	foc_obj.feedback.cur_offset.qI_Component2 = 2048;
+	foc_obj.position_set = 10;
+	
 	encoder_init();
 	encoder_reset_zero();
 	cur_fbk_init();
@@ -79,17 +81,14 @@ void task_motor_control(void* args){
         printf("%016d: name:[%s] id:[%d] msg:[%s]\n", pev->g_timer->timestamp,
                pev->name, pev->id,(uint8_t*)msg.pstr);
     }
-	//task_motor_run();
-	// 1000 ms get speed
-	//if(time_cnt++ >= 0){
-	//	time_cnt = 0;		
-		//enconder_get_rpm(&foc_obj.feedback.rpm);
-		//foc_obj.feedback.rpm = enconder_calc_rot_speed()*2*314/100;
-		foc_obj.feedback.rpm = enconder_get_ave_speed();
-	//}
+	
+	foc_obj.feedback.rpm = enconder_get_ave_speed();
+	
+	
 	
 	//task_motor_open_loop();	
 	//task_motor_park_clark();
+	task_motor_position_loop();	
 	task_motor_speed_loop();
 	//task_motor_run_idzero();
 	//task_motor_run_iqzero();
@@ -216,6 +215,14 @@ static void task_motor_run_iqzero(void){
 	foc_obj.svpwm.UBeta = foc_obj.vol_ab.qV_Component2;		
 	svpwm_main_run2(&foc_obj.svpwm);
 	svpwm_reset_pwm_duty(&foc_obj.svpwm);
+}
+
+static void task_motor_position_loop(void){
+
+#if USE_POSITION_PID	
+	foc_obj.rpm_speed_set = PI_Controller(&foc_obj.position_pi, 
+											foc_obj.position_set - TIM3->CNT);//foc_obj.feedback.theta);	
+#endif
 }
 
 static void task_motor_speed_loop(void){

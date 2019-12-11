@@ -71,6 +71,7 @@ struct foc_mod {
 	PID_Handle_t speed_pi;
 	PID_Handle_t cur_d_pi;
 	PID_Handle_t cur_q_pi;
+	PID_Handle_t position_pi;
 
 	Curr_Components cur_pre_set_dq;
 	Curr_Components cur_park_dq;
@@ -87,6 +88,7 @@ struct foc_mod {
 	int16_t angle_cnt;
 	int16_t angle_cnt_detal;	
 	int16_t rpm_speed_set;
+	int16_t position_set;
 	int16_t e_theta;
 	
 	volatile int16_t flux_ref;		//d volt

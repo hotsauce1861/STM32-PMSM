@@ -52,7 +52,17 @@ void pid_config(int8_t index){
 			foc_obj.cur_q_pi.hUpperOutputLimit = 32767; 
 			foc_obj.cur_q_pi.wLowerIntegralLimit = -32768*100;
 			foc_obj.cur_q_pi.wUpperIntegralLimit = 32767*100;	
-		
+			
+			PID_HandleInit(&foc_obj.position_pi);			
+			foc_obj.position_pi.hKpGain = 0;
+			foc_obj.position_pi.hKiGain = 0;
+			foc_obj.position_pi.hKpDivisor = 0;
+			foc_obj.position_pi.hKiDivisor = 0;	
+			foc_obj.position_pi.hKpDivisorPOW2 = 0;
+			foc_obj.position_pi.hKiDivisorPOW2 = 7;
+			foc_obj.position_pi.hKdGain = 0;	
+			foc_obj.position_pi.hLowerOutputLimit = -32768;
+			foc_obj.position_pi.hUpperOutputLimit = 32767; 				
 			break;
 		case 2:
 			PID_HandleInit(&foc_obj.speed_pi);
@@ -88,7 +98,19 @@ void pid_config(int8_t index){
 			foc_obj.cur_q_pi.hKiDivisorPOW2 = 7;
 			foc_obj.cur_q_pi.hKdGain = 0;	
 			foc_obj.cur_q_pi.hLowerOutputLimit = -32768;
-			foc_obj.cur_q_pi.hUpperOutputLimit = 32767; 					
+			foc_obj.cur_q_pi.hUpperOutputLimit = 32767; 		
+
+			PID_HandleInit(&foc_obj.position_pi);			
+			foc_obj.position_pi.hKpGain = 0;
+			foc_obj.position_pi.hKiGain = 0;
+			foc_obj.position_pi.hKpDivisor = 0;
+			foc_obj.position_pi.hKiDivisor = 0;	
+			foc_obj.position_pi.hKpDivisorPOW2 = 0;
+			foc_obj.position_pi.hKiDivisorPOW2 = 7;
+			foc_obj.position_pi.hKdGain = 0;	
+			foc_obj.position_pi.hLowerOutputLimit = -32768;
+			foc_obj.position_pi.hUpperOutputLimit = 32767; 		
+
 			break;
 	}
 #endif	

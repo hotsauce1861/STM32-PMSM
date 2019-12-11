@@ -21,6 +21,8 @@
 #define USE_PID 				1
 #define USE_CUR_PID				1
 #define USE_SPEED_PID			0
+#define USE_POSITION_PID		1
+
 #define PN						2
 
 
