@@ -18,6 +18,12 @@
 #define TASK_ID_KEY				2
 #define TASK_ID_DISPLAY			3
 
+#define USE_PID 				1
+#define USE_CUR_PID				1
+#define USE_SPEED_PID			0
+#define PN						2
 
+
+void pid_config(int8_t index);
 
 #endif

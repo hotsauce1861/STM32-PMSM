@@ -497,6 +497,11 @@
               <FileType>5</FileType>
               <FilePath>.\User\user_config.h</FilePath>
             </File>
+            <File>
+              <FileName>user_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\user_config.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

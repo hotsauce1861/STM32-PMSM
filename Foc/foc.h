@@ -37,8 +37,8 @@ int16_t set_up_current(int16_t c);
 #define PID_FLUX_KD_DEFAULT  (int16_t)10
 
 // Toruqe/Flux PID  parameter dividers
-#define TF_KPDIV ((uint16_t)(2))
-#define TF_KIDIV ((uint16_t)(128))
+#define TF_KPDIV ((uint16_t)(0))
+#define TF_KIDIV ((uint16_t)(0))
 #define TF_KDDIV ((uint16_t)(8192))
 
 struct motor_param {
