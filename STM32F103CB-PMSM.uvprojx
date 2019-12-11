@@ -740,6 +740,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Control</GroupName>
+          <Files>
+            <File>
+              <FileName>velocity_curve.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Control\velocity_curve.c</FilePath>
+            </File>
+            <File>
+              <FileName>velocity_curve.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Control\velocity_curve.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>

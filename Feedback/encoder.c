@@ -166,56 +166,6 @@ MOTO_DIR encoder_get_motor_dir(void)
 	}
 }
 
-/**
- * @brief 	获取正交编码计数值 N=4*编码器线数
- * @retval	数据格式 Q1
- */
-int32_t encoder_get_signal_cnt(void){
-	int32_t cnt = 0;
-	cnt = TIM3->CNT - ENCODER_ZERO_VAL;
-	return cnt;
-}
-
-static void encoder_set_angular_pos_cnt(uint16_t val){
-	angle_cnt = val;
-}
-
-
-int16_t encoder__get_angular_pos_in_sector(void){
-	return 0;
-}
-
-
-/**
- * @brief 获取转子相对于编码器零点信号的角度
- * @retval 角度格式 Q15
- */
-int16_t encoder_get_angular_pos(void){
-
-	/**
-	| hAngle 			| angle 	| std 		|
-	| (0,16384] 		| U0_90 	| (0,0.5]	|
-	| (16384,32767]		| U90_180 	| (0.5,0.99]|
-	| (-16384,-1] 		| U270_360 	| (0,-0.5] 	|
-	| (-16384,-32768]	| U180_270 	| (-0.5,-1)	|
-	*/
-	int16_t zero_val = 0;
-	int16_t cnt;
-	
-	zero_val = ENCODER_ONE_CIRCLE_CNT/2;	
-
-	angle_cnt += (TIM3->CNT - ENCODER_ZERO_VAL);
-	if(angle_cnt > INT16_MAX){
-		angle_cnt = INT16_MAX; 
-	}
-	if(angle_cnt < INT16_MIN){
-		angle_cnt = INT16_MIN;
-	}
-	return (int16_t)(angle_cnt*Q15/zero_val);
-
-}
-
-
 int16_t encoder_get_e_theta(void){
   int32_t temp;  
   temp = -(int32_t)(TIM_GetCounter(TIM3)) * (int32_t)(UINT32_MAX / ENCODER_ONE_CIRCLE_CNT);         
@@ -251,7 +201,6 @@ int16_t encoder_conv_angular_pos(int16_t enc_cnt){
 
 void encoder_set_to_zero_position(void){
 	TIM_SetCounter(TIM3, ENCODER_ZERO_VAL);	
-	encoder_set_angular_pos_cnt(0);	
 }
 
 /**
@@ -489,7 +438,6 @@ void TIM3_IRQHandler(void)
 void EXTI9_5_IRQHandler(void){
 
 	if(EXTI_GetITStatus(EXTI_Line5) == SET){ 
-		//encoder_set_angular_pos_cnt(0);	
 		zero_pos_flag = 1;
 		//first_zero_cnt = angle_cnt;
 	}
