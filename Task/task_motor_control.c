@@ -57,12 +57,17 @@ void task_motor_control_init(void){
 	
 	svpwm_init();
 	
-	pid_config(2);
+	//pid_config(2);
+	pid_config(1);
 	//sofeware init
 	task_motor_config();
 	foc_obj.feedback.cur_offset.qI_Component1 = 2020;
 	foc_obj.feedback.cur_offset.qI_Component2 = 2048;
-	foc_obj.position_set = 10;
+	foc_obj.position_set = 1500;
+	foc_obj.rpm_speed_set = 50;
+	
+	foc_obj.ffc.a_factor = 40;
+	foc_obj.ffc.b_factor = 80;
 	
 	encoder_init();
 	encoder_reset_zero();
@@ -83,13 +88,22 @@ void task_motor_control(void* args){
     }
 	
 	foc_obj.feedback.rpm = enconder_get_ave_speed();
-	
-	
-	
+	#if USE_POSITION_PID
 	//task_motor_open_loop();	
 	//task_motor_park_clark();
-	task_motor_position_loop();	
+	//if(time_cnt++ % 2 == 0){
+		task_motor_position_loop();	
+	//}		
+	#endif
+		
 	task_motor_speed_loop();
+	
+	#if USE_FEED_FORWARD
+	foc_obj.ffc.ein = foc_obj.position_set - TIM3->CNT;
+	foc_obj.ffc.result = ff_calc_result(&foc_obj.ffc);
+	foc_obj.rpm_speed_set+= foc_obj.ffc.result;
+	#endif
+	
 	//task_motor_run_idzero();
 	//task_motor_run_iqzero();
 	//task_motor_run_iqidharf();
@@ -105,10 +119,7 @@ void task_motor_control(void* args){
         */
     }
 }
-int16_t Kp = 10;
-int16_t Kp_div = 1;
-int16_t Ki = 1;
-int16_t Ki_div = 1;
+
 static void task_motor_config(void){
 	int16_t	tmp_cnt = 0;
 	/*
@@ -219,9 +230,29 @@ static void task_motor_run_iqzero(void){
 
 static void task_motor_position_loop(void){
 
-#if USE_POSITION_PID	
+#if USE_POSITION_PID
+	static int16_t pre_spd = 0;
+	
+	int16_t detal_spd = foc_obj.feedback.rpm - pre_spd;
+	
+	
 	foc_obj.rpm_speed_set = PI_Controller(&foc_obj.position_pi, 
 											foc_obj.position_set - TIM3->CNT);//foc_obj.feedback.theta);	
+
+	//foc_obj.rpm_speed_set -= detal_spd/2;
+	//if(foc_obj.rpm_speed_set < MIN_RPM || foc_obj.rpm_speed_set > MIN_RPM){
+	//	foc_obj.rpm_speed_set = 0;
+	//}
+	/*
+	if(foc_obj.rpm_speed_set > MAX_RPM){
+		foc_obj.rpm_speed_set = MAX_RPM;
+	}
+	if(foc_obj.rpm_speed_set < -MAX_RPM){
+		foc_obj.rpm_speed_set = -MAX_RPM;
+	}
+	*/
+	
+	pre_spd = foc_obj.feedback.rpm;
 #endif
 }
 
@@ -248,10 +279,10 @@ static void task_motor_speed_loop(void){
 	
 #if 1	 	
 	
-	uart_data[0] = 0;//(int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
-	uart_data[1] = 0;//foc_obj.cur_park_dq.qI_Component2;
-	uart_data[2] = foc_obj.feedback.rpm;
-	uart_data[3] = foc_obj.rpm_speed_set;	
+	uart_data[0] = foc_obj.position_set*10;//(int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
+	uart_data[1] = TIM3->CNT*10;//foc_obj.cur_park_dq.qI_Component2;
+	uart_data[2] = foc_obj.feedback.rpm*100;
+	uart_data[3] = foc_obj.rpm_speed_set*100;	
 	
 	//uart_data[0] = (int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
 	//uart_data[1] = (int16_t)((int32_t)foc_obj.feedback.ib*Q14/2048*165/454*5);//foc_obj.feedback.ib*10;

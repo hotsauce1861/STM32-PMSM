@@ -4,7 +4,7 @@
 #include "pid_regulator.h"
 #include "svpwm_module.h"
 #include "svpwm_math.h"
-
+#include "feed_forward.h"
 
 #define SPEED_CONTROL           (uint32_t)0x0001
 #define FIRST_START             (uint32_t)0x0002
@@ -73,6 +73,8 @@ struct foc_mod {
 	PID_Handle_t cur_q_pi;
 	PID_Handle_t position_pi;
 
+	ff_mod_t	 ffc;
+	
 	Curr_Components cur_pre_set_dq;
 	Curr_Components cur_park_dq;
 	Curr_Components cur_clark_ab;

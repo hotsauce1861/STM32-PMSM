@@ -22,6 +22,10 @@
 #define USE_CUR_PID				1
 #define USE_SPEED_PID			0
 #define USE_POSITION_PID		1
+#define	USE_FEED_FORWARD		1
+
+#define MAX_RPM 				65
+#define MIN_RPM	 				5
 
 #define PN						2
 
