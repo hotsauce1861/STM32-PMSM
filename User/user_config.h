@@ -22,13 +22,29 @@
 #define USE_CUR_PID				1
 #define USE_SPEED_PID			0
 #define USE_POSITION_PID		1
-#define	USE_FEED_FORWARD		1
+#define	USE_FEED_FORWARD		0
 
-#define MAX_RPM 				65
+#define MAX_RPM 				75
 #define MIN_RPM	 				5
 
 #define PN						2
 
+#define SPEED_PID_2MS			2
+#define SPEED_PID_5MS			5
+#define SPEED_PID_10MS			10
+
+#define SPEED_PID_SAMPLE		SPEED_PID_2MS
+/*
+#if (SPEED_PID_SAMPLE == SPEED_PID_2MS)
+#define ENCODER_SPEED_FACTOR	500
+#elif (SPEED_PID_SAMPLE == SPEED_PID_5MS)
+#define ENCODER_SPEED_FACTOR	200
+#elif (SPEED_PID_SAMPLE == SPEED_PID_10MS)
+#define ENCODER_SPEED_FACTOR	100
+#else
+#endif
+*/
+#define __maybe_unused __attribute__((unused)) 
 
 void pid_config(int8_t index);
 

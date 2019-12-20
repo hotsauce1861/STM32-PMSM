@@ -7,8 +7,6 @@
 
 #include <stdint.h>
 
-//__IO uint16_t ADC_RegularConvertedValueTab[16];
-
 static void cur_fbk_irq_init(void){
 
 	NVIC_InitTypeDef NVIC_InitStructure;
@@ -27,7 +25,7 @@ static void cur_fbk_adc_init(void){
 	
 	ADC_DeInit(ADC1);
 	ADC_InitTypeDef ADC_InitStructure;
-	DMA_InitTypeDef   DMA_InitStructure;
+	//DMA_InitTypeDef   DMA_InitStructure;
 	/* ADC1 configuration ------------------------------------------------------*/
 	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
 	ADC_InitStructure.ADC_ScanConvMode = ENABLE;
@@ -68,14 +66,14 @@ static void cur_fbk_adc_init(void){
 	DMA_Cmd(DMA1_Channel1, ENABLE);
 	
 #else	
-	//https://blog.csdn.net/gtkknd/article/details/39292731
+	
 	/* Set injected sequencer length */
-	ADC_InjectedSequencerLengthConfig(ADC1, 4);
+	ADC_InjectedSequencerLengthConfig(ADC1, 2);
 	/* ADC1 injected channel Configuration */ 
 	ADC_InjectedChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_1Cycles5);
 	ADC_InjectedChannelConfig(ADC1, ADC_Channel_1, 2, ADC_SampleTime_1Cycles5);
-	ADC_InjectedChannelConfig(ADC1, ADC_Channel_2, 3, ADC_SampleTime_1Cycles5);
-	ADC_InjectedChannelConfig(ADC1, ADC_Channel_3, 4, ADC_SampleTime_1Cycles5);	
+	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_2, 3, ADC_SampleTime_1Cycles5);
+	//ADC_InjectedChannelConfig(ADC1, ADC_Channel_3, 4, ADC_SampleTime_1Cycles5);	
 	/* ADC1 injected external trigger configuration */
 	ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_T1_TRGO);
 	//ADC_ExternalTrigInjectedConvConfig(ADC1, ADC_ExternalTrigInjecConv_T1_CC4);

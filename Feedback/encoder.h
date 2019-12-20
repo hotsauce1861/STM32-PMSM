@@ -3,7 +3,9 @@
 #include <stdint.h>
 
 #define ALIGNMENT_ANGLE       	(uint16_t) 0 //Degrees [0..359] 
-#define SPEED_SAMPLING_FREQ		200
+
+#define SPEED_SAMPLING_FREQ		500
+
 #define ENCODER_ONE_CIRCLE_CNT	2160L
 #define ENCODER_ZERO_CIRCLE_CNT	1580L
 #define SAMPLE_FRQ 				10000L

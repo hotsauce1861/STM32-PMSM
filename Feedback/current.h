@@ -14,8 +14,13 @@
 #define IB_CHANNEL_DRI ADC_Channel_2
 #endif
 
+#define IA_VALUE_REG		ADC1->JDR1
+#define IB_VALUE_REG		ADC1->JDR2
+
 #define RES_IA	1024	//采样电阻A
 #define RES_IB	1024	//采样电阻B
+
+#define USE_POLL_MECH		1
 
 /**
  *			OC1 ---> Ic	

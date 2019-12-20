@@ -34,8 +34,8 @@
 
 #include "gw_hal.h"
 
-#define DISABLE         0
-#define ENABLE          1
+#define GW_DISABLE       0
+#define GW_ENABLE        1
 
 #define GW_RESULT		int8_t
 

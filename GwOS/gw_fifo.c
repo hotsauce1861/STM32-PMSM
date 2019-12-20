@@ -90,7 +90,7 @@ void gw_event_fifo_init(void){
     struct gw_event *p_event;
     for(; i<size; i++){
         p_event = &event_table[i%size];
-        p_event->status = DISABLE;
+        p_event->status = GW_DISABLE;
         p_event->timestamp = 0;
     }
     global_timer.timestamp = 0;
@@ -100,8 +100,8 @@ void gw_reset_event_status(void){
     uint8_t i = 0;
     uint8_t size = EVENT_SIZE;
     for(; i<size; i++){
-        if(event_table[i%size].status == ENABLE){
-            event_table[i%size].status = DISABLE;
+        if(event_table[i%size].status == GW_ENABLE){
+            event_table[i%size].status = GW_DISABLE;
         }
     }
 }
@@ -116,7 +116,7 @@ void gw_poll_event_task(void){
         p_event = &event_table[i%size];
         if( p_event->poll_time + p_event->timestamp < p_event->g_timer->timestamp){
             p_event->timestamp = p_event->g_timer->timestamp;
-            p_event->status = ENABLE;
+            p_event->status = GW_ENABLE;
         }
     }
     //GW_EXIT_CRITICAL_AREA;
@@ -129,9 +129,9 @@ void gw_execute_event_task(void){
     //GW_ENTER_CRITICAL_AREA;
     for(; i<size; i++){
         p_event = &event_table[i%size];
-        if(p_event->status == ENABLE && p_event->exec_task != NULL){
+        if(p_event->status == GW_ENABLE && p_event->exec_task != NULL){
             p_event->exec_task();
-            p_event->status = DISABLE;
+            p_event->status = GW_DISABLE;
         }
     }
     //GW_EXIT_CRITICAL_AREA;

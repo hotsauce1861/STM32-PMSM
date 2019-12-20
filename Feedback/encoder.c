@@ -419,7 +419,6 @@ void enconder_get_rpm(int16_t *pdata){
 }
 void TIM3_IRQHandler(void)
 { 
-	uint16_t flag = 0x0001 << 4;
 	if(TIM3->SR&(TIM_FLAG_Update)){		
 		
 		if(overflow_times >= UINT16_MAX){

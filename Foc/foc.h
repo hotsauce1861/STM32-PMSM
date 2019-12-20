@@ -68,23 +68,23 @@ typedef struct fdbk_mod fdbk_mod_t;
 
 struct foc_mod {
 
-	PID_Handle_t speed_pi;
-	PID_Handle_t cur_d_pi;
-	PID_Handle_t cur_q_pi;
-	PID_Handle_t position_pi;
+	PID_Handle_t speed_pi;				// speed loop Id controller
+	PID_Handle_t cur_d_pi;				// current loop Id controller
+	PID_Handle_t cur_q_pi;				// current loop Iq controller
+	PID_Handle_t position_pi;			// positon loop pi controller
 
-	ff_mod_t	 ffc;
+	ff_mod_t	 ffc;					// feed forward controller
 	
-	Curr_Components cur_pre_set_dq;
-	Curr_Components cur_park_dq;
-	Curr_Components cur_clark_ab;
-	Curr_Components cur_ab;	
+	Curr_Components cur_pre_set_dq;		// current loop reference dq value
+	Curr_Components cur_park_dq;		// current loop feedback ab---park--->dq value	
+	Curr_Components cur_clark_ab;		// current loop feedback AB---clark->ab value	
+	Curr_Components cur_ab;				// current loop feedback AB value	
 	
 	Volt_Components vol_pre_set_dq;
 	Volt_Components vol_ab;
 	Volt_Components vol_dq;
 	Volt_Components vol_pi_out;
-	svpwm_mod_t svpwm;
+	svpwm_mod_t svpwm;					// svpwm module
 	motor_param_t motor_cfg;
 	fdbk_mod_t feedback;
 	int16_t angle_cnt;
@@ -93,8 +93,6 @@ struct foc_mod {
 	int16_t position_set;
 	int16_t e_theta;
 	
-	volatile int16_t flux_ref;		//d volt
-	volatile int16_t torque_ref;	//q volt
 };
 typedef struct foc_mod foc_mod_t;
 

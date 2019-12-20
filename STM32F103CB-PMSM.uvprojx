@@ -488,16 +488,6 @@
               <FilePath>.\User\user_state_machine.c</FilePath>
             </File>
             <File>
-              <FileName>user_state_machine.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\User\user_state_machine.h</FilePath>
-            </File>
-            <File>
-              <FileName>user_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\User\user_config.h</FilePath>
-            </File>
-            <File>
               <FileName>user_config.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\user_config.c</FilePath>
@@ -508,9 +498,9 @@
               <FilePath>.\User\user_flash.c</FilePath>
             </File>
             <File>
-              <FileName>user_flash.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\User\user_flash.h</FilePath>
+              <FileName>motor_protocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\motor_protocol.c</FilePath>
             </File>
           </Files>
         </Group>

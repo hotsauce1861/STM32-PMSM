@@ -18,13 +18,14 @@
 
 //bsp include
 #include "usart_driver.h"
+#include "position.h"
 
 extern void task_key_create(void);
 extern void task_display_create(void);
 extern void task_motor_control_create(void);
 
 void task_bsp_init(void){
-	usart_init();
+	usart_init();	
 }
 
 void task_system_init(void){

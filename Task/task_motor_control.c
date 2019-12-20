@@ -26,23 +26,25 @@
 
 foc_mod_t foc_obj;
 
-static void task_motor_open_loop(void);
-static void task_motor_speed_loop(void);
-static void task_motor_position_loop(void);
-static void task_motor_run_idzero(void);
-static void task_motor_run_iqzero(void);
-static void task_motor_run_iqidharf(void);
-static void task_motor_run_iq1id2(void);
-static void task_motor_run_iq2id1(void);
-static void task_motor_config(void);
-static void task_motor_park_clark(void);
+static __maybe_unused void task_motor_open_loop(void);
+static __maybe_unused void task_motor_speed_loop(void);
+static __maybe_unused void task_motor_position_loop(void);
+static __maybe_unused void task_motor_run_idzero(void);
+static __maybe_unused void task_motor_run_iqzero(void);
+static __maybe_unused void task_motor_run_iqidharf(void);
+static __maybe_unused void task_motor_run_iq1id2(void);
+static __maybe_unused void task_motor_run_iq2id1(void);
+static __maybe_unused void task_motor_config(void);
+static __maybe_unused void task_motor_park_clark(void);
+void task_motor_at_zero_position(void *pargs);
 
+void task_motor_stop(void);
 void task_motor_control_init(void);
 void task_motor_control(void* args);
 
 void task_motor_control_create(){
 	gw_task_args_create("motor_control", TASK_ID_MOTOR, 
-					TYPE_POLL, GW_DISABLE, 5,
+					TYPE_POLL, GW_DISABLE, SPEED_PID_SAMPLE,
 					task_motor_control_init,
 					task_motor_control);
 }
@@ -63,7 +65,7 @@ void task_motor_control_init(void){
 	task_motor_config();
 	foc_obj.feedback.cur_offset.qI_Component1 = 2020;
 	foc_obj.feedback.cur_offset.qI_Component2 = 2048;
-	foc_obj.position_set = 1500;
+	foc_obj.position_set = 2500;
 	foc_obj.rpm_speed_set = 50;
 	
 	foc_obj.ffc.a_factor = 40;
@@ -72,6 +74,10 @@ void task_motor_control_init(void){
 	encoder_init();
 	encoder_reset_zero();
 	cur_fbk_init();
+	//stm_get_cur_state
+	pos_init();
+	pos_set_cbk(task_motor_at_zero_position, NULL);
+	stm_set_next_state(&motor_state,START_UP);
 	
 }
 void task_motor_control(void* args){
@@ -95,15 +101,27 @@ void task_motor_control(void* args){
 		task_motor_position_loop();	
 	//}		
 	#endif
-		
-	task_motor_speed_loop();
 	
 	#if USE_FEED_FORWARD
 	foc_obj.ffc.ein = foc_obj.position_set - TIM3->CNT;
 	foc_obj.ffc.result = ff_calc_result(&foc_obj.ffc);
-	foc_obj.rpm_speed_set+= foc_obj.ffc.result;
-	#endif
+	foc_obj.rpm_speed_set += foc_obj.ffc.result;
+	//foc_obj.+= foc_obj.ffc.result;
+	//foc_obj.cur_pre_set_dq.qI_Component2 += foc_obj.ffc.result;	
+	#endif	
+
 	
+	task_motor_speed_loop();
+	if(time_cnt%5 == -1){
+		usart_printf("$%d %d %d %d %d %d;",	foc_obj.position_set*10,
+											TIM3->CNT*10,
+											foc_obj.feedback.rpm*100,
+											foc_obj.rpm_speed_set*100,
+											foc_obj.cur_pre_set_dq.qI_Component2,
+											foc_obj.cur_park_dq.qI_Component2);
+	}	
+	time_cnt++;
+		
 	//task_motor_run_idzero();
 	//task_motor_run_iqzero();
 	//task_motor_run_iqidharf();
@@ -121,7 +139,6 @@ void task_motor_control(void* args){
 }
 
 static void task_motor_config(void){
-	int16_t	tmp_cnt = 0;
 	/*
 		software init		
 	*/
@@ -231,9 +248,17 @@ static void task_motor_run_iqzero(void){
 static void task_motor_position_loop(void){
 
 #if USE_POSITION_PID
-	static int16_t pre_spd = 0;
 	
-	int16_t detal_spd = foc_obj.feedback.rpm - pre_spd;
+	int16_t e_detal = 0;
+	e_detal = foc_obj.position_set - TIM3->CNT;
+	
+	if(e_detal <= 100 && e_detal >= -100){
+		foc_obj.position_pi.hKpGain = 1;
+	}else if(e_detal <= 500 && e_detal >= -500){
+		foc_obj.position_pi.hKpGain = 2;
+	}else{
+		foc_obj.position_pi.hKpGain = 3;
+	}
 	
 	
 	foc_obj.rpm_speed_set = PI_Controller(&foc_obj.position_pi, 
@@ -250,14 +275,11 @@ static void task_motor_position_loop(void){
 	if(foc_obj.rpm_speed_set < -MAX_RPM){
 		foc_obj.rpm_speed_set = -MAX_RPM;
 	}
-	*/
-	
-	pre_spd = foc_obj.feedback.rpm;
+	*/	
 #endif
 }
 
-static void task_motor_speed_loop(void){
-	static uint16_t i = 0;	
+static void task_motor_speed_loop(void){	
 	uint8_t sector = 0;
 	
 	Volt_Components volt_input;
@@ -278,6 +300,7 @@ static void task_motor_speed_loop(void){
 	foc_get_feedback(&foc_obj.feedback);
 	
 #if 1	 	
+		
 	
 	uart_data[0] = foc_obj.position_set*10;//(int16_t)((int32_t)foc_obj.feedback.ia*Q14/2048*165/454*5);
 	uart_data[1] = TIM3->CNT*10;//foc_obj.cur_park_dq.qI_Component2;
@@ -302,6 +325,49 @@ static void task_motor_speed_loop(void){
 	//usart_printf("%d,",foc_obj.feedback.ia);
 	SDS_OutPut_Data_INT(uart_data); 		
 	
+}
+/**
+
+*/
+extern void task_motor_startup_02(Curr_Components cur_ab,uint16_t timeout){
+	static int16_t cnt = 0;
+	static int16_t angle = 0;
+	int32_t id_set = 0;
+	int32_t iq_set = 0;
+	int16_t pi_id_out, pi_iq_out;
+	Volt_Components volt_input;
+	#define START_ZERO_SECTOR	3
+	#if USE_POLL_MECH
+	if( (get_pos_rotor() != START_ZERO_SECTOR) && cnt++ < timeout){
+	#else	
+	if	(cnt++ < timeout){
+	#endif
+		foc_obj.cur_ab = cur_ab;
+	
+		foc_obj.feedback.theta = encoder_get_e_theta();	
+		//foc_obj.feedback.theta = (int16_t)(encoder_get_e_theta()+ (int32_t)foc_obj.angle_cnt_detal );
+			
+		foc_obj.cur_clark_ab = clarke(cur_ab);	
+		foc_obj.cur_park_dq = park(foc_obj.cur_clark_ab, foc_obj.feedback.theta);
+		
+		id_set = foc_obj.cur_pre_set_dq.qI_Component1;
+		iq_set = foc_obj.cur_pre_set_dq.qI_Component2;
+		
+		pi_id_out = PI_Controller(&foc_obj.cur_d_pi, id_set - foc_obj.cur_park_dq.qI_Component1);
+		pi_iq_out = PI_Controller(&foc_obj.cur_q_pi, iq_set - foc_obj.cur_park_dq.qI_Component2);
+	
+	
+		foc_obj.vol_ab = park_rev(volt_input, foc_obj.feedback.theta);
+		foc_obj.svpwm.UAlpha = foc_obj.vol_ab.qV_Component1;
+		foc_obj.svpwm.UBeta = foc_obj.vol_ab.qV_Component2;	
+		svpwm_main_run2(&foc_obj.svpwm);
+		svpwm_reset_pwm_duty(&foc_obj.svpwm);			
+	}
+	#if USE_POLL_MECH
+	else{
+		task_motor_at_zero_position(NULL);
+	}
+	#endif
 }
 
 extern void task_motor_startup(Curr_Components cur_ab,uint16_t timeout){
@@ -338,6 +404,7 @@ extern void task_motor_startup(Curr_Components cur_ab,uint16_t timeout){
 		svpwm_reset_pwm_duty(&foc_obj.svpwm);	
 		
 	}else{
+		get_pos_rotor_2();
 		stm_set_next_state(&motor_state,RUN);
 		encoder_reset_aligment();
 		//encoder_reset_zero();
@@ -346,7 +413,18 @@ extern void task_motor_startup(Curr_Components cur_ab,uint16_t timeout){
 		cnt = 0;
 	}	
 }
-int16_t user_angle = 0;
+
+void task_motor_at_zero_position(void *pargs){
+	
+	if(pargs == NULL){
+		
+	}	
+	stm_set_next_state(&motor_state, RUN);
+	encoder_reset_aligment();
+	foc_obj.cur_pre_set_dq.qI_Component1 = 0;
+	foc_obj.cur_pre_set_dq.qI_Component2 = PID_FLUX_REFERENCE;
+}
+
 extern void task_motor_cur_loop(Curr_Components cur_ab){
 	static int16_t cnt = 0;
 	int32_t id_set = 0;
@@ -361,7 +439,7 @@ extern void task_motor_cur_loop(Curr_Components cur_ab){
 	//foc_obj.feedback.theta = cnt+=256;
 	//foc_obj.feedback.theta = foc_obj.e_theta;
 	foc_obj.cur_clark_ab = clarke(cur_ab);	
-	foc_obj.cur_park_dq = park(foc_obj.cur_clark_ab, foc_obj.feedback.theta + user_angle);
+	foc_obj.cur_park_dq = park(foc_obj.cur_clark_ab, foc_obj.feedback.theta);
 	
 	id_set = (int32_t)foc_obj.cur_pre_set_dq.qI_Component1;
 	iq_set = (int32_t)foc_obj.cur_pre_set_dq.qI_Component2;
@@ -375,7 +453,7 @@ extern void task_motor_cur_loop(Curr_Components cur_ab){
 	foc_obj.vol_pi_out.qV_Component2 = pi_iq_out;
 	//foc_obj.vol_pi_out.qV_Component1 = 0;
 	//foc_obj.vol_pi_out.qV_Component2 = 25000;
-	foc_obj.vol_ab = park_rev(volt_input, foc_obj.feedback.theta + user_angle);
+	foc_obj.vol_ab = park_rev(volt_input, foc_obj.feedback.theta);
 	
 	foc_obj.svpwm.UAlpha = foc_obj.vol_ab.qV_Component1;
 	foc_obj.svpwm.UBeta = foc_obj.vol_ab.qV_Component2;	
@@ -455,106 +533,7 @@ static void task_motor_open_loop(void){
 	SDS_OutPut_Data_INT(uart_data); 	
 }
 
-static void task_motor_run(void){
-	
-	static uint16_t i = 0;	
-	uint8_t sector = 0;
-	
-	Volt_Components volt_input;
-	int16_t pi_speed_out = 0;
-	int16_t pi_id_out, pi_iq_out;
-	int32_t id_set = 0;
-	int32_t iq_set = 0;
-	int32_t uart_data[4];		
-
-#if USE_PID	
-
-	#if USE_CUR_PID	
-	foc_obj.cur_ab.qI_Component1 = foc_obj.feedback.ia;
-	foc_obj.cur_ab.qI_Component2 = foc_obj.feedback.ib;
-	
-	foc_obj.cur_clark_ab = clarke(foc_obj.cur_ab);	
-	
-	foc_obj.cur_park_dq = park(foc_obj.cur_clark_ab,
-					(foc_obj.feedback.theta + foc_obj.feedback.theta_offset)*PN );
-	//cur_park_dq = park(cur_clark_ab, i);
-	//cur_park_dq.qI_Component2;
-	#if USE_SPEED_PID
-	pi_speed_out = PI_Controller(&foc_obj.speed_pi,foc_obj.rpm_speed_set - foc_obj.feedback.rpm);
-	foc_obj.pre_set_vol_dq.qV_Component2 = pi_speed_out;
-	#endif	
-
-	id_set = foc_obj.cur_pre_set_dq.qI_Component1;
-	iq_set = foc_obj.cur_pre_set_dq.qI_Component2;
-	#if 1
-	pi_id_out = PI_Controller(&foc_obj.cur_d_pi, id_set - foc_obj.cur_park_dq.qI_Component1);
-	pi_iq_out = PI_Controller(&foc_obj.cur_q_pi, iq_set - foc_obj.cur_park_dq.qI_Component2);
-	#else
-	pi_id_out = id_set;
-	pi_iq_out = iq_set;
-	#endif
-	volt_input.qV_Component1 = pi_id_out;// + foc_obj.cur_park_dq.qI_Component2 * 1000;
-	volt_input.qV_Component2 = pi_iq_out;// + foc_obj.cur_park_dq.qI_Component1 * 1000;
-
-	/**
-		帕克反变换
-	 */
-	
-	foc_obj.vol_ab = park_rev(volt_input, 
-				(foc_obj.feedback.theta + foc_obj.feedback.theta_offset)*PN);
-	foc_obj.svpwm.UAlpha = foc_obj.vol_ab.qV_Component1;
-	foc_obj.svpwm.UBeta = foc_obj.vol_ab.qV_Component2;	
-	#endif
-#else
-	volt_input.qV_Component1 = 0;
-	volt_input.qV_Component2 = 25000;
-
-	//vol_ab = park_rev(volt_input, agl*PN);
-	vol_ab = park_rev(volt_input, i);
-	//trig_math = trig_functions(i);
-	svpwm.UBeta = vol_ab.qV_Component1;
-	svpwm.UAlpha = vol_ab.qV_Component2;
-	
-#endif
-	/*
-		计算SVPWM波形
-	*/
-	svpwm_main_run2(&foc_obj.svpwm);
-	svpwm_reset_pwm_duty(&foc_obj.svpwm);
-	
-	foc_get_feedback(&foc_obj.feedback);
- 
-	//uart_data[0] = svpwm.Tcm1;
-	//uart_data[1] = svpwm.Tcm2;
-	//uart_data[2] = svpwm.Tcm3;
-	//uart_data[3] = svpwm.sector*1000;	
-	
-	//uart_data[0] = Ia*20;
-	//uart_data[1] = Ib*20;
-	//uart_data[2] = i;
-	//uart_data[3] = agl*PN;
-	//SDS_OutPut_Data(uart_data);
-
-	//uart_data[0] = i;
-	//uart_data[1] = agl*PN;
-	//uart_data[2] = pi_id_out;
-	//uart_data[3] = pi_iq_out;	
-	
-	uart_data[0] = foc_obj.feedback.ia*10;
-	uart_data[1] = foc_obj.feedback.ib*10;
-	uart_data[2] = foc_obj.feedback.theta*PN;
-	uart_data[3] = foc_obj.feedback.rpm*150;//*50*60/2060;	
-	
-	//printf("%d,\n",Ia);
-	SDS_OutPut_Data_INT(uart_data); 
-	//pwm_reset_duty_cnt(1, svpwm.Tcm1);
-	//pwm_reset_duty_cnt(2, svpwm.Tcm2);
-	//pwm_reset_duty_cnt(3, svpwm.Tcm3);
-	//printf("Sector:%d Ua:0x%08X Ub:0x%08X\n", svpwm.sector,svpwm.Ua,svpwm.Ub);
-	
-}
-
-static void task_motor_stop(void){
+void task_motor_stop(void){
 	pwm_disable();
 }
 

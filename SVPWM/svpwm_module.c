@@ -96,7 +96,6 @@ void svpwm_reset_time(	int32_t Ts,
 
 void svpwm_get_sector(struct svpwm_mod* const svpwm){
 	int32_t wUalpha,wUbeta;
-	uint8_t a,b,c;
 	wUalpha = svpwm->UAlpha * SQRT3_Q14;
 	wUbeta = svpwm->UBeta * Q14;
 #if 1
@@ -289,7 +288,6 @@ void svpwm_main_run2(struct svpwm_mod* const svpwm){
 	int32_t wX,wY,wZ,wTimePhA,wTimePhB,wTimePhC;
 	int32_t wUalpha,wUbeta;
 	uint8_t a,b,c;
-	int32_t sector;
 	uint16_t max_times = 0;
 	uint16_t Ts = svpwm->Tpwm;
 	int32_t T4,T6;

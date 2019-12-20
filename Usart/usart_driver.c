@@ -9,13 +9,26 @@
 #define RX_PIN		GPIO_Pin_11
 #define BAUDRATE	115200
 
+#define IRQ_UART_PRE	3
+#define IRQ_UART_SUB	3
+
+#define USART_Rx_DMA_Channel    DMA1_Channel3
+#define USART_Rx_DMA_FLAG       DMA1_FLAG_TC3
+#define USART_DR_Base           0x40004804
+#define USART_BUF_SIZE			((uint16_t)64)
+
+uint8_t RxBuffer[USART_BUF_SIZE] = { 0 };
+int16_t head = 0,tail = 0;
+
 static USART_InitTypeDef USART_InitStructure;
 
 static void rcc_init(void){
-  /* Enable GPIO clock */
-  RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB 
-  						| RCC_APB2Periph_AFIO, ENABLE);
-  RCC_APB1PeriphClockCmd( RCC_APB1Periph_USART3, ENABLE);
+
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+	/* Enable GPIO clock */
+	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB 
+							| RCC_APB2Periph_AFIO, ENABLE);
+	RCC_APB1PeriphClockCmd( RCC_APB1Periph_USART3, ENABLE);
 }
 
 static void gpio_init(void){
@@ -33,6 +46,41 @@ static void gpio_init(void){
   
   GPIO_Init(GPIOB, &GPIO_InitStructure);
 
+}
+
+static void dma_init(void){
+
+  DMA_InitTypeDef DMA_InitStructure;
+
+  /* USARTy_Tx_DMA_Channel (triggered by USARTy Tx event) Config */
+ 
+	DMA_DeInit(USART_Rx_DMA_Channel);
+	DMA_InitStructure.DMA_PeripheralBaseAddr = USART_DR_Base;
+	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)RxBuffer;
+	//DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+	DMA_InitStructure.DMA_BufferSize = USART_BUF_SIZE;
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+	DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
+	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+	DMA_Init(USART_Rx_DMA_Channel, &DMA_InitStructure);
+
+}
+
+static void irq_init(void){
+
+	NVIC_InitTypeDef NVIC_InitStructure;
+
+	/* Enable the USART3_IRQn Interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = IRQ_UART_PRE;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = IRQ_UART_SUB;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
 }
 
 void usart_send_char(char ch){
@@ -86,6 +134,8 @@ void usart_init(void){
 
 	rcc_init ();
 	gpio_init ();
+	irq_init();
+	
 	/* USARTx configured as follow:
 		- BaudRate = 115200 baud  
 		- Word Length = 8 Bits
@@ -103,9 +153,46 @@ void usart_init(void){
 	/* USART configuration */
 	USART_Init(COM_PORT, &USART_InitStructure);
 
+	//USART_ITConfig(COM_PORT, USART_IT_IDLE, ENABLE);
+	USART_ITConfig(COM_PORT, USART_IT_RXNE, ENABLE);
 	/* Enable USART */
 	USART_Cmd(COM_PORT, ENABLE);
+	
+	USART_DMACmd(COM_PORT,USART_DMAReq_Rx, ENABLE);
+	dma_init();
+	DMA_ITConfig(USART_Rx_DMA_Channel, DMA_IT_TC, ENABLE);
+	DMA_ITConfig(USART_Rx_DMA_Channel, DMA_IT_TE, ENABLE);
+	DMA_Cmd(USART_Rx_DMA_Channel, ENABLE);	
+
 }
+
+/**
+  * @brief  This function handles USART3 global interrupt request.
+  * @param  None
+  * @retval None
+  */
+void USART3_IRQHandler(void)
+{
+	uint16_t rect_len = 0;
+	if(USART_GetITStatus(COM_PORT, USART_IT_RXNE) != RESET)	
+	{
+
+		USART_ReceiveData(COM_PORT);
+		rect_len = DMA_GetCurrDataCounter(USART_Rx_DMA_Channel);
+				
+		tail = (tail + rect_len)%USART_BUF_SIZE;
+		//fifo is not full
+		if( head != tail ) {
+		
+		}
+		//DMA_Cmd(USART_Rx_DMA_Channel, DISABLE);
+		//rect_len = DMA_GetCurrDataCounter(USART_Rx_DMA_Channel);
+		
+		//DMA_Cmd(USART_Rx_DMA_Channel, ENABLE);
+	}
+	USART_ClearITPendingBit(COM_PORT, USART_IT_RXNE);
+}
+
 
 
 #if USE_MICROLIB_USART

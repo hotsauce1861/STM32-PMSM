@@ -2,8 +2,10 @@
 #define _USART_DRIVER_H
 #include <stdio.h>
 #include <stdint.h>
+
 /* Private function prototypes -----------------------------------------------*/
 #define USE_MICROLIB_USART 1
+
 #if USE_MICROLIB_USART
 
 #ifdef __GNUC__
