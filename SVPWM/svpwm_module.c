@@ -18,38 +18,6 @@ void svpwm_init(void){
 	pwm_init();	
 }
 
-//sqrt(3)*Vbeta作为标么值
-uint8_t svpwm_nofloat_get_sector(struct svpwm_mod *svpwm){
-
-    uint8_t a,b,c;
-	//int32_t U1,U2,U3;
-	int32_t Ualpha = svpwm->UAlpha;
-	int32_t Ubeta = svpwm->UBeta;
-
-	/* 利用以下公式确定扇区 */
-	//U1 = Ubeta;							
-	//U2 = (SQRT_3*Ualpha - Ubeta * 100)/2;	
-	//U3 = (-SQRT_3*Ualpha - Ubeta * 100)/2;
-
-	if(Ubeta > (int32_t)0)
-        a = 1;
-    else
-        a = 0;
-
-	if((300*Ualpha) > (Ubeta * 100)){
-		b = 1;
-	}else{
-		b = 0;
-	}
-	
-	if((-300*Ualpha) > (Ubeta * 100))
-        c = 1;
-    else
-        c = 0;
-
-	return (4*c + 2*b + a);
-}
-
 void svpwm_time_check(uint16_t *time,uint16_t max_time,uint16_t min_time){
 	if(*time>max_time){
 		*time = max_time;

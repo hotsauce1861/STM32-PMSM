@@ -9,19 +9,22 @@
 	command package format
 	------------------------------------
 	Head command 	option   data 	 Tail
-	0x55  2 bytes	1 byte   4 byte  0xAA
+	%  2 bytes	1 byte   4 byte  	 &
 */
 
-#define PACKAGE_HEAD	0x55
-#define PACKAGE_TAIL	0xAA
+#define PACKAGE_HEAD	'%'
+#define PACKAGE_TAIL	'&'
+#define PACKAGE_SIZE	9
+
 #define MOTOR_CMD_MASK	0xF000
 #define MOTOR_CMD_SHIFT	12
-enum motor_cmd {
-	
+enum motor_cmd {	
 	//basic_cmd
-	STOP 			= 0x0001,
-	RUN_RPM 		= 0x0002,
-	RUN_POS 		= 0x0003,
+	M_SYS_RESET		= 0x000F,
+	M_STOP 			= 0x0001,
+	M_RUN_RPM 		= 0x0002,
+	M_RUN_POS 		= 0x0003,
+	M_STARTUP		= 0x0004,
 	
 	//pid of current loop
 	PID_CUR_KP 		= 0x1000,
@@ -45,20 +48,40 @@ enum motor_cmd {
 	
 	FFC_A_FACTOR	= 0x4000,
 	FFC_B_FACTOR	= 0x4001
-}; 
+};
+
+enum motor_run_option{
+	DIR_FORWARD = 0x01,
+	DIR_BACK 	= 0x02,
+};
+
+union motor_cmd_data {
+	int32_t value;
+	uint8_t value_n[4];
+};
+
+union motor_cmd_cmd {
+	int16_t value;
+	uint8_t value_n[2];
+};
+
 
 struct motor_cmd_mod{
 	uint8_t head;
-	uint16_t cmd;
+	union motor_cmd_cmd cmd;
 	uint8_t option;
-	int32_t data;
+	union motor_cmd_data data;
 	uint8_t tail;
+	int8_t process_flag;
 };
 
 typedef struct motor_cmd_mod motor_cmd_mod_t;
 
+extern motor_cmd_mod_t user_cmd_mod;
 int8_t motor_cmd_is_valid(motor_cmd_mod_t *pcmd);
 void motor_cmd_process(motor_cmd_mod_t *pcmd);
+
+void motor_get_cmd_from_uart(void *pargs);
 
 #ifdef __cplusplus
 }

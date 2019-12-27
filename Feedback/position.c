@@ -4,6 +4,8 @@
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_rcc.h"
 
+int16_t phase_signal_angle_matrix[6] = {0xd556,0x2aaa,0x0000,0x8000,0xaaac,0x5554};
+
 volatile uint8_t first_startup_flag = 1;
 volatile PFUNC callback = NULL;
 volatile void* pargs = NULL;
@@ -92,6 +94,37 @@ uint8_t get_pos_rotor_2(void){
 			break;
 		case 6:
 			sector = 5;
+			break;			
+		}	
+	return sector;
+}
+
+uint8_t get_pos_rotor_3(void){
+	int8_t a,b,c,sector;
+	a = get_pos_pha();
+	b = get_pos_phb();
+	c = get_pos_phc();
+	sector = 4*c+b*2+a;
+
+	switch (sector)
+		{
+		case 1:
+			sector = 6;			
+			break;
+		case 2:
+			sector = 2;
+			break;
+		case 3:
+			sector = 1;
+			break;
+		case 4:
+			sector = 4;
+			break;
+		case 5:
+			sector = 5;
+			break;
+		case 6:
+			sector = 3;
 			break;			
 		}	
 	return sector;

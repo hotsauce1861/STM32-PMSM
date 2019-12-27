@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "stm32f10x.h"
 #include "user_config.h"
 #include "pid_regulator.h"
 #include "encoder.h"
@@ -8,6 +9,12 @@
 #include "SDS.h"
 
 extern foc_mod_t foc_obj;
+
+void soft_reset(void)
+{
+    __set_FAULTMASK(1); // 关闭所有中断
+    NVIC_SystemReset(); // 复位
+}
 
 void pid_config(int8_t index){
 	
@@ -41,7 +48,7 @@ void pid_config(int8_t index){
 			foc_obj.cur_d_pi.hLowerOutputLimit = -32768;
 			foc_obj.cur_d_pi.hUpperOutputLimit = 32767; 
 			foc_obj.cur_d_pi.hKpDivisorPOW2 = 1;
-			foc_obj.cur_d_pi.hKiDivisorPOW2 = 7;
+			foc_obj.cur_d_pi.hKiDivisorPOW2 = 8;
 			
 			PID_HandleInit(&foc_obj.cur_q_pi);			
 			foc_obj.cur_q_pi.hKpGain = PID_TORQUE_KP_DEFAULT;
@@ -49,7 +56,7 @@ void pid_config(int8_t index){
 			foc_obj.cur_q_pi.hKpDivisor = TF_KPDIV;
 			foc_obj.cur_q_pi.hKiDivisor = TF_KIDIV;	
 			foc_obj.cur_q_pi.hKpDivisorPOW2 = 1;
-			foc_obj.cur_q_pi.hKiDivisorPOW2 = 7;
+			foc_obj.cur_q_pi.hKiDivisorPOW2 = 8;
 			foc_obj.cur_q_pi.hKdGain = 0;	
 			foc_obj.cur_q_pi.hLowerOutputLimit = -32768;
 			foc_obj.cur_q_pi.hUpperOutputLimit = 32767; 

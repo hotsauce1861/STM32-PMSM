@@ -209,13 +209,19 @@ void ADC1_2_IRQHandler(void)
 		cur_ab.qI_Component1 = (int16_t)wib;
 		cur_ab.qI_Component2 = (int16_t)wia;
 		
+		if(stm_get_cur_state(&motor_state) == TEST){
+		
+		}
 		if(stm_get_cur_state(&motor_state) == START_UP){
-			task_motor_startup_02(cur_ab,5000);
+			task_motor_startup_05(cur_ab,50000);
+			//task_motor_startup_04(cur_ab,50000);
+			//task_motor_startup_03(cur_ab,50000);
+			//task_motor_startup_02(cur_ab,5000);
 			//task_motor_startup(cur_ab,5000);
 		}else if(stm_get_cur_state(&motor_state) == RUN){
 			task_motor_cur_loop(cur_ab);
 		}else if (stm_get_cur_state(&motor_state) == STOP){
-			
+			task_motor_stop();
 		}
 		ADC_ITConfig(ADC1, ADC_IT_JEOC, ENABLE);
 		#endif

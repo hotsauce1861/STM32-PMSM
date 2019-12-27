@@ -35,7 +35,8 @@
  * @return  gw_list     - The pointer to the list
  */
 gw_list* gw_list_init(void){
-	gw_list* phead = (gw_list*)GW_MALLOC(sizeof(gw_list_node));
+	//gw_list* phead = (gw_list*)GW_MALLOC(sizeof(gw_list_node));
+	gw_list* phead = (gw_list*)malloc(sizeof(gw_list_node));
 	if(phead == NULL){
 		return NULL;
 	}

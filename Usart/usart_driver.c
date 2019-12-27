@@ -3,22 +3,15 @@
 #include "stm32f10x_usart.h"
 #include "usart_driver.h"
 
-//default 8N1
-#define COM_PORT	USART3
-#define TX_PIN		GPIO_Pin_10
-#define RX_PIN		GPIO_Pin_11
-#define BAUDRATE	115200
-
-#define IRQ_UART_PRE	3
-#define IRQ_UART_SUB	3
-
-#define USART_Rx_DMA_Channel    DMA1_Channel3
-#define USART_Rx_DMA_FLAG       DMA1_FLAG_TC3
-#define USART_DR_Base           0x40004804
-#define USART_BUF_SIZE			((uint16_t)64)
-
 uint8_t RxBuffer[USART_BUF_SIZE] = { 0 };
-int16_t head = 0,tail = 0;
+
+uart_mod_t user_uart_mod = {
+	.rx_dat_len = 0,
+	.head = 0,
+	.tail = 0,
+	.pfunc_rx_cbk = NULL,
+	.pargs = NULL
+};
 
 static USART_InitTypeDef USART_InitStructure;
 
@@ -153,17 +146,28 @@ void usart_init(void){
 	/* USART configuration */
 	USART_Init(COM_PORT, &USART_InitStructure);
 
-	//USART_ITConfig(COM_PORT, USART_IT_IDLE, ENABLE);
-	USART_ITConfig(COM_PORT, USART_IT_RXNE, ENABLE);
+	USART_ITConfig(COM_PORT, USART_IT_IDLE, ENABLE);
+	//USART_ITConfig(COM_PORT, USART_IT_RXNE, ENABLE);
 	/* Enable USART */
 	USART_Cmd(COM_PORT, ENABLE);
 	
 	USART_DMACmd(COM_PORT,USART_DMAReq_Rx, ENABLE);
 	dma_init();
-	DMA_ITConfig(USART_Rx_DMA_Channel, DMA_IT_TC, ENABLE);
+	DMA_ITConfig(USART_Rx_DMA_Channel, DMA_IT_TC, ENABLE);	
 	DMA_ITConfig(USART_Rx_DMA_Channel, DMA_IT_TE, ENABLE);
 	DMA_Cmd(USART_Rx_DMA_Channel, ENABLE);	
 
+}
+
+void usart_set_rx_cbk(uart_mod_t *pmod, rx_cbk pfunc,void *pargs){
+	pmod->pargs = pargs;
+	pmod->pfunc_rx_cbk = pfunc;
+}
+
+void DMA1_Channel3_IRQHandler(void){
+     if(DMA_GetITStatus(USART_Rx_DMA_FLAG) == SET){        
+        DMA_ClearITPendingBit(USART_Rx_DMA_FLAG);
+    }
 }
 
 /**
@@ -173,24 +177,26 @@ void usart_init(void){
   */
 void USART3_IRQHandler(void)
 {
+	uint8_t buf[USART_BUF_SIZE];
 	uint16_t rect_len = 0;
-	if(USART_GetITStatus(COM_PORT, USART_IT_RXNE) != RESET)	
+	if(USART_GetITStatus(COM_PORT, USART_IT_IDLE) != RESET)	
 	{
-
+		uint8_t i = 0;
 		USART_ReceiveData(COM_PORT);
-		rect_len = DMA_GetCurrDataCounter(USART_Rx_DMA_Channel);
-				
-		tail = (tail + rect_len)%USART_BUF_SIZE;
-		//fifo is not full
-		if( head != tail ) {
-		
+		user_uart_mod.head = USART_BUF_SIZE - DMA_GetCurrDataCounter(USART_Rx_DMA_Channel);		
+		//fifo is not full	
+		while(user_uart_mod.head%USART_BUF_SIZE != user_uart_mod.tail%USART_BUF_SIZE){			
+			user_uart_mod.rx_buf[i++] = RxBuffer[user_uart_mod.tail++%USART_BUF_SIZE];
 		}
-		//DMA_Cmd(USART_Rx_DMA_Channel, DISABLE);
-		//rect_len = DMA_GetCurrDataCounter(USART_Rx_DMA_Channel);
-		
+		user_uart_mod.rx_dat_len = i;
 		//DMA_Cmd(USART_Rx_DMA_Channel, ENABLE);
+		if(user_uart_mod.pfunc_rx_cbk != NULL){
+			user_uart_mod.pfunc_rx_cbk(user_uart_mod.pargs);
+		}
 	}
-	USART_ClearITPendingBit(COM_PORT, USART_IT_RXNE);
+	
+	USART_ClearITPendingBit(COM_PORT, USART_IT_IDLE);
+	//USART_ClearITPendingBit(COM_PORT, USART_IT_RXNE);
 }
 
 

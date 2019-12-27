@@ -10,6 +10,8 @@
 #include <stdint.h>
 #include "stm32f10x.h"
 
+#include "user_config.h"
+
 const int16_t angle_table_forward[6] = {0x0000,0x2aaa,0x5554,0x8000,0xaaac,0xd556};
 const int16_t angle_table_back[6] = {0xd556,0xaaac,0x8000,0x5554,0x2aaa,0x0000};
 
@@ -32,6 +34,35 @@ void foc_tesk_run_forward(foc_module_tst foc,uint16_t timeout,
 }	
 */
 extern foc_mod_t foc_obj;
+
+void foc_set_rpm_ref(foc_mod_t *p, int16_t data){
+	p->rpm_speed_set = data;
+	if(p->rpm_speed_set > MAX_RPM){
+		p->rpm_speed_set = MAX_RPM;
+	}
+	if(p->rpm_speed_set < -MAX_RPM){
+		p->rpm_speed_set = -MAX_RPM;
+	}
+}
+
+int16_t foc_get_rpm_ref(foc_mod_t *p){
+	return p->rpm_speed_set;
+}
+
+void foc_set_position_ref(foc_mod_t *p, int16_t data){
+	p->position_set = data;
+	if(p->position_set > MAX_POSITION){
+		p->position_set = MAX_POSITION;
+	}
+	if(p->position_set < -MIN_POSITION){
+		p->position_set = -MIN_POSITION;
+	}
+}
+
+int16_t foc_get_position_ref(foc_mod_t *p){
+	return p->position_set;
+}
+
 void foc_start_up_03(Curr_Components cur_ab,uint16_t timeout){
 	static int16_t cnt = 0;
 	int32_t id_set = 0;

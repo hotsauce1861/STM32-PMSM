@@ -12,6 +12,7 @@ typedef enum {
 	STOP		= 0x03,		
 	WAIT		= 0x04,
 	FAULT		= 0x05,
+	TEST		= 0x06
 }state_e;
 
 typedef state_e (*hcbk_get_cur_state)(void);

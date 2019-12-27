@@ -38,7 +38,7 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 extern struct gw_timer global_timer;
-extern struct gw_event event_table[];
+//extern struct gw_event event_table[];
 extern struct svpwm_mod *psvpwm;
 /* Exported functions ------------------------------------------------------- */
 extern void TimingDelay_Decrement(void);

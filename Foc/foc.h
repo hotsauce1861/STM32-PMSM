@@ -97,6 +97,12 @@ struct foc_mod {
 typedef struct foc_mod foc_mod_t;
 
 void foc_get_feedback(fdbk_mod_t * const pfbk);
+
+void foc_set_rpm_ref(foc_mod_t *p, int16_t data);
+int16_t foc_get_rpm_ref(foc_mod_t *p);
+void foc_set_position_ref(foc_mod_t *p, int16_t data);
+int16_t foc_get_position_ref(foc_mod_t *p);
+
 void foc_motor_start(foc_mod_t * const foc,uint16_t timeout,
 					void (* const time_cbk)(int16_t));
 void foc_start_up(foc_mod_t *foc,uint16_t timeout,

@@ -53,6 +53,7 @@ int main(void)
 	
 	task_main();
 
+	return 0;
 }
 
 #ifdef  USE_FULL_ASSERT

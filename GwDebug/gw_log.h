@@ -31,6 +31,8 @@
 
 #include <stdio.h>
 
+/* define compiler specific symbols */
+#if defined ( __CC_ARM   )
 #if USE_PRINTF
 extern int printf(const char *, ...);
 #define fprintf(fmt, args...) printf( ##args)
@@ -38,6 +40,18 @@ extern int printf(const char *, ...);
 extern int usart_printf(const char *, ...);
 #define fprintf(fmt, args...) usart_printf( ##args)
 #endif
+#elif defined   (  __GNUC__  )
+	
+#if USE_PRINTF
+extern int printf(const char *, ...);
+#define fprintf(fmt, args...) printf( ##args)
+#else
+extern int usart_printf(const char *, ...);
+#define fprintf(fmt, args...)         usart_printf(##args)
+#endif
+
+#endif //endif of __CC_ARM  __GNUC__
+
 
 #define LOG_OUTPUT 		1
 
@@ -47,29 +61,30 @@ extern int usart_printf(const char *, ...);
 #define DEBUG_WARRING	4
 #define DEBUG_ERROR		5
 
+
 #if LOG_OUTPUT
 #if (LOG_OUTPUT == LOG_DEBUG)
-#define Log_d(tag, format, ...) fprintf (tag, "Debug:<Func:%s @line:%d> "format"\n", __func__, __LINE__, ##__VA_ARGS__)
+#define Log_d(tag, format, ...) fprintf (tag " Debug:<%s @%d @%s> "format"\r\n", __func__, __LINE__, __FILE__, ##__VA_ARGS__)
 #else 
 #define Log_d(tag, format, ...)
 #endif
 #if (LOG_OUTPUT == LOG_INFO)
-#define Log_i(tag, format, ...) fprintf (tag, "Info:<Func:%s> "format"\n", __func__, ## __VA_ARGS__)
+#define Log_i(tag, format, ...) fprintf (tag " Info:<%s @%d @%s> "format"\r\n", __func__, __LINE__, __FILE__, ##__VA_ARGS__)
 #else 
 #define Log_i(tag, format, ...)
 #endif
 #if (LOG_OUTPUT == LOG_KEY)
-#define Log_k(tag, format, ...) fprintf (tag, "Key:<Func:%s @line:%d> "format"\n", __func__, __LINE__, ##__VA_ARGS__)
+#define Log_k(tag, format, ...) fprintf (tag " Key:<%s @%d @%s> "format"\r\n", __func__, __LINE__, __FILE__, ##__VA_ARGS__)
 #else 
 #define Log_k(tag, format, ...)
 #endif
 #if (LOG_OUTPUT == DEBUG_WARRING)
-#define Log_w(tag, format, ...) fprintf (tag, "Warring:<Func:%s @line:%d> "format"\n", __func__, __LINE__, ##__VA_ARGS__)
+#define Log_w(tag, format, ...) fprintf (tag " Warring:<%s @%d @%s> "format"\r\n", __func__, __LINE__, __FILE__, ##__VA_ARGS__)
 #else 
 #define Log_w(tag, format, ...)
 #endif
 #if (LOG_OUTPUT == DEBUG_ERROR)
-#define Log_e(tag, format, ...) fprintf (tag, "Error:<Func:%s @Line:%d @File:%s> "format"\n", __func__, __LINE__, __FILE__, ##__VA_ARGS__)
+#define Log_e(tag, format, ...) fprintf (tag " Error:<%s @%d @%s> "format"\r\n", __func__, __LINE__, __FILE__, ##__VA_ARGS__)
 #else 
 #define Log_e(tag, format, ...)
 #endif

@@ -12,6 +12,8 @@
 #define PHB			GPIO_Pin_1
 #define PHC			GPIO_Pin_2
 
+extern int16_t phase_signal_angle_matrix[6];
+
 //初始化电角三相信号的状态值
 #define INIT_PHA_VALUE	1
 #define INIT_PHB_VALUE	1
@@ -21,6 +23,7 @@ typedef void (*PFUNC)(void*);	//到达初始位置时候回调函数
 
 uint8_t get_pos_rotor(void);
 uint8_t get_pos_rotor_2(void);
+uint8_t get_pos_rotor_3(void);
 void pos_init(void);
 void pos_set_cbk(PFUNC p,void *pargs);
 
