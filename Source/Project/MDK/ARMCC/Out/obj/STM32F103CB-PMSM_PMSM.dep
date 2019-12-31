@@ -1,670 +1,0 @@
-Dependencies for Project 'STM32F103CB-PMSM', Target 'PMSM': (DO NOT MODIFY !)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\misc.c)(0x5E0AD711)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\misc.o --omf_browse .\out\obj\misc.crf --depend .\out\obj\misc.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.c)(0x5E0AD712)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_gpio.o --omf_browse .\out\obj\stm32f10x_gpio.crf --depend .\out\obj\stm32f10x_gpio.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_i2c.c)(0x5E0AD712)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_i2c.o --omf_browse .\out\obj\stm32f10x_i2c.crf --depend .\out\obj\stm32f10x_i2c.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_i2c.h)(0x5E0AD70F)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.c)(0x5E0AD713)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_rcc.o --omf_browse .\out\obj\stm32f10x_rcc.crf --depend .\out\obj\stm32f10x_rcc.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rtc.c)(0x5E0AD713)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_rtc.o --omf_browse .\out\obj\stm32f10x_rtc.crf --depend .\out\obj\stm32f10x_rtc.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rtc.h)(0x5E0AD710)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.c)(0x5E0AD713)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_tim.o --omf_browse .\out\obj\stm32f10x_tim.crf --depend .\out\obj\stm32f10x_tim.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.c)(0x5E0AD714)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_usart.o --omf_browse .\out\obj\stm32f10x_usart.crf --depend .\out\obj\stm32f10x_usart.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_exti.c)(0x5E0AD712)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_exti.o --omf_browse .\out\obj\stm32f10x_exti.crf --depend .\out\obj\stm32f10x_exti.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.c)(0x5E0AD711)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_adc.o --omf_browse .\out\obj\stm32f10x_adc.crf --depend .\out\obj\stm32f10x_adc.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_flash.c)(0x5E0AD712)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_flash.o --omf_browse .\out\obj\stm32f10x_flash.crf --depend .\out\obj\stm32f10x_flash.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_flash.h)(0x5E0AD70F)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_dma.c)(0x5E0AD712)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_dma.o --omf_browse .\out\obj\stm32f10x_dma.crf --depend .\out\obj\stm32f10x_dma.d)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.c)(0x5E0AD707)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\core_cm3.o --omf_browse .\out\obj\core_cm3.crf --depend .\out\obj\core_cm3.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-F (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.c)(0x5E0AD708)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\system_stm32f10x.o --omf_browse .\out\obj\system_stm32f10x.crf --depend .\out\obj\system_stm32f10x.d)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup\arm\startup_stm32f10x_md.s)(0x5E0AD70A)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include--pd "__UVISION_VERSION SETA 526" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"-o .\out\obj\startup_stm32f10x_md.o --depend .\out\obj\startup_stm32f10x_md.d)
-F (..\..\..\User\main.c)(0x5E0AD7A7)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\main.o --omf_browse .\out\obj\main.crf --depend .\out\obj\main.d)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\Task\task_main.h)(0x5E0AD7CE)
-F (..\..\..\User\stm32f10x_it.c)(0x5E0AD7A7)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\stm32f10x_it.o --omf_browse .\out\obj\stm32f10x_it.crf --depend .\out\obj\stm32f10x_it.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (..\..\..\User\stm32f10x_it.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\SVPWM\svpwm_driver.h)(0x5E0AD7A1)
-I (..\..\..\SVPWM\svpwm_module.h)(0x5E0AD7A1)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\User\user_config.h)(0x5E0AD7A8)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_fifo.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-I (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)
-I (..\..\..\Foc\foc.h)(0x5E0AD6FF)
-I (..\..\..\Pid\pid_regulator.h)(0x5E0AD7E6)
-I (..\..\..\Control\feed_forward.h)(0x5E0AD789)
-I (..\..\..\User\user_state_machine.h)(0x5E0AD7A8)
-I (..\..\..\Feedback\current.h)(0x5E0AD7AE)
-I (..\..\..\Task\task_motor_control.h)(0x5E0AD7CE)
-F (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)()
-F (..\..\..\User\user_state_machine.c)(0x5E0AD7A8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\user_state_machine.o --omf_browse .\out\obj\user_state_machine.crf --depend .\out\obj\user_state_machine.d)
-I (..\..\..\User\user_state_machine.h)(0x5E0AD7A8)
-F (..\..\..\User\user_config.c)(0x5E0AD7A7)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\user_config.o --omf_browse .\out\obj\user_config.crf --depend .\out\obj\user_config.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\User\user_config.h)(0x5E0AD7A8)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_fifo.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-I (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (..\..\..\Pid\pid_regulator.h)(0x5E0AD7E6)
-I (..\..\..\Feedback\encoder.h)(0x5E0AD7AE)
-I (..\..\..\Feedback\current.h)(0x5E0AD7AE)
-I (..\..\..\Feedback\position.h)(0x5E0AD7AE)
-I (..\..\..\Foc\foc.h)(0x5E0AD6FF)
-I (..\..\..\SVPWM\svpwm_module.h)(0x5E0AD7A1)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-I (..\..\..\Control\feed_forward.h)(0x5E0AD789)
-I (..\..\..\GwDebug\SDS.h)(0x5E0AD799)
-F (..\..\..\User\user_flash.c)(0x5E0AD7A7)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\user_flash.o --omf_browse .\out\obj\user_flash.crf --depend .\out\obj\user_flash.d)
-I (..\..\..\User\user_flash.h)(0x5E0AD7A7)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-F (..\..\..\User\motor_protocol.c)(0x5E0AD7A8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\motor_protocol.o --omf_browse .\out\obj\motor_protocol.crf --depend .\out\obj\motor_protocol.d)
-I (..\..\..\User\motor_protocol.h)(0x5E0AD7A8)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\User\user_config.h)(0x5E0AD7A8)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_fifo.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-I (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (..\..\..\User\user_state_machine.h)(0x5E0AD7A8)
-I (..\..\..\Task\task_motor_control.h)(0x5E0AD7CE)
-I (..\..\..\Feedback\current.h)(0x5E0AD7AE)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-I (..\..\..\Usart\usart_driver.h)(0x5E0AD784)
-I (..\..\..\Foc\foc.h)(0x5E0AD6FF)
-I (..\..\..\Pid\pid_regulator.h)(0x5E0AD7E6)
-I (..\..\..\SVPWM\svpwm_module.h)(0x5E0AD7A1)
-I (..\..\..\Control\feed_forward.h)(0x5E0AD789)
-F (..\..\..\User\user_banner.c)(0x5E0AD7A7)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\user_banner.o --omf_browse .\out\obj\user_banner.crf --depend .\out\obj\user_banner.d)
-I (..\..\..\User\user_banner.h)(0x5E0AD7A7)
-I (..\..\..\Usart\usart_driver.h)(0x5E0AD784)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-F (..\..\..\Doc\pin_map)(0x5E0AD6FB)()
-F (..\..\..\Display\display_driver.c)(0x5E0AD7D4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\display_driver.o --omf_browse .\out\obj\display_driver.crf --depend .\out\obj\display_driver.d)
-I (..\..\..\Display\display_driver.h)(0x5E0AD7D4)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599EDB3C)
-F (..\..\..\Display\display_device.c)(0x5E0AD7D4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\display_device.o --omf_browse .\out\obj\display_device.crf --depend .\out\obj\display_device.d)
-I (..\..\..\Display\display_device.h)(0x5E0AD7D4)
-F (..\..\..\SVPWM\svpwm_driver.c)(0x5E0AD7A1)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\svpwm_driver.o --omf_browse .\out\obj\svpwm_driver.crf --depend .\out\obj\svpwm_driver.d)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\SVPWM\svpwm_driver.h)(0x5E0AD7A1)
-I (..\..\..\User\stm32f10x_it.h)(0x5E0AD7A7)
-I (..\..\..\SVPWM\svpwm_module.h)(0x5E0AD7A1)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-F (..\..\..\SVPWM\svpwm_driver.h)(0x5E0AD7A1)()
-F (..\..\..\SVPWM\svpwm_module.c)(0x5E0AD7A1)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\svpwm_module.o --omf_browse .\out\obj\svpwm_module.crf --depend .\out\obj\svpwm_module.d)
-I (..\..\..\SVPWM\svpwm_module.h)(0x5E0AD7A1)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-I (..\..\..\SVPWM\svpwm_driver.h)(0x5E0AD7A1)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-F (..\..\..\Usart\usart_driver.c)(0x5E0AD784)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\usart_driver.o --omf_browse .\out\obj\usart_driver.crf --depend .\out\obj\usart_driver.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x599EDB3A)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\Usart\usart_driver.h)(0x5E0AD784)
-F (..\..\..\GwOS\gw_event.c)(0x5E0AD7B8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\gw_event.o --omf_browse .\out\obj\gw_event.crf --depend .\out\obj\gw_event.d)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-F (..\..\..\GwOS\gw_fifo.c)(0x5E0AD7B8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\gw_fifo.o --omf_browse .\out\obj\gw_fifo.crf --depend .\out\obj\gw_fifo.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_fifo.h)(0x5E0AD7B8)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-F (..\..\..\GwOS\gw_tasks.c)(0x5E0AD7B8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\gw_tasks.o --omf_browse .\out\obj\gw_tasks.crf --depend .\out\obj\gw_tasks.d)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_list.h)(0x5E0AD7B9)
-I (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-F (..\..\..\GwOS\gw_timer.c)(0x5E0AD7B8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\gw_timer.o --omf_browse .\out\obj\gw_timer.crf --depend .\out\obj\gw_timer.d)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-F (..\..\..\GwOS\gw_msgs.c)(0x5E0AD7B9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\gw_msgs.o --omf_browse .\out\obj\gw_msgs.crf --depend .\out\obj\gw_msgs.d)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-F (..\..\..\GwOS\gw_list.c)(0x5E0AD7B9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\gw_list.o --omf_browse .\out\obj\gw_list.crf --depend .\out\obj\gw_list.d)
-I (..\..\..\GwOS\gw_list.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-F (..\..\..\GwOS\gw_hal.c)(0x5E0AD7B8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\gw_hal.o --omf_browse .\out\obj\gw_hal.crf --depend .\out\obj\gw_hal.d)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-F (..\..\..\Feedback\current.c)(0x5E0AD7AE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\current.o --omf_browse .\out\obj\current.crf --depend .\out\obj\current.d)
-I (..\..\..\Feedback\current.h)(0x5E0AD7AE)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Feedback\position.c)(0x5E0AD7AE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\position.o --omf_browse .\out\obj\position.crf --depend .\out\obj\position.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (..\..\..\Feedback\position.h)(0x5E0AD7AE)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-F (..\..\..\Feedback\encoder.c)(0x5E0AD7AE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\encoder.o --omf_browse .\out\obj\encoder.crf --depend .\out\obj\encoder.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (..\..\..\Feedback\encoder.h)(0x5E0AD7AE)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\Feedback\position.h)(0x5E0AD7AE)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-F (..\..\..\GwDebug\SDS.c)(0x5E0AD799)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\sds.o --omf_browse .\out\obj\sds.crf --depend .\out\obj\sds.d)
-I (..\..\..\GwDebug\SDS.h)(0x5E0AD799)
-I (..\..\..\Usart\usart_driver.h)(0x5E0AD784)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-F (..\..\..\GwDebug\SDS.h)(0x5E0AD799)()
-F (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)()
-F (..\..\..\Test\test_svpwm.c)(0x5E0AD7EC)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\test_svpwm.o --omf_browse .\out\obj\test_svpwm.crf --depend .\out\obj\test_svpwm.d)
-F (..\..\..\Test\test_encoder.c)(0x5E0AD7EC)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\test_encoder.o --omf_browse .\out\obj\test_encoder.crf --depend .\out\obj\test_encoder.d)
-F (..\..\..\Test\test_dispaly.c)(0x5E0AD7EC)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\test_dispaly.o --omf_browse .\out\obj\test_dispaly.crf --depend .\out\obj\test_dispaly.d)
-I (..\..\..\Task\task_display.h)(0x5E0AD7CE)
-I (..\..\..\User\user_config.h)(0x5E0AD7A8)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_fifo.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-I (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-F (..\..\..\Test\test_usart.c)(0x5E0AD7EC)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\test_usart.o --omf_browse .\out\obj\test_usart.crf --depend .\out\obj\test_usart.d)
-F (..\..\..\Test\test_event.c)(0x5E0AD7EC)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\test_event.o --omf_browse .\out\obj\test_event.crf --depend .\out\obj\test_event.d)
-F (..\..\..\Math\svpwm_math.c)(0x5E0AD7BF)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\svpwm_math.o --omf_browse .\out\obj\svpwm_math.crf --depend .\out\obj\svpwm_math.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-F (..\..\..\Pid\pid_regulator.c)(0x5E0AD7E6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\pid_regulator.o --omf_browse .\out\obj\pid_regulator.crf --depend .\out\obj\pid_regulator.d)
-I (..\..\..\Pid\pid_regulator.h)(0x5E0AD7E6)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-F (..\..\..\Pid\pid_regulator.h)(0x5E0AD7E6)()
-F (..\..\..\Foc\foc.c)(0x5E0AD6FF)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\foc.o --omf_browse .\out\obj\foc.crf --depend .\out\obj\foc.d)
-I (..\..\..\Foc\foc.h)(0x5E0AD6FF)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Pid\pid_regulator.h)(0x5E0AD7E6)
-I (..\..\..\SVPWM\svpwm_module.h)(0x5E0AD7A1)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-I (..\..\..\Control\feed_forward.h)(0x5E0AD789)
-I (..\..\..\Feedback\encoder.h)(0x5E0AD7AE)
-I (..\..\..\Feedback\position.h)(0x5E0AD7AE)
-I (..\..\..\Feedback\current.h)(0x5E0AD7AE)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\User\user_config.h)(0x5E0AD7A8)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_fifo.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-I (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (..\..\..\User\user_state_machine.h)(0x5E0AD7A8)
-F (..\..\..\Foc\foc.h)(0x5E0AD6FF)()
-F (..\..\..\Foc\motor_control.c)(0x5E0AD6FF)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\motor_control.o --omf_browse .\out\obj\motor_control.crf --depend .\out\obj\motor_control.d)
-I (..\..\..\Foc\motor_control.h)(0x5E0AD6FF)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-F (..\..\..\Foc\motor_control.h)(0x5E0AD6FF)()
-F (..\..\..\Task\task_display.c)(0x5E0AD7CE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\task_display.o --omf_browse .\out\obj\task_display.crf --depend .\out\obj\task_display.d)
-I (..\..\..\Task\task_display.h)(0x5E0AD7CE)
-F (..\..\..\Task\task_motor_control.c)(0x5E0AD7CD)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\task_motor_control.o --omf_browse .\out\obj\task_motor_control.crf --depend .\out\obj\task_motor_control.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\Task\task_motor_control.h)(0x5E0AD7CE)
-I (..\..\..\Feedback\current.h)(0x5E0AD7AE)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-I (..\..\..\User\user_config.h)(0x5E0AD7A8)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_fifo.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-I (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)
-I (..\..\..\SVPWM\svpwm_module.h)(0x5E0AD7A1)
-I (..\..\..\SVPWM\svpwm_driver.h)(0x5E0AD7A1)
-I (..\..\..\Usart\usart_driver.h)(0x5E0AD784)
-I (..\..\..\Pid\pid_regulator.h)(0x5E0AD7E6)
-I (..\..\..\Feedback\encoder.h)(0x5E0AD7AE)
-I (..\..\..\Feedback\position.h)(0x5E0AD7AE)
-I (..\..\..\Foc\foc.h)(0x5E0AD6FF)
-I (..\..\..\Control\feed_forward.h)(0x5E0AD789)
-I (..\..\..\GwDebug\SDS.h)(0x5E0AD799)
-I (..\..\..\User\user_state_machine.h)(0x5E0AD7A8)
-I (..\..\..\User\motor_protocol.h)(0x5E0AD7A8)
-F (..\..\..\Task\task_key.c)(0x5E0AD7CE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\task_key.o --omf_browse .\out\obj\task_key.crf --depend .\out\obj\task_key.d)
-I (..\..\..\Task\task_key.h)(0x5E0AD7CE)
-I (..\..\..\User\user_config.h)(0x5E0AD7A8)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_fifo.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-I (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-F (..\..\..\Task\task_main.c)(0x5E0AD7CE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\task_main.o --omf_browse .\out\obj\task_main.crf --depend .\out\obj\task_main.d)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x5E0AD708)
-I (..\..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x5E0AD708)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-I (..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\system_stm32f10x.h)(0x5E0AD708)
-I (..\..\..\User\stm32f10x_conf.h)(0x5E0AD7A7)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_bkp.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_dma.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_exti.h)(0x5E0AD70E)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_gpio.h)(0x5E0AD70F)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x5E0AD710)
-I (..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x5E0AD70E)
-I (..\..\..\SVPWM\svpwm_module.h)(0x5E0AD7A1)
-I (..\..\..\Math\svpwm_math.h)(0x5E0AD7BF)
-I (..\..\..\Usart\usart_driver.h)(0x5E0AD784)
-I (..\..\..\Task\task_display.h)(0x5E0AD7CE)
-I (..\..\..\Task\task_motor_control.h)(0x5E0AD7CE)
-I (..\..\..\Feedback\current.h)(0x5E0AD7AE)
-I (..\..\..\Task\task_key.h)(0x5E0AD7CE)
-I (..\..\..\Task\task_main.h)(0x5E0AD7CE)
-I (..\..\..\User\user_config.h)(0x5E0AD7A8)
-I (..\..\..\GwOS\gw_type.h)(0x5E0AD7B9)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (..\..\..\GwOS\gw_hal.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_fifo.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_event.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_timer.h)(0x5E0AD7B8)
-I (..\..\..\GwOS\gw_msgs.h)(0x5E0AD7B9)
-I (..\..\..\GwOS\gw_tasks.h)(0x5E0AD7B8)
-I (..\..\..\GwDebug\gw_log.h)(0x5E0AD799)
-I (..\..\..\Feedback\encoder.h)(0x5E0AD7AE)
-I (..\..\..\Feedback\position.h)(0x5E0AD7AE)
-I (..\..\..\User\motor_protocol.h)(0x5E0AD7A8)
-I (..\..\..\User\user_banner.h)(0x5E0AD7A7)
-I (..\..\..\Foc\foc.h)(0x5E0AD6FF)
-I (..\..\..\Pid\pid_regulator.h)(0x5E0AD7E6)
-I (..\..\..\Control\feed_forward.h)(0x5E0AD789)
-F (..\..\..\Control\velocity_curve.c)(0x5E0AD789)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\velocity_curve.o --omf_browse .\out\obj\velocity_curve.crf --depend .\out\obj\velocity_curve.d)
-I (..\..\..\Control\velocity_curve.h)(0x5E0AD789)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
-F (..\..\..\Control\velocity_curve.h)(0x5E0AD789)()
-F (..\..\..\Control\feed_forward.c)(0x5E0AD789)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O3 --apcs=interwork -I ..\..\..\User -I ..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\..\Display -I ..\..\..\Usart -I ..\..\..\SVPWM -I ..\..\..\Display -I ..\..\..\Feedback -I ..\..\..\GwDebug -I ..\..\..\Math -I ..\..\..\Pid -I ..\..\..\Test -I ..\..\..\Foc -I ..\..\..\GwOS -I ..\..\..\Task -I ..\..\..\Control-I.\RTE\_PMSM-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\out\obj\feed_forward.o --omf_browse .\out\obj\feed_forward.crf --depend .\out\obj\feed_forward.d)
-I (..\..\..\Control\feed_forward.h)(0x5E0AD789)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
