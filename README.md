@@ -1,5 +1,4 @@
-# STM32-PMSM 
-![](./QPano3/Resources/bt428.svg) ![](./QPano3/Resources/plug.svg)
+# STM32-PMSM ![](./QPano3/Resources/bt428.svg) ![](./QPano3/Resources/plug.svg)
 Project of driving permanent magnet synchronous motor based on STM32F103XXX.
 
 If you think this project has helped you, please give me a star, which is the greatest encouragement to me.

@@ -1,0 +1,15 @@
+.\out\obj\task_key.o: ..\..\..\Task\task_key.c
+.\out\obj\task_key.o: ..\..\..\Task\task_key.h
+.\out\obj\task_key.o: ..\..\..\User\user_config.h
+.\out\obj\task_key.o: ..\..\..\GwOS\gw_type.h
+.\out\obj\task_key.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\out\obj\task_key.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\out\obj\task_key.o: ..\..\..\GwOS\gw_hal.h
+.\out\obj\task_key.o: ..\..\..\GwOS\gw_type.h
+.\out\obj\task_key.o: ..\..\..\GwOS\gw_fifo.h
+.\out\obj\task_key.o: ..\..\..\GwOS\gw_event.h
+.\out\obj\task_key.o: ..\..\..\GwOS\gw_timer.h
+.\out\obj\task_key.o: ..\..\..\GwOS\gw_msgs.h
+.\out\obj\task_key.o: ..\..\..\GwOS\gw_tasks.h
+.\out\obj\task_key.o: ..\..\..\GwDebug\gw_log.h
+.\out\obj\task_key.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

@@ -1,0 +1,15 @@
+.\out\obj\test_dispaly.o: ..\..\..\Test\test_dispaly.c
+.\out\obj\test_dispaly.o: ..\..\..\Task\task_display.h
+.\out\obj\test_dispaly.o: ..\..\..\User\user_config.h
+.\out\obj\test_dispaly.o: ..\..\..\GwOS\gw_type.h
+.\out\obj\test_dispaly.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\out\obj\test_dispaly.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\out\obj\test_dispaly.o: ..\..\..\GwOS\gw_hal.h
+.\out\obj\test_dispaly.o: ..\..\..\GwOS\gw_type.h
+.\out\obj\test_dispaly.o: ..\..\..\GwOS\gw_fifo.h
+.\out\obj\test_dispaly.o: ..\..\..\GwOS\gw_event.h
+.\out\obj\test_dispaly.o: ..\..\..\GwOS\gw_timer.h
+.\out\obj\test_dispaly.o: ..\..\..\GwOS\gw_msgs.h
+.\out\obj\test_dispaly.o: ..\..\..\GwOS\gw_tasks.h
+.\out\obj\test_dispaly.o: ..\..\..\GwDebug\gw_log.h
+.\out\obj\test_dispaly.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
