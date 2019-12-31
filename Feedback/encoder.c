@@ -37,6 +37,17 @@ volatile uint8_t zero_pos_flag = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
+encoder_mod_t user_encoder = {
+	.one_circle_lines_num = 2160,
+	.align_angle = 0,
+	.first_zero_signal_flag = 1,
+	.first_start_sector_flag = 0,
+	.zero_signal_offset = 0,
+	.first_zero_signal_cbk = NULL,
+	.pargs = NULL
+};
+
+
 void encoder_pin_init(void){
 	GPIO_InitTypeDef GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
@@ -151,6 +162,10 @@ void encoder_init(void){
 	encoder_tim_init();
 }
 
+void encoder_set_cbk(encoder_mod_t *p, pFunc cbk, void* pargs){
+	p->first_zero_signal_cbk = cbk;
+	p->pargs = pargs;
+}
 /**
  * @brief 	获取编码器旋转方向
  * @retval	MOTO_DIR
@@ -182,10 +197,6 @@ int16_t encoder_get_m_theta(void){
 
 void encoder_reset_aligment(void){
 	TIM_SetCounter(TIM3, ENCODER_ZERO_VAL);	
-}
-
-void encoder_reset_zero(void){
-	TIM_SetCounter(TIM3, 0);	
 }
 
 /**
@@ -417,6 +428,23 @@ void enconder_get_pulse_cnt(int16_t *pdata){
 void enconder_get_rpm(int16_t *pdata){
 	
 }
+
+void encoder_set_first_start_sector_flag(encoder_mod_t *p, int8_t val){
+	p->first_start_sector_flag = val;
+}
+
+int8_t encoder_get_first_start_sector_flag(encoder_mod_t *p){
+	return p->first_start_sector_flag;
+}
+
+void encoder_set_first_zero_signal_flag(encoder_mod_t *p, int8_t val){
+	p->first_zero_signal_flag = val;
+}
+
+int8_t encoder_get_first_zero_signal_flag(encoder_mod_t *p){
+	return p->first_zero_signal_flag;
+}
+
 void TIM3_IRQHandler(void)
 { 
 	if(TIM3->SR&(TIM_FLAG_Update)){		
@@ -438,6 +466,10 @@ void EXTI9_5_IRQHandler(void){
 
 	if(EXTI_GetITStatus(EXTI_Line5) == SET){ 
 		zero_pos_flag = 1;
+				
+		if(user_encoder.first_zero_signal_cbk != NULL){
+			user_encoder.first_zero_signal_cbk(user_encoder.pargs);
+		}
 		//first_zero_cnt = angle_cnt;
 	}
 	EXTI_ClearITPendingBit(EXTI_Line5);

@@ -6,8 +6,8 @@
 
 #define SPEED_SAMPLING_FREQ		500
 
-#define ENCODER_ONE_CIRCLE_CNT	2160L
-#define ENCODER_ZERO_CIRCLE_CNT	1580L
+#define ENCODER_ONE_CIRCLE_CNT	2160
+#define ENCODER_ZERO_CIRCLE_CNT	1580
 #define SAMPLE_FRQ 				10000L
 #define SYS_FRQ					72000000L
 #define ENCODER_MAX_CNT			0xFFFF
@@ -15,6 +15,21 @@
 //#define ENCODER_ZERO_VAL		0
 #define START_SECTOR	5
 
+typedef void (*pFunc)(void *pargs);
+
+struct encoder_mod {
+	const uint16_t one_circle_lines_num;
+	
+	const uint8_t align_angle;
+	int8_t first_zero_signal_flag;
+	int8_t first_start_sector_flag;
+	int16_t zero_signal_offset;
+	pFunc first_zero_signal_cbk;
+	void *pargs;
+};
+
+typedef struct encoder_mod  encoder_mod_t;
+extern encoder_mod_t user_encoder;
 /*
 QPEA--->PA6/TIM3C1
 QPEB--->PA7/TIM3C1
@@ -34,6 +49,7 @@ typedef enum{
  */
 void encoder_init(void);
 
+void encoder_set_cbk(encoder_mod_t *p, pFunc cbk,void* pargs);
 /**
  *	@brief get encoder capture signal counts
  */
@@ -74,13 +90,19 @@ int16_t encoder_get_m_theta(void);
 int16_t encoder_get_e_theta(void);
 
 void encoder_reset_aligment(void);
-
-void encoder_reset_zero(void);
 	
 void enconder_get_rpm(int16_t *pdata);
 
 int16_t enconder_calc_rot_speed(void);
 
 int16_t enconder_get_ave_speed(void);
+
+void encoder_set_first_start_sector_flag(encoder_mod_t *p, int8_t val);
+
+int8_t encoder_get_first_start_sector_flag(encoder_mod_t *p);
+
+void encoder_set_first_zero_signal_flag(encoder_mod_t *p, int8_t val);
+
+int8_t encoder_get_first_zero_signal_flag(encoder_mod_t *p);
 
 #endif

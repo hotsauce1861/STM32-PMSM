@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include "stm32f10x.h"
 #include "svpwm_module.h"
 #include "svpwm_math.h"
 #include "usart_driver.h"
@@ -18,24 +18,43 @@
 
 //bsp include
 #include "usart_driver.h"
+#include "encoder.h"
 #include "position.h"
 #include "motor_protocol.h"
+
+//user file
+#include "user_banner.h"
+#include "foc.h"
 
 extern void task_key_create(void);
 extern void task_display_create(void);
 extern void task_motor_control_create(void);
 
 void task_bsp_init(void){
+
+#if defined(USE_BOOTLOADER)
+	SCB->VTOR = FLASH_BASE | 0x3000;	//重定向Vector Table
+#endif
+	
+	timer_base_init();
+	
 	/* init usart*/
 	usart_init();
 	usart_set_rx_cbk(&user_uart_mod, motor_get_cmd_from_uart,&user_uart_mod);	
+	
+	encoder_init();
+	encoder_set_cbk(&user_encoder,foc_encoder_get_zero_line_offset,&user_encoder);
+
+	
+
 }
 
+
 void task_system_init(void){
-	timer_base_init();
+					
 	// gw_os init
 	gw_task_list_init();
-	gw_msg_fifo_init(&msg_fifo);	
+	gw_msg_fifo_init(&msg_fifo);		
 }
 
 void task_create(void){
@@ -53,8 +72,7 @@ void task_main(void){
 	gw_task_init_process();
 #else
 	gw_event_fifo_init();
-#endif
-
+#endif	
 	while (1)
 	{				
 #if USE_TASK_LIST	

@@ -35,6 +35,7 @@
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
+extern void user_banner_show(void);
 
 int main(void)
 {	
@@ -45,9 +46,9 @@ int main(void)
 	/**
 		task code		
 	*/
-	task_system_init();
-
 	task_bsp_init();
+	
+	task_system_init();	
 	
 	task_create();
 	

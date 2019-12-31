@@ -11,6 +11,7 @@
 #include "stm32f10x.h"
 
 #include "user_config.h"
+#include "user_state_machine.h"
 
 const int16_t angle_table_forward[6] = {0x0000,0x2aaa,0x5554,0x8000,0xaaac,0xd556};
 const int16_t angle_table_back[6] = {0xd556,0xaaac,0x8000,0x5554,0x2aaa,0x0000};
@@ -357,25 +358,22 @@ void foc_motor_start(foc_mod_t *foc,uint16_t timeout,void (* const time_cbk)(int
 	#endif
 }
 
-/*
-void foc_motor_get_zero_cnt(foc_mod_t foc,uint16_t timeout,
-													void (* const time_cbk)(int16_t)){
-
-		while((sector = get_pos_rotor_2()) != 1){
-		
-		volt_out = park_rev(foc->vol_dq, cnt+=64);
-		foc->svpwm.UAlpha = volt_out.qV_Component1;
-		foc->svpwm.UBeta = volt_out.qV_Component2;
-
-		svpwm_main_run2(&foc->svpwm);
-		svpwm_reset_pwm_duty(&foc->svpwm);
-		
-		if(time_cbk != 0){
-			time_cbk(1); // 1ms
-		}
-		if(time_cnt++>timeout || circle > 2){
-			break;
-		}
+void foc_encoder_get_zero_line_offset(void *pargs){
+	encoder_mod_t *p = pargs;
+	if(pargs == NULL){
+		return;
+	}	
+	//已经检测过复位信号偏移位置
+	if(p->first_zero_signal_flag == 0){
+		TIM3->CNT = p->zero_signal_offset;
+		return;
 	}
+	
+	//检测是否已经到初始化扇区
+	if(p->first_start_sector_flag == 1
+		&& stm_get_cur_state(&motor_state) == RUN ){
+		p->zero_signal_offset = TIM3->CNT;
+		p->first_zero_signal_flag = 0;
+	}	
 }
-*/
+	

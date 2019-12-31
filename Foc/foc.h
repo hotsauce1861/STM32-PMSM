@@ -110,4 +110,6 @@ void foc_start_up(foc_mod_t *foc,uint16_t timeout,
 
 void foc_start_up_02(foc_mod_t *foc,uint16_t timeout,void (* const time_cbk)(int16_t));
 
+void foc_encoder_get_zero_line_offset(void *pargs);
+
 #endif

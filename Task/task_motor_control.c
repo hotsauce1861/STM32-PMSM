@@ -70,9 +70,8 @@ void task_motor_control_init(void){
 	//sofeware init
 	task_motor_config();
 	
-			
-	encoder_init();
-	encoder_reset_zero();
+	TIM3->CNT = 0;
+	//encoder_reset_zero();
 	cur_fbk_init();
 	//stm_get_cur_state
 	pos_init();
@@ -484,7 +483,7 @@ extern void task_motor_startup_05(Curr_Components cur_ab,uint16_t timeout){
 	}
 	#if USE_POLL_MECH
 	else{
-		task_motor_at_zero_position(NULL);
+		task_motor_at_zero_position(NULL);		
 	}
 	#endif
 }
@@ -697,6 +696,7 @@ void task_motor_at_zero_position(void *pargs){
 	encoder_reset_aligment();
 	foc_obj.cur_pre_set_dq.qI_Component1 = 0;
 	foc_obj.cur_pre_set_dq.qI_Component2 = PID_FLUX_REFERENCE;
+	encoder_set_first_zero_signal_flag(&user_encoder, 1);
 }
 
 extern void task_motor_cur_loop(Curr_Components cur_ab){
